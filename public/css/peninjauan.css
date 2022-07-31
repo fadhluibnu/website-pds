@@ -1,0 +1,172 @@
+.filter label {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #4e5764;
+}
+.namanomor:focus-within,
+.date:focus-within {
+  border-color: #86b7fe !important;
+  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+}
+.filter .namanomor,
+.filter .date {
+  /* background: #f3f5fa; */
+  background-color: #fff;
+  transition: 0.15s;
+}
+.filter .namanomor .input-group-text,
+.filter .date .input-group-text {
+  background-color: transparent !important;
+  border: none;
+}
+.filter .namanomor .form-control,
+.filter .date .form-control {
+  border: transparent;
+  background-color: transparent;
+}
+.filter .namanomor .form-control {
+  padding: 10px 10px 10px 0px;
+}
+.filter .date .form-control {
+  padding: 10px 0px 10px 10px;
+}
+.filter .namanomor .form-control:focus,
+.filter .date .form-control:focus {
+  box-shadow: none;
+}
+.ui-widget.ui-widget-content {
+  border: none !important;
+  margin-top: 5px;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+  padding: 16px;
+  border-radius: 10px;
+}
+.ui-widget-header {
+  border: none;
+  background-color: #f3f5fa;
+  color: #4e5764;
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 15px;
+  border-radius: 8px;
+}
+.ui-datepicker-calendar {
+  color: #4e5764;
+}
+.ui-state-default,
+.ui-widget-content .ui-state-default {
+  /* background: none; */
+  font-weight: normal;
+  color: #454545;
+  border: none;
+  text-align: center;
+  border-radius: 20px;
+}
+.ui-datepicker td a {
+  display: block;
+  padding: 0;
+  text-align: right;
+  text-decoration: none;
+  width: 34px;
+  line-height: 34px;
+  height: 34px;
+}
+.ui-datepicker td a:hover {
+  background-color: #3574ed;
+  transition: 0.3s;
+  color: white;
+}
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight {
+  background-color: #3574ed;
+  color: white;
+}
+.my-table .no-urut {
+  width: 4%;
+}
+.my-table .nomordokumen {
+  width: 20%;
+}
+.my-table .namadokumen {
+  width: 28%;
+}
+.my-table .statusdokumen {
+  width: 14%;
+}
+.my-table .pemohon {
+  width: 14%;
+}
+.my-table .tglupload {
+  width: 11%;
+}
+.my-table .aksi {
+  width: 11%;
+}
+.my-table .header {
+  background: rgba(0, 26, 65, 0.63);
+}
+.my-table .data .box-icon.disable {
+  background-color: #aaaaaa !important;
+}
+.my-table .data .box-icon {
+  width: 33px;
+  height: 33px;
+  background: #3574ee;
+  text-align: center;
+  line-height: 33px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+}
+/* table bootstrap */
+.table .prof-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.table tr th {
+  font-weight: 500;
+}
+.table .box-icon {
+  width: 33px;
+  height: 33px;
+  text-align: center;
+  line-height: 33px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+}
+.table .box-icon.disable {
+  background-color: #aaaaaa !important;
+  cursor: not-allowed;
+}
+.pengajuan td:nth-child(1),
+.pengguna td:nth-child(1),
+.peninjauan td:nth-child(1),
+.pengguna td:nth-child(6) {
+  width: 4%;
+}
+.pengajuan td:nth-child(2),
+.pengguna td:nth-child(4) {
+  width: 16%;
+}
+.pengajuan td:nth-child(4),
+.pengguna td:nth-child(2),
+.peninjauan td:nth-child(2),
+.peninjauan td:nth-child(5) {
+  width: 14%;
+}
+.pengajuan td:nth-child(5),
+.pengguna td:nth-child(5) {
+  width: 14%;
+}
+.pengajuan td:nth-child(6),
+.peninjauan td:nth-child(6),
+.peninjauan td:nth-child(4),
+.peninjauan td:nth-child(7) {
+  width: 12%;
+}

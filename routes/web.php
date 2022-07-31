@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Livewire\Page\Overview;
+use App\Http\Livewire\Page\Pengajuan;
+use App\Http\Livewire\Page\Pengaturan;
+use App\Http\Livewire\Page\Pengguna;
+use App\Http\Livewire\Page\Peninjauan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', Overview::class)->name("overview");
+Route::get('/peninjauan', [Peninjauan::class])->name("peninjauan");
+Route::get('/pengajuan', [Pengajuan::class])->name("pengajuan");
+Route::get('/pengguna', [Pengguna::class])->name("pengguna");
+Route::get('/pengaturan', [Pengaturan::class])->name("pengaturan");
