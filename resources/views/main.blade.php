@@ -10,9 +10,14 @@
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
-    <link rel="stylesheet" href="css/sidebarheader.css">
-    <link rel="stylesheet" href="css/peninjauan.css">
-    <link rel="stylesheet" href="css/style.css">
+
+    @if ($title == 'Login')
+        <link rel="stylesheet" href="css/login.css">
+    @else
+        <link rel="stylesheet" href="css/sidebarheader.css">
+        <link rel="stylesheet" href="css/peninjauan.css">
+        <link rel="stylesheet" href="css/style.css">
+    @endif
 
     <!-- icon  -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
