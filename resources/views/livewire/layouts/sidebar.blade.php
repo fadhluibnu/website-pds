@@ -51,20 +51,27 @@
                     class="bi bi-grid-fill"></i> Overview</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('peninjauan') }}"><i class="bi bi-file-earmark-arrow-down"></i>
+            <a class="nav-link @if ($title == 'Peninjauan') active @endif" href="{{ route('peninjauan') }}"><i
+                    class="bi bi-file-earmark-arrow-down"></i>
                 Peninjauan</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('pengajuan') }}"><i class="bi bi-file-earmark-arrow-up"></i>
+            <a class="nav-link @if ($title == 'Pengajuan') active @endif" href="{{ route('pengajuan') }}"><i
+                    class="bi bi-file-earmark-arrow-up"></i>
                 Pengajuan</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('pengguna') }}"><i class="bi bi-person-circle"></i>
+            <a class="nav-link  @if ($title == 'Pengguna') active @endif" href="{{ route('pengguna') }}"><i
+                    class="bi bi-person-circle"></i>
                 Pengguna</a>
         </li>
         <p class="pref">Preferensi</p>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('pengaturan') }}"><i class="bi bi-gear"></i> Pengaturan</a>
+            <a class="nav-link  @if ($title == 'Pengaturan') active @endif" href="{{ route('pengaturan') }}"><i
+                    class="bi bi-gear"></i> Pengaturan</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('logout') }}"><i class="bi bi-gear"></i> Keluar</a>
         </li>
     </ul>
 </div>

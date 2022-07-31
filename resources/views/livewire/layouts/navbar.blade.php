@@ -2,7 +2,7 @@
     <header id="header-overview" class="bg-white container-fluid d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center justify-content-between" style="width: 64%!important;">
             <h1 class="title-page">{{ $title }}</h1>
-            <form action="" class="">
+            <form action="" class="@if ($title != 'Overview') d-none @endif">
                 <div class="input-group" id="form-search-header">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
                     <input type="text" class="form-control" placeholder="Cari dokumen" aria-label="Username"
