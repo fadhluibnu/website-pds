@@ -30,6 +30,16 @@
         rel="stylesheet">
     {{-- <meta name="turbolinks-visit-control" content="reload"> --}}
     <title>{{ $title }}</title>
+    <style>
+        .turbolinks-progress-bar {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: linear-gradient(to right, red, orange)
+        }
+    </style>
 </head>
 
 <body style="height: 100vh; overflow-y: hidden;">
@@ -42,9 +52,7 @@
             <div class="content overflow-hidden position-relative" style="height: 100vh;">
                 <livewire:layouts.navbar :title="$title"></livewire:layouts.navbar>
 
-                <div class="container-fluid" style="height: 90vh;overflow-y: auto;">
-                    @yield('content')
-                </div>
+                @yield('content')
             </div>
         </div>
     @endif

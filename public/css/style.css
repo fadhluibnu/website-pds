@@ -518,50 +518,10 @@ body {
   font-weight: 500 !important;
   color: #4e5764;
 }
-/* .drop-container {
-  padding: 1.5rem;
-  width: 100%;
-  display: inline-block;
-  border-radius: 10px;
+
+/* pengaturan */
+.pengaturan .profile{
+  background-color: #3574ee;
+  width: 100px;
+height: 100px;
 }
-.drop {
-  border-radius: 10px;
-  border: 3px dashed #aaa;
-  display: grid;
-  width: 100%;
-  place-content: center;
-  padding: 2rem;
-  box-sizing: border-box;
-  place-items: center;
-}
-.active {
-  background: #edccff;
-}
-.drop .icon {
-  font-weight: 500;
-  color: #a916f9;
-}
-.drop .text {
-  text-align: center;
-  font-weight: 500;
-  color: #443f46;
-  margin-top: 1rem;
-}
-.my-progress {
-  background-color: #a916f9;
-  width: 0%;
-  height: 20px;
-  display: none;
-  border-radius: 10px;
-  transition: all 0.2s;
-}
-.drop label {
-  background: #a916f9;
-  padding: 0.7rem 1.8rem;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-}
-.file-input {
-  display: none;
-} */

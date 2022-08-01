@@ -71,7 +71,7 @@
                     class="bi bi-gear"></i> Pengaturan</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('logout') }}"><i class="bi bi-gear"></i> Keluar</a>
+            <a class="nav-link" href="{{ route('logout') }}"><i class="bi bi-box-arrow-left"></i> Keluar</a>
         </li>
     </ul>
 </div>
