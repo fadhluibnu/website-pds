@@ -61,7 +61,7 @@
                 Pengajuan</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link  @if ($title == 'Pengguna') active @endif" href="{{ route('pengguna') }}"><i
+            <a class="nav-link  @if ($title == 'Pengguna' || $title == 'Detail Pengguna') active @endif" href="{{ route('pengguna') }}"><i
                     class="bi bi-person-circle"></i>
                 Pengguna</a>
         </li>

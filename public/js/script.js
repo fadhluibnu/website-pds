@@ -7,6 +7,10 @@ function modalTarget(param, id) {
     document.getElementById(id).classList.add("off");
     document.getElementById(id).classList.remove("active");
   }
+  if(param == "link"){
+    // window.location.href=`${id}`
+    alert(id)
+  }
 }
 function getNameFile() {
   const nameFile = document.getElementById("fileTinjau").value;

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Livewire\Page\DetailPengguna;
 use App\Http\Livewire\Page\Overview;
 use App\Http\Livewire\Page\Pengajuan;
 use App\Http\Livewire\Page\Pengaturan;
@@ -27,3 +28,4 @@ Route::get('/peninjauan', Peninjauan::class)->name("peninjauan");
 Route::get('/pengajuan', Pengajuan::class)->name("pengajuan");
 Route::get('/pengguna', Pengguna::class)->name("pengguna");
 Route::get('/pengaturan', Pengaturan::class)->name("pengaturan");
+Route::get('/pengguna/detail-pengguna', DetailPengguna::class)->name("detail-pengguna");
