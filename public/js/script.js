@@ -8,6 +8,7 @@ function modalTarget(param, id) {
         document.getElementById(id).classList.remove("active");
     }
     if (param == "link") {
+        // window.location.href=`${id}`
         alert(id);
     }
 }

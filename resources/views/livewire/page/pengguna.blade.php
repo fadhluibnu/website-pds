@@ -59,10 +59,10 @@
                     <td class="py-2">Username@gmail.com</td>
                     <td class="py-2">Manager</td>
                     <td class="py-2 px-4 ps-0">
-                        <div class="box-icon rounded-circle bg-primary" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" data-bs-title="Profil"
-                            onclick="modalTarget('link','{{ route('pengguna') }}')">
-                            <i class="bi bi-eye-fill"></i>
+                        <div onclick="modalTarget('link', {{ route('detail-pengguna') }})"
+                            class=" box-icon rounded-circle bg-primary" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" data-bs-title="Profil">
+                            <i class="bi bi-eye-fill m-auto"></i>
                         </div>
                     </td>
                 </tr>

@@ -13,7 +13,16 @@
     <link rel="stylesheet" href="css/sidebarheader.css">
     <link rel="stylesheet" href="css/peninjauan.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/login.css">
+    @if (
+        $title == "Login"
+    )
+        <link rel="stylesheet" href="css/login.css">
+    @endif
+    @if (
+        $title == "Detail Pengguna"
+    )
+        <link rel="stylesheet" href="css/detail-pengguna.css">
+    @endif
 
     <!-- icon  -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
@@ -101,8 +110,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="{{ mix('js/app.js') }}"></script>
+    <SCript>
+        function modalTarget(param, id) {
+        if(param == "link"){
+            // window.location.href=`${id}`
+            alert(id)
+        }
+        }
+    </SCript>
     <script src="js/script.js"></script>
     <script>
+        
         $(function() {
             $("#datepicker").datepicker();
         });
