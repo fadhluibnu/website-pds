@@ -61,7 +61,7 @@
                     <td class="py-2 px-4 ps-0">
                         <div class="box-icon rounded-circle bg-primary" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" data-bs-title="Profil"
-                            onclick="modalTarget('open','modal-detail-targeted')">
+                            onclick="modalTarget('link','{{ route('pengguna') }}')">
                             <i class="bi bi-eye-fill"></i>
                         </div>
                     </td>
