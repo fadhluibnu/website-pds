@@ -1,0 +1,43 @@
+body {
+    background-color: #F2F6FB;
+    font-family: 'Poppins';
+}
+
+button {
+    width: 531px;
+    height: 55px;
+}
+
+.center-all {
+    /* position: absolute; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.masuk {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    /* identical to box height */
+
+    letter-spacing: 0.01em;
+
+    color: #4E5764;
+}
+
+.slmt {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 54px;
+    /* identical to box height */
+
+    letter-spacing: 0.01em;
+
+    color: #4E5764;
+}
