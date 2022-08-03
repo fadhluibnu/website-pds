@@ -38,11 +38,53 @@
     <style>
         .turbolinks-progress-bar {
             position: absolute;
+            width: 100% !important;
+            height: 100%;
+            z-index: 90000000 !important;
             top: 0;
             bottom: 0;
             left: 0;
             right: 0;
-            background-image: linear-gradient(to right, red, orange)
+            background-color: rgba(31, 31, 31, 0.20);
+        }
+
+        .turbolinks-progress-bar::before {
+            position: absolute;
+            content: "";
+            width: 20px;
+            height: 20px;
+            background: #0f57e6;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            animation: turbo-loading .5s infinite;
+        }
+
+        .turbolinks-progress-bar::after {
+            position: absolute;
+            content: "";
+            width: 20px;
+            height: 20px;
+            background: #0f57e6;
+            border-radius: 50%;
+            left: 52%;
+            top: 50%;
+            animation: turbo-loading .5s infinite;
+            animation-delay: 0.10s;
+        }
+
+        @keyframes turbo-loading {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
     </style>
 </head>

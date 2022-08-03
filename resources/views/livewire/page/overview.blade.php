@@ -154,7 +154,7 @@
                 <input class="form-control" type="search" placeholder="Search Document"
                     aria-label="default input example">
             </form> -->
-                <div class="data-pds px-1" style="height: 452px;overflow-y:auto;">
+                <div class="data-pds px-1" style="max-height: 300px;overflow-y:auto;">
                     <div class="d-flex bg-white header fw-semibold text-color sticky-top" style="padding: 0px 10px;">
                         <div class="nama px-2">
                             Nama Dokumen
@@ -184,7 +184,7 @@
                             </div>
                         </div>
                     </div>
-                    <div style="height: 200px;"></div>
+                    {{-- <div style="height: 200px;"></div> --}}
                 </div>
             </div>
             <div class="col-7">
