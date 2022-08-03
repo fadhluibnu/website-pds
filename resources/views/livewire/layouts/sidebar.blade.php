@@ -1,4 +1,4 @@
-<div class="sidebar bg-white expand" style="height: 100vh;">
+<div class="sidebar bg-white expand position-relative" style="height: 100vh;z-index:100000000;">
     <div class="bg-prof-sidebar bg-primary">
         <div class="contain-logo d-flex">
             <div class="logo d-flex m-auto mt-3">
