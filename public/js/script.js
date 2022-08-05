@@ -1,3 +1,32 @@
+const tooltipTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="tooltip"]'
+);
+const tooltipList = [...tooltipTriggerList].map(
+    (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+);
+
+// function showToolstip() {
+//     const tooltip = document.createElement("div");
+
+//     tooltip.id = "Tooltip Peninjauan";
+//     tooltip.style.visibility = "hidden"; // make it hidden till mouse over
+//     tooltip.style.position = "fixed";
+//     tooltip.style.top = "8px";
+//     tooltip.style.left = "8px";
+//     tooltip.style.padding = "8px";
+//     tooltip.style.width = "300px";
+//     tooltip.style.borderRadius = "16px";
+//     tooltip.style.border = "solid thin grey";
+//     tooltip.style.backgroundColor = "grey";
+
+//     document
+//         .querySelectorAll('[data-bs-my-tooltip="tooltip"]')
+//         .appendChild(tooltip);
+// }
+// function hideToolstip() {
+//     alert("hide");
+// }
+
 function modalTarget(param, id) {
     if (param == "open") {
         document.getElementById(id).classList.remove("off");
@@ -8,10 +37,11 @@ function modalTarget(param, id) {
         document.getElementById(id).classList.remove("active");
     }
     if (param == "link") {
-        // window.location.href=`${id}`
-        alert(id);
+        window.location.href = `${id}`;
+        // alert(id);
     }
 }
+
 function getNameFile() {
     const nameFile = document.getElementById("fileTinjau").value;
     document.getElementById("nameFileTinjau").value = nameFile.substr(

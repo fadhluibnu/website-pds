@@ -61,18 +61,27 @@
                     <td class="py-2">17/01/2022</td>
                     <td class="py-2 px-3 ps-0">
                         <div class="d-flex">
-                            <div class="box-icon rounded-circle bg-primary" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" data-bs-title="Detail & History"
+                            <div class="box-icon rounded-circle bg-primary"
                                 onclick="modalTarget('open','modal-detail-targeted')">
                                 <i class="bi bi-folder-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Detail & History</span>
+                                </div>
                             </div>
-                            <div class="box-icon rounded-circle bg-warning ms-1" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" data-bs-title="Edit PDS"
+                            <div class="box-icon rounded-circle bg-warning ms-1"
                                 onclick="modalTarget('open', 'modal-edit-targeted')"><i class="bi bi-pen-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Edit</span>
+                                </div>
                             </div>
-                            <div class="box-icon rounded-circle bg-danger ms-1" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" data-bs-title="Delete PDS"
+                            <div class="box-icon rounded-circle bg-danger ms-1"
                                 onclick="modalTarget('open', 'modal-delete-targeted')"><i class="bi bi-trash-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Delete</span>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -108,11 +117,25 @@
                     <td class="py-2">17/01/2022</td>
                     <td class="py-2 px-3 ps-0">
                         <div class="d-flex">
-                            <div class="box-icon rounded-circle bg-primary"><i class="bi bi-folder-fill"></i></div>
-                            <div class="box-icon disable rounded-circle bg-warning ms-1" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" data-bs-title="Disabled"><i class="bi bi-pen-fill"></i>
+                            <div class="box-icon rounded-circle bg-primary"><i class="bi bi-folder-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Detail & History</span>
+                                </div>
                             </div>
-                            <div class="box-icon rounded-circle bg-danger ms-1"><i class="bi bi-trash-fill"></i></div>
+                            <div class="box-icon disable rounded-circle bg-warning ms-1"><i
+                                    class="bi bi-pen-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Edit</span>
+                                </div>
+                            </div>
+                            <div class="box-icon rounded-circle bg-danger ms-1"><i class="bi bi-trash-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Delete</span>
+                                </div>
+                            </div>
                         </div>
                     </td>
                 </tr>

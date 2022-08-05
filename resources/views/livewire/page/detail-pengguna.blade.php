@@ -1,7 +1,9 @@
 <div class="container-fluid" style="height: 90vh; overflow-y: auto">
+    <a href="{{ route('pengguna') }}" class="nav-link btn d-inline-block p-2 text-primary"><i
+            class="bi bi-arrow-left-circle-fill"></i> Kembali</a>
     <div>
         <div class="inpo-data p-1 mb-3 d-flex">
-            <div class="dokumen-diupload p-3 bg-white box-radius-10">
+            <div class="detail-dokumen-diupload p-3 bg-white box-radius-10">
                 <div class="d-flex">
                     <div class="icon bg-primary rounded d-flex">
                         <i class="bi bi-file-earmark-text-fill m-auto"></i>
@@ -10,7 +12,7 @@
                 </div>
                 <h1 class="m-0">100</h1>
             </div>
-            <div class="dokumen-disahkan p-3 bg-white box-radius-10 ms-3">
+            <div class="detail-dokumen-disahkan p-3 bg-white box-radius-10 ms-3">
                 <div class="d-flex">
                     <div class="icon bg-success rounded d-flex">
                         <i class="bi bi-file-earmark-check-fill m-auto"></i>
@@ -19,7 +21,7 @@
                 </div>
                 <h1 class="m-0">80</h1>
             </div>
-            <div class="dalam-proses p-3 bg-white box-radius-10 ms-3">
+            <div class="detail-dalam-proses p-3 bg-white box-radius-10 ms-3">
                 <div class="d-flex">
                     <div class="icon bg-danger rounded d-flex">
                         <i class="bi bi-file-earmark-excel-fill m-auto"></i>
@@ -28,7 +30,7 @@
                 </div>
                 <h1 class="m-0">10</h1>
             </div>
-            <div class="dalam-proses p-3 bg-white box-radius-10 ms-3">
+            <div class="detail-dalam-proses p-3 bg-white box-radius-10 ms-3">
                 <div class="d-flex">
                     <div class="icon bg-warning rounded d-flex">
                         <i class="bi bi-file-earmark-arrow-up-fill m-auto"></i>
@@ -58,32 +60,29 @@
                         <div class="row mb-3">
                             <label for="inputNama" class="col-sm-2 col-form-label">Nama</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputNama" disabled
-                                    value="Thomeas">
+                                <input type="text" class="form-control" id="inputNama" disabled value="Thomeas">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputUsername"disabled
-                                value="Thomeas">
+                                <input type="text" class="form-control" id="inputUsername"disabled value="Thomeas">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="inputNIK" class="col-sm-2 col-form-label">NIK</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputNIK" disabled
-                                value="12345678">
+                                <input type="text" class="form-control" id="inputNIK" disabled value="12345678">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="inputEmail3"disabled
-                                value="Thomeas@gmail.com">
+                                    value="Thomeas@gmail.com">
                             </div>
                         </div>
-                    </div>
+                </div>
                 </form>
             </div>
         </div>

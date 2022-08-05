@@ -59,11 +59,13 @@
                     <td class="py-2">Username@gmail.com</td>
                     <td class="py-2">Manager</td>
                     <td class="py-2 px-4 ps-0">
-                        <div onclick="modalTarget('link', {{ route('detail-pengguna') }})"
-                            class=" box-icon rounded-circle bg-primary" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" data-bs-title="Profil">
+                        <a href="{{ route('detail-pengguna') }}" class="btn box-icon rounded-circle btn-primary p-2">
                             <i class="bi bi-eye-fill m-auto"></i>
-                        </div>
+                            <div class="my-tooltip d-none">
+                                <div class="segitiga"></div>
+                                <span>Detail</span>
+                            </div>
+                        </a>
                     </td>
                 </tr>
             </tbody>

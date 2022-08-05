@@ -72,13 +72,18 @@
                     <td class="py-2 px-3 ps-0">
                         <div class="d-flex">
                             <div class="box-icon bg-primary rounded-circle"
-                                onclick="modalTarget('open','modal-detail-targeted')" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" data-bs-title="Detail & History"><i
-                                    class="bi bi-folder-fill"></i>
+                                onclick="modalTarget('open','modal-detail-targeted')"><i class="bi bi-folder-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Detail & History</span>
+                                </div>
                             </div>
-                            <div class="box-icon bg-success rounded-circle ms-2" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" data-bs-title="Tinjau"
+                            <div class="box-icon bg-success rounded-circle ms-2"
                                 onclick="modalTarget('open','modal-tinjau-targeted')"><i class="bi bi-eye-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Tinjau</span>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -103,12 +108,19 @@
                     <td class="py-2 px-3 ps-0">
                         <div class="d-flex">
                             <div class="box-icon bg-primary rounded-circle"
-                                onclick="modalTarget('open','modal-detail-targeted')" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" data-bs-title="Detail & History"><i
+                                onclick="modalTarget('open','modal-detail-targeted')"><i
                                     class="bi bi-folder-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Detail & History</span>
+                                </div>
                             </div>
                             <div class="box-icon disable bg-success rounded-circle ms-2"><i
                                     class="bi bi-eye-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Disable</span>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -133,12 +145,20 @@
                     <td class="py-2 px-3 ps-0">
                         <div class="d-flex">
                             <div class="box-icon bg-primary rounded-circle"
-                                onclick="modalTarget('open','modal-detail-targeted')" data-bs-toggle="tooltip"
-                                data-bs-placement="bottom" data-bs-title="Detail & History"><i
-                                    class="bi bi-folder-fill"></i>
+                                onclick="modalTarget('open','modal-detail-targeted')" onmouseover="showToolstip()"
+                                onmouseout="hideToolstip()"><i class="bi bi-folder-fill m-auto"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Detail & History</span>
+                                </div>
                             </div>
-                            <div class="box-icon disable bg-success rounded-circle ms-2"><i
-                                    class="bi bi-eye-fill"></i>
+                            <div class="box-icon disable bg-success rounded-circle ms-2" onmouseover="showToolstip()">
+                                <i class="bi
+                                bi-eye-fill"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Disable</span>
+                                </div>
                             </div>
                         </div>
                     </td>

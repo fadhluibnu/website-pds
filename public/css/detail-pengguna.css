@@ -1,61 +1,61 @@
-.box-profil{
+.box-profil {
     /* width: 1113px;
     height: 339px; */
 }
 /* info-data */
-.dokumen-diupload,
-.dokumen-disahkan,
-.dalam-proses {
-  width: 264px;
-  height: 194px;
+.detail-dokumen-diupload,
+.detail-dokumen-disahkan,
+.detail-dalam-proses {
+    width: 264px;
+    height: 194px;
 }
-.dalam-proses {
-  box-shadow: 6px 6px 97px rgba(0, 0, 0, 0.11);
+.detail-dalam-proses {
+    box-shadow: 6px 6px 97px rgba(0, 0, 0, 0.11);
 }
-.inpo-data .dokumen-diupload .icon,
-.inpo-data .dokumen-disahkan .icon,
-.inpo-data .dalam-proses .icon {
-  width: 74px;
-  height: 74px;
-  font-size: 50px;
-  color: white;
+.inpo-data .detail-dokumen-diupload .icon,
+.inpo-data .detail-dokumen-disahkan .icon,
+.inpo-data .detail-dalam-proses .icon {
+    width: 74px;
+    height: 74px;
+    font-size: 50px;
+    color: white;
 }
-.inpo-data .dokumen-diupload .icon {
-  box-shadow: 5px 11px 47px 5px rgba(40, 75, 145, 0.2);
+.inpo-data .detail-dokumen-diupload .icon {
+    box-shadow: 5px 11px 47px 5px rgba(40, 75, 145, 0.2);
 }
 .inpo-data p {
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
-  color: #5a5a5a;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #5a5a5a;
 }
 .inpo-data h1 {
-  font-weight: 600;
-  font-size: 38px;
-  line-height: 57px;
-  color: #545454;
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 57px;
+    color: #545454;
 }
 .profile {
-  width: 188px;
-  height: 188px;
-  border-radius: 50%;
-  background-image: url(assets/thomeas.png);
-  background-size: cover;
-  background-position: center;
+    width: 188px;
+    height: 188px;
+    border-radius: 50%;
+    background-image: url(assets/thomeas.png);
+    background-size: cover;
+    background-position: center;
 }
-.poto{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.poto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.engginer{
-  color: white;
+.engginer {
+    color: white;
 }
-.pro{
-  /* display: flex;
+.pro {
+    /* display: flex;
   flex-direction: column;
   align-items: center; */
 }
-.icone{
-  box-shadow: 5px 11px 47px 5px rgba(40, 75, 145, 0.2);
+.icone {
+    box-shadow: 5px 11px 47px 5px rgba(40, 75, 145, 0.2);
 }

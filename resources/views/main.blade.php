@@ -10,18 +10,17 @@
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
-    <link rel="stylesheet" href="css/sidebarheader.css">
-    <link rel="stylesheet" href="css/peninjauan.css">
-    <link rel="stylesheet" href="css/style.css">
-    @if (
-        $title == "Login"
-    )
-        <link rel="stylesheet" href="css/login.css">
+    <meta name="turbolinks-cache-control" content="no-cache">
+    @if ($title != 'Login' || $title != 'Detail Pengguna')
+        <link rel="stylesheet" href="{{ asset('css/sidebarheader.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/peninjauan.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     @endif
-    @if (
-        $title == "Detail Pengguna"
-    )
-        <link rel="stylesheet" href="css/detail-pengguna.css">
+    @if ($title == 'Login')
+        <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    @endif
+    @if ($title == 'Detail Pengguna')
+        <link rel="stylesheet" href="{{ asset('css/detail-pengguna.css') }}">
     @endif
 
     <!-- icon  -->
@@ -33,8 +32,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-    {{-- <meta name="turbolinks-visit-control" content="reload"> --}}
-    <title>{{ $title }}</title>
+    @livewireStyles
     <style>
         .turbolinks-progress-bar {
             position: absolute;
@@ -87,6 +85,7 @@
             }
         }
     </style>
+    <title>{{ $title }}</title>
 </head>
 
 <body style="height: 100vh; overflow-y: hidden;">
@@ -103,30 +102,26 @@
             </div>
         </div>
     @endif
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+        integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+        integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
-    <SCript>
-        function modalTarget(param, id) {
-        if(param == "link"){
-            // window.location.href=`${id}`
-            alert(id)
-        }
-        }
-    </SCript>
-    <script src="js/script.js"></script>
+    @livewireScripts
     <script>
-        
         $(function() {
             $("#datepicker").datepicker();
         });
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
+
 </body>
 
 </html>
