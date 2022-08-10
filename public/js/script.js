@@ -1,31 +1,10 @@
-const tooltipTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="tooltip"]'
-);
-const tooltipList = [...tooltipTriggerList].map(
-    (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-);
+function wireClick(spiner, eye) {
+    let spin = document.getElementById(spiner);
+    let ey = document.getElementById(eye);
 
-// function showToolstip() {
-//     const tooltip = document.createElement("div");
-
-//     tooltip.id = "Tooltip Peninjauan";
-//     tooltip.style.visibility = "hidden"; // make it hidden till mouse over
-//     tooltip.style.position = "fixed";
-//     tooltip.style.top = "8px";
-//     tooltip.style.left = "8px";
-//     tooltip.style.padding = "8px";
-//     tooltip.style.width = "300px";
-//     tooltip.style.borderRadius = "16px";
-//     tooltip.style.border = "solid thin grey";
-//     tooltip.style.backgroundColor = "grey";
-
-//     document
-//         .querySelectorAll('[data-bs-my-tooltip="tooltip"]')
-//         .appendChild(tooltip);
-// }
-// function hideToolstip() {
-//     alert("hide");
-// }
+    ey.classList.add("d-none");
+    spin.classList.remove("d-none");
+}
 
 function modalTarget(param, id) {
     if (param == "open") {

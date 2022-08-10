@@ -20,12 +20,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [AuthController::class, 'index'])->name("login");
-Route::get('/logout', [AuthController::class, 'logout'])->name("logout");
-
-Route::get('/', Overview::class)->name("overview");
-Route::get('/peninjauan', Peninjauan::class)->name("peninjauan");
-Route::get('/pengajuan', Pengajuan::class)->name("pengajuan");
-Route::get('/pengguna', Pengguna::class)->name("pengguna");
-Route::get('/pengaturan', Pengaturan::class)->name("pengaturan");
-Route::get('/pengguna/detail-pengguna', DetailPengguna::class)->name("detail-pengguna");
+Route::middleware(['auth'])->group(function () {
+    Route::get('/logout', [AuthController::class, 'logout'])->name("logout");
+    Route::get('/', Overview::class)->name("overview");
+    Route::get('/pengajuan', Pengajuan::class)->name("pengajuan");
+    Route::get('/pengaturan', Pengaturan::class)->name("pengaturan");
+});
+Route::get('/peninjauan', Peninjauan::class)->name("peninjauan")->middleware(['manager', 'manajemen', 'pengendali_dokumen']);
+Route::middleware(['pengendali_dokumen'])->group(function () {
+    Route::get('/pengguna', Pengguna::class)->name("pengguna");
+    Route::get('/pengguna/detail-pengguna', DetailPengguna::class)->name("detail-pengguna");
+});
+Route::get('/login', [AuthController::class, 'index'])->name("login")->middleware('guest');
+Route::post('/login', [AuthController::class, 'login'])->middleware('guest');

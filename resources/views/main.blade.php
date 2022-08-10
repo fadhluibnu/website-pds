@@ -84,6 +84,10 @@
                 opacity: 0;
             }
         }
+
+        #livewire-error {
+            z-index: 200000000000 !important;
+        }
     </style>
     <title>{{ $title }}</title>
 </head>
