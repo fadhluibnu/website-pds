@@ -20,11 +20,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['myauth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name("logout");
-    Route::get('/', Overview::class)->name("overview");
+    // Route::get('/', Overview::class)->name("overview");
     Route::get('/pengajuan', Pengajuan::class)->name("pengajuan");
     Route::get('/pengaturan', Pengaturan::class)->name("pengaturan");
+    Route::get('/', function(){
+        return session('auth');
+    })->name("overview");
 });
 Route::get('/peninjauan', Peninjauan::class)->name("peninjauan")->middleware(['manager', 'manajemen', 'pengendali_dokumen']);
 Route::middleware(['pengendali_dokumen'])->group(function () {

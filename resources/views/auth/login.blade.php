@@ -1622,13 +1622,15 @@
             <h2 class="masuk">Masuk</h2>
             <div class="bg-white p-2">
               <div class="login">
-                <form class="login-items" action="/">
+                <form class="login-items" action="/login" method="POST">
+                  @csrf
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label"
                       >Email</label
                     >
                     <input
                       type="email"
+                      name="email"
                       class="form-control p-2"
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
@@ -1640,6 +1642,7 @@
                     >
                     <input
                       type="password"
+                      name="password"
                       class="form-control p-2"
                       id="exampleInputPassword1"
                     />

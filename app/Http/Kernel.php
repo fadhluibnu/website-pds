@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\IsAuth;
 use App\Http\Middleware\IsEngginer;
 use App\Http\Middleware\IsManager;
 use App\Http\Middleware\IsManajemen;
@@ -70,6 +71,7 @@ class Kernel extends HttpKernel
         'manager' => IsManager::class,
         'manajemen' => IsManajemen::class,
         'pengendali_dokumen' => IsPengendaliDokumen::class,
-        'engginer' => IsEngginer::class
+        'engginer' => IsEngginer::class,
+        'myauth' => IsAuth::class
     ];
 }
