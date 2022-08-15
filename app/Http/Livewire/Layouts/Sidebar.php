@@ -13,6 +13,10 @@ class Sidebar extends Component
     }
     public function render()
     {
-        return view('livewire.layouts.sidebar');
+        $user = session('auth');
+        return view('livewire.layouts.sidebar', [
+            'user' => $user,
+            'gate' => $user['user']['role']['id']
+        ]);
     }
 }

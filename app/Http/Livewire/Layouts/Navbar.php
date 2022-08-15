@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Layouts;
 
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class Navbar extends Component

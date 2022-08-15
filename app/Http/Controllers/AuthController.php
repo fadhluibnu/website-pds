@@ -16,15 +16,23 @@ class AuthController extends Controller
     }
     public function logout()
     {
-        return redirect()->route('login');
+        $token = session('auth');
+        $response = Http::withToken($token['token'])->get('https://pds-api-example.000webhostapp.com/api/logout');
+        if ($response['status'] == 200) {
+            session()->forget(['auth']);
+            return redirect()->route('login');
+        }
+        return redirect()->route('overview');
     }
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $response = Http::post('https://pds-api-example.000webhostapp.com/api/login', [
             'email' => $request->email,
             'password' => $request->password,
         ]);
-        if($response['message']=='success'){
-            session(['auth' => $response]);
+        $json = $response->json();
+        if ($json['message'] == 'success' & $json['status'] == 200) {
+            session(['auth' => $json]);
             return redirect()->route('overview');
         }
         session()->flash('status', 'Gagal Masuk');

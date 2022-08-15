@@ -156,7 +156,7 @@ body {
     transition: 0.4s;
 }
 .content .modal-custom.off {
-    display: none;
+    display: none !important;
     transition: 0.4s;
 }
 .content .modal-custom .modal-content .header-modal {
@@ -344,7 +344,7 @@ body {
 }
 
 /* status pds */
-.content .status-pds button {
+.content button.mybutton {
     padding: 12px 25px;
     font-weight: 500;
     font-size: 16px;
@@ -524,4 +524,23 @@ body {
     background-color: #3574ee;
     width: 100px;
     height: 100px;
+}
+
+/* file upload */
+
+.upload-container {
+    left: 0;
+    right: 0;
+    border: 1px solid #92b0b3;
+}
+.upload-container input#fileUpload {
+    background-color: transparent !important;
+    outline-offset: -10px;
+    width: 100%;
+    height: 300px;
+    text-align: center !important;
+}
+
+.upload-container input:hover {
+    background: #ddd;
 }

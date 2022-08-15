@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class IsManajemen
+class IsManagerUREL
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class IsManajemen
     public function handle(Request $request, Closure $next)
     {
         $data = session('auth');
-        if (!$data || $data['user']['role']['id'] != 3) {
+        if (!$data || $data['user']['role']['id'] != 6) {
             abort(403);
         }
         return $next($request);

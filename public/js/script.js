@@ -17,16 +17,20 @@ function modalTarget(param, id) {
     }
     if (param == "link") {
         window.location.href = `${id}`;
-        // alert(id);
     }
 }
 
-function getNameFile() {
-    const nameFile = document.getElementById("fileTinjau").value;
-    document.getElementById("nameFileTinjau").value = nameFile.substr(
-        nameFile.lastIndexOf("\\") + 1
-    );
+function getNameFile(input, place) {
+    let inp = document.getElementById(input).value;
+    let display = document.getElementById(place);
+    let name = inp.substr(inp.lastIndexOf("\\") + 1);
+    display.value = name;
 }
+
+function checkBox(param) {
+    document.getElementById(param).removeAttribute("disabled");
+}
+
 document
     .getElementById("komenter-monitor")
     .addEventListener("mouseover", function () {

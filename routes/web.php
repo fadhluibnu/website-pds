@@ -22,17 +22,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['myauth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name("logout");
-    // Route::get('/', Overview::class)->name("overview");
+    Route::get('/', Overview::class)->name("overview");
     Route::get('/pengajuan', Pengajuan::class)->name("pengajuan");
     Route::get('/pengaturan', Pengaturan::class)->name("pengaturan");
-    Route::get('/', function(){
-        return session('auth');
-    })->name("overview");
 });
-Route::get('/peninjauan', Peninjauan::class)->name("peninjauan")->middleware(['manager', 'manajemen', 'pengendali_dokumen']);
+Route::get('/peninjauan', Peninjauan::class)->name("peninjauan")->middleware('peninjauan');
 Route::middleware(['pengendali_dokumen'])->group(function () {
     Route::get('/pengguna', Pengguna::class)->name("pengguna");
     Route::get('/pengguna/detail-pengguna', DetailPengguna::class)->name("detail-pengguna");
 });
-Route::get('/login', [AuthController::class, 'index'])->name("login")->middleware('guest');
-Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
+Route::get('/login', [AuthController::class, 'index'])->name("login")->middleware('myguest');
+Route::post('/login', [AuthController::class, 'login'])->middleware('myguest');

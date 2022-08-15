@@ -16,7 +16,8 @@ class IsPengendaliDokumen
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->check() || auth()->user()->role_id != 4) {
+        $data = session('auth');
+        if ($data['user']['role']['id'] != 4 || !$data) {
             abort(403);
         }
         return $next($request);

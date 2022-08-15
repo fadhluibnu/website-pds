@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class IsManager
+class IsGuest
 {
     /**
      * Handle an incoming request.
@@ -16,8 +16,8 @@ class IsManager
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->check() || auth()->user()->role_id != 5 || auth()->user()->role_id != 6 || auth()->user()->role_id != 7) {
-            abort(403);
+        if (session()->has('auth')) {
+            return redirect()->route('overview');
         }
         return $next($request);
     }

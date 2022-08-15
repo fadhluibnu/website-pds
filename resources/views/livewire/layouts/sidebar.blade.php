@@ -39,8 +39,8 @@
                 <div class="profile m-auto"></div>
             </div>
             <div class="detail-profil-sidebar text-center">
-                <p class="nama-sidebar">Thomeas</p>
-                <p class="role-sidebar">Engginer</p>
+                <p class="nama-sidebar">{{ $user['user']['name'] }}</p>
+                <p class="role-sidebar">{{ $user['user']['role']['role'] }}</p>
             </div>
             <hr>
         </div>
@@ -50,21 +50,25 @@
             <a class="nav-link @if ($title == 'Overview') active @endif" href="{{ route('overview') }}"><i
                     class="bi bi-grid-fill"></i> Overview</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link @if ($title == 'Peninjauan') active @endif" href="{{ route('peninjauan') }}"><i
-                    class="bi bi-file-earmark-arrow-down"></i>
-                Peninjauan</a>
-        </li>
+        @if ($gate != 1)
+            <li class="nav-item">
+                <a class="nav-link @if ($title == 'Peninjauan') active @endif" href="{{ route('peninjauan') }}"><i
+                        class="bi bi-file-earmark-arrow-down"></i>
+                    Peninjauan</a>
+            </li>
+        @endif
         <li class="nav-item">
             <a class="nav-link @if ($title == 'Pengajuan') active @endif" href="{{ route('pengajuan') }}"><i
                     class="bi bi-file-earmark-arrow-up"></i>
                 Pengajuan</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link  @if ($title == 'Pengguna' || $title == 'Detail Pengguna') active @endif" href="{{ route('pengguna') }}"><i
-                    class="bi bi-person-circle"></i>
-                Pengguna</a>
-        </li>
+        @if ($gate == 4)
+            <li class="nav-item">
+                <a class="nav-link  @if ($title == 'Pengguna' || $title == 'Detail Pengguna') active @endif" href="{{ route('pengguna') }}"><i
+                        class="bi bi-person-circle"></i>
+                    Pengguna</a>
+            </li>
+        @endif
         <p class="pref">Preferensi</p>
         <li class="nav-item">
             <a class="nav-link  @if ($title == 'Pengaturan') active @endif" href="{{ route('pengaturan') }}"><i

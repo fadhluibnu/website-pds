@@ -160,16 +160,22 @@
                         aria-label="default input example">
                 </form>
             </div>
-            <button onclick="modalTarget('open', 'modal-upload-targeted')" type="button"
-                class="btn btn-primary box-radius-10"><i class="bi bi-file-earmark-arrow-up-fill me-1"></i>
-                Upload PDS</button>
+            <button wire:click='openModal("upload", "active")' onclick="wireClick('spinerUpload', 'eyeUpload')"
+                type="button" class="btn btn-primary box-radius-10 mybutton">
+                <div class="d-flex">
+                    <div id="spinerUpload" class="d-none">
+                        <span class="spinner-border spinner-border-sm  me-2" role="status"
+                            aria-hidden="true"></span>
+                    </div>
+                    <div id="eyeUpload">
+                        <i class="bi bi-file-earmark-arrow-up-fill me-1"></i>
+                    </div>
+                    Upload PDS
+                </div>
+            </button>
         </div>
         <div class="row p-3 pt-1">
             <div class="col-5">
-                <!-- <form action="" class="mb-3 px-3">
-                <input class="form-control" type="search" placeholder="Search Document"
-                    aria-label="default input example">
-            </form> -->
                 <div class="data-pds px-1" style="max-height: 300px;overflow-y:auto;">
                     <div class="d-flex bg-white header fw-semibold text-color sticky-top" style="padding: 0px 10px;">
                         <div class="nama px-2">
@@ -319,8 +325,15 @@
             </div>
         </div>
     </div>
+
+    {{-- @if ($modal) --}}
+    @if ($modal['for'] == 'upload')
+        <livewire:logic.upload-pds :modalUpload="$modal['message']"></livewire:logic.upload-pds>
+    @endif
+    {{-- @endif --}}
+
     <!-- modal-custom-tinjau -->
-    @if ($data)
+    {{-- @if ($data)
         <div class="position-absolute modal-custom modal-custom-tinjau {{ $data['tinjau'] }} d-flex"
             id="modal-tinjau-targeted" style="z-index: 100000;">
             <div class="close-modal position-absolute " onclick="modalTarget('close','modal-tinjau-targeted')">
@@ -432,117 +445,127 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif --}}
     <!-- end modal-custom-tinjau -->
-</div>
-
-<!-- modal-custom-tinjau -->
-<div class="position-absolute modal-custom modal-custom-upload off d-flex" id="modal-upload-targeted"
-    style="z-index: 10000;">
-    <div class="close-modal position-absolute " onclick="modalTarget('close','modal-upload-targeted')">
-    </div>
-    <div class="modal-content">
-        <div class="header-modal border-bottom d-flex align-items-center justify-content-between">
-            <h1>Upload PDS</h1>
-            <i class="bi bi-x-lg" style="cursor: pointer;"
-                onclick="modalTarget('close', 'modal-upload-targeted')"></i>
+    <!-- modal-custom-tinjau -->
+    {{-- <div class="position-absolute modal-custom modal-custom-upload off d-flex" id="modal-upload-targeted"
+        style="z-index: 10000;">
+        <div class="close-modal position-absolute " onclick="modalTarget('close','modal-upload-targeted')">
         </div>
-        <div class="box-modal-content p-3 overflow-auto">
-            <form action="">
-                <div class="row overflow-auto" style="height: 70vh;">
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label for="namadokumen" class="form-label">Nama Dokumen</label>
-                            <input type="text" class="form-control p-2 box-radius-10" id="namadokumen"
-                                placeholder="Pihak terkait">
-                        </div>
-                        <div class="mb-3">
-                            <label for="nomordokumen" class="form-label">Nomor Dokumen</label>
-                            <input type="text" class="form-control p-2 box-radius-10" id="nomordokumen"
-                                placeholder="Pihak terkait">
-                        </div>
-                        <div class="mb-3">
-                            <label for="jenisdokumen" class="form-label">Jenis Dokumen</label>
-                            <select class="form-select p-2 box-radius-10" id="jenisdokumen"
-                                aria-label="Default select example">
-                                <option selected>Pilih Jenis Dokumen</option>
-                                <option value="1">Panduan Mutu</option>
-                                <option value="2">Prosedur</option>
-                                <option value="3">Instruksi Kerja</option>
-                                <option value="3">Test Procedure</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="jenispermohonan" class="form-label">Jenis Permohonan</label>
-                            <select class="form-select p-2 box-radius-10" id="jenispermohonan"
-                                aria-label="Default select example">
-                                <option selected>Pilih Jenis Permohonan</option>
-                                <option value="1">Penerbitan Dokumen Baru</option>
-                                <option value="2">Perubahan Dokumen</option>
-                                <option value="3">Penghapusan Dokumen</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="penanggungjawab" class="form-label">Penanggung Jawab</label>
-                            <div class="d-flex flex-wrap">
-                                <input type="checkbox" name="pengendali-dokumen" class="d-none btn-check-custom"
-                                    id="pengendali-dokumen">
-                                <label for="pengendali-dokumen" class="btn-checkbox"><i
-                                        class="bi bi-check-circle-fill"></i> Pengendali
-                                    Dokumen</label>
-                                <input type="checkbox" name="manager-iqa" class="d-none btn-check-custom"
-                                    id="manager-iqa">
-                                <label for="manager-iqa" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                    Manager IQA</label>
-                                <input type="checkbox" name="manager-urel" class="d-none btn-check-custom"
-                                    id="manager-urel">
-                                <label for="manager-urel" class="btn-checkbox"><i
-                                        class="bi bi-check-circle-fill"></i> Manager UREL</label>
-                                <input type="checkbox" name="manager-deqa" class="d-none btn-check-custom"
-                                    id="manager-deqa">
-                                <label for="manager-deqa" class="btn-checkbox"><i
-                                        class="bi bi-check-circle-fill"></i> Manager DEQA</label>
-                                <input type="checkbox" name="osm-tth" class="d-none btn-check-custom"
-                                    id="osm-tth">
-                                <label for="osm-tth" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                    OSM TTH</label>
+        <div class="modal-content">
+            <div class="header-modal border-bottom d-flex align-items-center justify-content-between">
+                <h1>Upload PDS</h1>
+                <i class="bi bi-x-lg" style="cursor: pointer;"
+                    onclick="modalTarget('close', 'modal-upload-targeted')"></i>
+            </div>
+            <div class="box-modal-content p-3 overflow-auto">
+                <form action="">
+                    <div class="row overflow-auto" style="height: 70vh;">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="namadokumen" class="form-label">Nama Dokumen</label>
+                                <input type="text" class="form-control p-2 box-radius-10" id="namadokumen"
+                                    placeholder="Pihak terkait">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nomordokumen" class="form-label">Nomor Dokumen</label>
+                                <input type="text" class="form-control p-2 box-radius-10" id="nomordokumen"
+                                    placeholder="Pihak terkait">
+                            </div>
+                            <div class="mb-3">
+                                <label for="jenisdokumen" class="form-label">Jenis Dokumen</label>
+                                <select class="form-select p-2 box-radius-10" id="jenisdokumen"
+                                    aria-label="Default select example">
+                                    <option selected>Pilih Jenis Dokumen</option>
+                                    <option value="1">Panduan Mutu</option>
+                                    <option value="2">Prosedur</option>
+                                    <option value="3">Instruksi Kerja</option>
+                                    <option value="3">Test Procedure</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="jenispermohonan" class="form-label">Jenis Permohonan</label>
+                                <select class="form-select p-2 box-radius-10" id="jenispermohonan"
+                                    aria-label="Default select example">
+                                    <option selected>Pilih Jenis Permohonan</option>
+                                    <option value="1">Penerbitan Dokumen Baru</option>
+                                    <option value="2">Perubahan Dokumen</option>
+                                    <option value="3">Penghapusan Dokumen</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="penanggungjawab" class="form-label">Penanggung Jawab</label>
+                                <div class="d-flex flex-wrap">
+                                    <input type="checkbox" name="pengendali-dokumen" class="d-none btn-check-custom"
+                                        id="pengendali-dokumen">
+                                    <label for="pengendali-dokumen" class="btn-checkbox"><i
+                                            class="bi bi-check-circle-fill"></i> Pengendali
+                                        Dokumen</label>
+                                    <input type="checkbox" name="manager-iqa" class="d-none btn-check-custom"
+                                        id="manager-iqa">
+                                    <label for="manager-iqa" class="btn-checkbox"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        Manager IQA</label>
+                                    <input type="checkbox" name="manager-urel" class="d-none btn-check-custom"
+                                        id="manager-urel">
+                                    <label for="manager-urel" class="btn-checkbox"><i
+                                            class="bi bi-check-circle-fill"></i> Manager UREL</label>
+                                    <input type="checkbox" name="manager-deqa" class="d-none btn-check-custom"
+                                        id="manager-deqa">
+                                    <label for="manager-deqa" class="btn-checkbox"><i
+                                            class="bi bi-check-circle-fill"></i> Manager DEQA</label>
+                                    <input type="checkbox" name="osm-tth" class="d-none btn-check-custom"
+                                        id="osm-tth">
+                                    <label for="osm-tth" class="btn-checkbox"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        OSM TTH</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label for="deskripsikebutuhan" class="form-label">Deskripsi Kebutuhan</label>
-                            <textarea class="form-control" id="deskripsikebutuhan" rows="5"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Lampirkan Dokumen</label>
-                            <div class="border p-3 box-radius-10 dragdrop d-flex " style="height: 245px;">
-                                <div class="d-flex flex-column align-items-center m-auto">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M22 15.3335V19.7779C22 20.3673 21.7659 20.9325 21.3491 21.3493C20.9324 21.766 20.3671 22.0002 19.7778 22.0002H4.22222C3.63285 22.0002 3.06762 21.766 2.65087 21.3493C2.23413 20.9325 2 20.3673 2 19.7779V15.3335"
-                                            stroke="#4E5764" stroke-width="2.5" stroke-linecap="round"
-                                            stroke-linejoin="round" />
-                                        <path d="M17.5554 7.55556L11.9999 2L6.44434 7.55556" stroke="#4E5764"
-                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M12 2V15.3333" stroke="#4E5764" stroke-width="2.5"
-                                            stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                    <span>Seret File Disini</span>
-                                    <span>atau</span>
-                                    <label for="file-upload-browse" class="text-primary"
-                                        style="cursor:pointer;">Pilih
-                                        File</label>
-                                    <input type="file" id="file-upload-browse" class="d-none">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="deskripsikebutuhan" class="form-label">Deskripsi Kebutuhan</label>
+                                <textarea class="form-control" id="deskripsikebutuhan" rows="5"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Lampirkan Dokumen</label>
+                                <div class="lampiran position-relative">
+                                    <div class="upload-container box-radius-10 position-absolute" style="opacity:0;">
+                                        <input type="file" id="fileUpload"
+                                            onchange="getNameFile('fileUpload', 'nameUpload', 'hiddenUpload')" />
+                                    </div>
+                                    <div class="border p-3 box-radius-10 dragdrop d-flex " style="height: 302px;">
+                                        <div class="d-flex flex-column align-items-center m-auto" id="hiddenUpload">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M22 15.3335V19.7779C22 20.3673 21.7659 20.9325 21.3491 21.3493C20.9324 21.766 20.3671 22.0002 19.7778 22.0002H4.22222C3.63285 22.0002 3.06762 21.766 2.65087 21.3493C2.23413 20.9325 2 20.3673 2 19.7779V15.3335"
+                                                    stroke="#4E5764" stroke-width="2.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M17.5554 7.55556L11.9999 2L6.44434 7.55556" stroke="#4E5764"
+                                                    stroke-width="2.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M12 2V15.3333" stroke="#4E5764" stroke-width="2.5"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                            <span>Seret File Disini</span>
+                                            <span>atau</span>
+                                            <label for="file-upload-browse" class="text-primary"
+                                                style="cursor:pointer;">Pilih
+                                                File</label>
+                                            <input type="file" id="file-upload-browse" class="d-none">
+                                        </div>
+                                        <p id="nameUpload" class="text-color m-auto d-none text-center"> </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <button class="btn btn-primary rounded-pill" style="width: 100%; padding:14px 0px;">Submit</button>
-            </form>
+                    <button class="btn btn-primary rounded-pill"
+                        style="width: 100%; padding:14px 0px;">Submit</button>
+                </form>
+            </div>
         </div>
-    </div>
+    </div> --}}
+    <!-- end modal-custom-tinjau -->
 </div>
-<!-- end modal-custom-tinjau -->

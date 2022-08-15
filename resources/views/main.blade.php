@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="turbolinks-visit-control" content="reload">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
-    <meta name="turbolinks-cache-control" content="no-cache">
     @if ($title != 'Login' || $title != 'Detail Pengguna')
         <link rel="stylesheet" href="{{ asset('css/sidebarheader.css') }}">
         <link rel="stylesheet" href="{{ asset('css/peninjauan.css') }}">
@@ -22,6 +22,7 @@
     @if ($title == 'Detail Pengguna')
         <link rel="stylesheet" href="{{ asset('css/detail-pengguna.css') }}">
     @endif
+    <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
 
     <!-- icon  -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
@@ -33,63 +34,15 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
     @livewireStyles
-    <style>
-        .turbolinks-progress-bar {
-            position: absolute;
-            width: 100% !important;
-            height: 100%;
-            z-index: 90000000 !important;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(31, 31, 31, 0.20);
-        }
-
-        .turbolinks-progress-bar::before {
-            position: absolute;
-            content: "";
-            width: 20px;
-            height: 20px;
-            background: #0f57e6;
-            border-radius: 50%;
-            left: 50%;
-            top: 50%;
-            animation: turbo-loading .5s infinite;
-        }
-
-        .turbolinks-progress-bar::after {
-            position: absolute;
-            content: "";
-            width: 20px;
-            height: 20px;
-            background: #0f57e6;
-            border-radius: 50%;
-            left: 52%;
-            top: 50%;
-            animation: turbo-loading .5s infinite;
-            animation-delay: 0.10s;
-        }
-
-        @keyframes turbo-loading {
-            0% {
-                opacity: 0;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-            }
-        }
-
-        #livewire-error {
-            z-index: 200000000000 !important;
-        }
-    </style>
-    <title>{{ $title }}</title>
+    @if (session()->has('auth'))
+        @php
+            $sessionUser = session('auth');
+        @endphp
+    @endif
+    <title>{{ $title }} @if (session()->has('auth'))
+            | {{ $sessionUser['user']['name'] }}
+        @endif
+    </title>
 </head>
 
 <body style="height: 100vh; overflow-y: hidden;">
@@ -118,13 +71,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
-    <script src="{{ mix('js/app.js') }}"></script>
-    @livewireScripts
     <script>
         $(function() {
             $("#datepicker").datepicker();
         });
     </script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    @livewireScripts
 
 </body>
 

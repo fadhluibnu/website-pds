@@ -16,9 +16,9 @@ class IsAuth
      */
     public function handle(Request $request, Closure $next)
     {
-    
+
         if (!session()->has('auth')) {
-            abort(403);
+            return redirect()->route('login');
         }
         return $next($request);
     }
