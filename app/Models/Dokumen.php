@@ -9,7 +9,7 @@ class Dokumen extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    protected $with = ['pics', 'pihakTerkait', 'histories', 'status'];
+    protected $with = ['pics', 'pihakTerkaits', 'histories', 'status'];
     public function histories()
     {
         return $this->hasMany(History::class);
@@ -18,7 +18,7 @@ class Dokumen extends Model
     {
         return $this->hasMany(Pic::class);
     }
-    public function pihakTerkait()
+    public function pihakTerkaits()
     {
         return $this->hasMany(PihakTerkait::class);
     }

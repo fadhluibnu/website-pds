@@ -37,20 +37,25 @@
         <div class="prof-side px-3">
             <div class="circle-shadow m-auto mt-4 d-flex">
                 <div class="profile m-auto"></div>
+                <style>
+                    .sidebar .profile {
+                        background-image: url({{ 'http://127.0.0.1:9009/storage/' . $user['photo'] }})
+                    }
+                </style>
             </div>
             <div class="detail-profil-sidebar text-center">
-                <p class="nama-sidebar">{{ $user['user']['name'] }}</p>
-                <p class="role-sidebar">{{ $user['user']['role']['role'] }}</p>
+                <p class="nama-sidebar">{{ $user['name'] }}</p>
+                <p class="role-sidebar">{{ $user['role'] }}</p>
             </div>
-            <hr>
         </div>
     </div>
     <ul class="nav flex-column sidebar-menu px-3">
+        <hr>
         <li class="nav-item">
             <a class="nav-link @if ($title == 'Overview') active @endif" href="{{ route('overview') }}"><i
                     class="bi bi-grid-fill"></i> Overview</a>
         </li>
-        @if ($gate != 1)
+        @if ($peninjauan)
             <li class="nav-item">
                 <a class="nav-link @if ($title == 'Peninjauan') active @endif" href="{{ route('peninjauan') }}"><i
                         class="bi bi-file-earmark-arrow-down"></i>
@@ -62,7 +67,7 @@
                     class="bi bi-file-earmark-arrow-up"></i>
                 Pengajuan</a>
         </li>
-        @if ($gate == 4)
+        @if ($pengguna)
             <li class="nav-item">
                 <a class="nav-link  @if ($title == 'Pengguna' || $title == 'Detail Pengguna') active @endif" href="{{ route('pengguna') }}"><i
                         class="bi bi-person-circle"></i>

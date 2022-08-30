@@ -70,63 +70,78 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($dokumen as $item)
-                    <tr class="pengajuan" style="line-height: 2;">
-                        <td class="py-2 px-3 pe-0">{{ $loop->iteration }}</td>
-                        <td class="py-2">{{ $item->nomor }}</td>
-                        <td class="py-2">{{ $item->judul }}</td>
-                        <td class="py-2">
-                            @if ($item->status == 1)
-                                <div class="bg-primary-status text-center p-2 rounded-pill">
-                                    Ditinjau
-                                </div>
-                            @endif
-                            @if ($item->status == 2)
-                                <div class="bg-danger-status text-center p-2 rounded-pill">
-                                    Dikembalikan
-                                </div>
-                            @endif
-                            @if ($item->status == 3)
-                                <div class="bg-success-status text-center p-2 rounded-pill">
-                                    Selesai
-                                </div>
-                            @endif
-                        </td>
-                        <td class="py-2">17/01/2022</td>
-                        <td class="py-2 px-3 ps-0">
-                            <div class="d-flex">
-                                <div class="box-icon rounded-circle bg-primary"
-                                    wire:click='openModal("detail", {{ $item->id }})'
-                                    onclick="wireClick('spinerDetail{{ $item->id }}', 'folderDetail{{ $item->id }}')">
-                                    <span id="spinerDetail{{ $item->id }}"
-                                        class="spinner-border spinner-border-sm m-auto d-none" role="status"
-                                        aria-hidden="true"></span>
-                                    <i id="folderDetail{{ $item->id }}" class="bi bi-folder-fill"></i>
-                                    <div class="my-tooltip d-none">
-                                        <div class="segitiga"></div>
-                                        <span>Detail & History</span>
-                                    </div>
-                                </div>
-                                <div class="box-icon rounded-circle bg-warning ms-1"
-                                    onclick="modalTarget('open', 'modal-edit-targeted')"><i
-                                        class="bi bi-pen-fill"></i>
-                                    <div class="my-tooltip d-none">
-                                        <div class="segitiga"></div>
-                                        <span>Edit</span>
-                                    </div>
-                                </div>
-                                <div class="box-icon rounded-circle bg-danger ms-1"
-                                    onclick="modalTarget('open', 'modal-delete-targeted')"><i
-                                        class="bi bi-trash-fill"></i>
-                                    <div class="my-tooltip d-none">
-                                        <div class="segitiga"></div>
-                                        <span>Delete</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
+                @if ($dokumen->isEmpty())
+                    <tr>
+                        <td colspan="6">Tidak ada dokumen</td>
                     </tr>
-                @endforeach
+                @else
+                    @foreach ($dokumen as $item)
+                        <tr class="pengajuan" style="line-height: 2;">
+                            <td class="py-2 px-3 pe-0">{{ $loop->iteration }}</td>
+                            <td class="py-2">{{ $item->nomor }}</td>
+                            <td class="py-2">{{ $item->judul }}</td>
+                            <td class="py-2">
+                                @if ($item->status == 1)
+                                    <div class="bg-primary-status text-center p-2 rounded-pill">
+                                        Ditinjau
+                                    </div>
+                                @endif
+                                @if ($item->status == 2)
+                                    <div class="bg-danger-status text-center p-2 rounded-pill">
+                                        Dikembalikan
+                                    </div>
+                                @endif
+                                @if ($item->status == 3)
+                                    <div class="bg-success-status text-center p-2 rounded-pill">
+                                        Selesai
+                                    </div>
+                                @endif
+                            </td>
+                            <td class="py-2">{{ date('d/m/Y', strtotime($item->created_at)) }}</td>
+                            <td class="py-2 px-3 ps-0">
+                                <div class="d-flex">
+                                    <div class="box-icon rounded-circle bg-primary"
+                                        wire:click='openModal("detail", {{ $item->id }})'
+                                        onclick="wireClick('spinerDetail{{ $item->id }}', 'folderDetail{{ $item->id }}')">
+                                        <span id="spinerDetail{{ $item->id }}"
+                                            class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                            aria-hidden="true"></span>
+                                        <i id="folderDetail{{ $item->id }}" class="bi bi-folder-fill"></i>
+                                        <div class="my-tooltip d-none">
+                                            <div class="segitiga"></div>
+                                            <span>Detail & History</span>
+                                        </div>
+                                    </div>
+                                    <div class="box-icon rounded-circle bg-warning ms-1"
+                                        wire:click='openModal("edit", {{ $item->id }})'
+                                        onclick="wireClick('spinerEdit{{ $item->id }}', 'penEdit{{ $item->id }}')">
+                                        <span id="spinerEdit{{ $item->id }}"
+                                            class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                            aria-hidden="true"></span>
+                                        <i id="penEdit{{ $item->id }}" class="bi bi-pen-fill"></i>
+                                        <div class="my-tooltip d-none">
+                                            <div class="segitiga"></div>
+                                            <span>Edit</span>
+                                        </div>
+                                    </div>
+                                    <div class="box-icon rounded-circle bg-danger ms-1"
+                                        wire:click='openModal("delete", {{ $item->id }})'
+                                        onclick="wireClick('spinerDelete{{ $item->id }}', 'penDelete{{ $item->id }}')">
+                                        <span id="spinerDelete{{ $item->id }}"
+                                            class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                            aria-hidden="true"></span>
+                                        <i id="penDelete{{ $item->id }}" class="bi bi-trash-fill"></i>
+                                        <div class="my-tooltip d-none">
+                                            <div class="segitiga"></div>
+                                            <span>Delete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                @endif
                 {{-- <tr class="pengajuan">
                     <td class="py-2 px-3 pe-0">2</td>
                     <td class="py-2">123457ADB</td>
@@ -189,32 +204,82 @@
     @if ($modal['for'] == 'detail')
         <livewire:logic.detail-history :idDokumen="$modal['message']"></livewire:logic.detail-history>
     @endif
+    @if ($modal['for'] == 'edit')
+        <livewire:logic.edit-pds :idDokumen="$modal['message']"></livewire:logic.edit-pds>
+    @endif
+    @if ($modal['for'] == 'delete')
+        <div class="position-absolute modal-custom modal-custom-perbaiki active d-flex" id="modal-delete-targeted"
+            style="z-index: 100000;">
+            <div class="close-modal position-absolute" wire:click='closeDelete'>
+            </div>
+            <div class="modal-content">
+                <div class="header-modal border-bottom d-flex align-items-center justify-content-between">
+                    <h1>Hapus Dokumen : {{ $deleteName }}</h1>
+                    <i class="bi bi-x-lg" style="cursor: pointer;" wire:click='closeDelete'></i>
+                </div>
+                <div class="box-modal-content p-3 py-4 border-bottom" style="max-height: 85vh;overflow-y:auto">
+                    <p class="fs-6">Konfirmasi Penghapusan PDS : <strong>{{ $deleteName }}</strong></p>
+                </div>
+                <div class="ms-auto p-3">
+                    <div class="d-flex">
+                        <button wire:loading wire:target='closeDelete' disabled
+                            class="btn bg-primary-status p-2 px-4 rounded-pill">
+                            <div class="d-flex m-auto align-items-center">
+                                <div class="loader d-flex">
+                                    <div class="point-loader rounded-circle point-loader1 bg-primary"></div>
+                                    <div class="point-loader rounded-circle point-loader2 bg-primary"></div>
+                                    <div class="point-loader rounded-circle point-loader3 bg-primary"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="btn bg-primary-status p-2 px-4 rounded-pill" wire:loading.remove
+                            wire:click='closeDelete'>Batal</button>
 
-</div>
-<div class="position-absolute modal-custom modal-custom-perbaiki off d-flex" id="modal-delete-targeted"
-    style="z-index: 100000;">
-    <div class="close-modal position-absolute" onclick="modalTarget('close','modal-delete-targeted')">
-    </div>
-    <div class="modal-content">
-        <div class="header-modal border-bottom d-flex align-items-center justify-content-between">
-            <h1>Hapus Dokumen : nama</h1>
-            <i class="bi bi-x-lg" style="cursor: pointer;"
-                onclick="modalTarget('close', 'modal-delete-targeted')"></i>
-        </div>
-        <div class="box-modal-content p-3 py-4 border-bottom" style="max-height: 85vh;overflow-y:auto">
-            <p class="fs-6">Konfirmasi Penghapusan PDS : <strong>Nama</strong></p>
-        </div>
-        <div class="ms-auto p-3">
-            <div class="d-flex">
-                <button class="btn bg-primary-status p-2 px-4 rounded-pill"
-                    onclick="modalTarget('close', 'modal-delete-targeted')">Batal</button>
-                <button class="btn btn-danger p-2 px-4 rounded-pill ms-2">Hapus</button>
+                        {{-- <div wire:loading.remove>
+                            <button type="submit"
+                                class="btn btn-primary rounded-pill d-flex justity-content-center m-auto"
+                                style="width: 100%;height:54px; padding:14px 0px;">
+                                <div class="m-auto">
+                                    Submit
+                                </div>
+                            </button>
+                        </div>
+                        <div wire:loading style="width: 100%;">
+                            <button disabled
+                                class="btn bg-primary-status p-2 px-4 rounded-pill"
+                                style="width: 100%;height:54px; padding:14px 0px;">
+                                <div class="d-flex m-auto align-items-center">
+                                    <div class="loader d-flex">
+                                        <div class="point-loader rounded-circle point-loader1 bg-white"></div>
+                                        <div class="point-loader rounded-circle point-loader2 bg-white"></div>
+                                        <div class="point-loader rounded-circle point-loader3 bg-white"></div>
+                                    </div>
+                                </div>
+                            </button>
+                        </div> --}}
+
+                        <button wire:loading wire:target='deletePds' disabled
+                            class="btn btn-danger p-3 px-4 rounded-pill ms-2">
+                            <div class="d-flex m-auto align-items-center">
+                                <div class="loader d-flex">
+                                    <div class="point-loader rounded-circle point-loader1 bg-white"></div>
+                                    <div class="point-loader rounded-circle point-loader2 bg-white"></div>
+                                    <div class="point-loader rounded-circle point-loader3 bg-white"></div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="btn btn-danger p-2 px-4 rounded-pill ms-2" wire:loading.remove
+                            wire:click='deletePds({{ $modal['message'] }})'>Hapus</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
+
 </div>
 
-<div class="position-absolute modal-custom modal-custom-perbaiki off d-flex" id="modal-perbaiki-targeted"
+
+{{-- <div class="position-absolute modal-custom modal-custom-perbaiki off d-flex" id="modal-perbaiki-targeted"
     style="z-index: 10000;">
     <div class="close-modal position-absolute " onclick="modalTarget('close','modal-perbaiki-targeted')">
     </div>
@@ -261,4 +326,4 @@
             </form>
         </div>
     </div>
-</div>
+</div> --}}

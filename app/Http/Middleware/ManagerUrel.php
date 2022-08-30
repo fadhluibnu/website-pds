@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class IsPengendaliDokumen
+class ManagerUrel
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,6 @@ class IsPengendaliDokumen
      */
     public function handle(Request $request, Closure $next)
     {
-        $data = session('auth');
-        if ($data[0]['role'] != "Document Controller 1" || $data[0]['role'] != "Document Controller 2" || $data[0]['role'] != "Super Admin" || !$data) {
-            abort(403);
-        }
         return $next($request);
     }
 }

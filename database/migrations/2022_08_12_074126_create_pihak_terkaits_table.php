@@ -16,7 +16,8 @@ class CreatePihakTerkaitsTable extends Migration
         Schema::create('pihak_terkaits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('dokumen_id');
-            $table->string('pihak_terkait');
+            $table->string('role_id');
+            $table->string('pihak_terkait')->nullable();
             $table->string('status')->default(false);
             $table->timestamps();
         });

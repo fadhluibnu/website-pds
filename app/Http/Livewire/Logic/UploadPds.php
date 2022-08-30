@@ -55,13 +55,13 @@ class UploadPds extends Component
     public function mount()
     {
         $sessionUser = session('auth');
-        $this->pemohon = $sessionUser['user']['id'];
-        $this->user_name = $sessionUser['user']['name'];
+        $this->pemohon = $sessionUser[0]['id'];
+        $this->user_name = $sessionUser[0]['name'];
         if (Gate::forUser($this->pemohon)->allows('management')) {
-            $this->management = $sessionUser['user']['id'];
+            $this->management = $sessionUser[0]['id'];
         }
         if (Gate::forUser($this->pemohon)->allows('pengendaliDokumen')) {
-            $this->pengendali = $sessionUser['user']['id'];
+            $this->pengendali = $sessionUser[0]['id'];
         }
     }
 
@@ -93,26 +93,28 @@ class UploadPds extends Component
 
             if ($store) {
                 if ($this->pengendalidokumen != null) {
-                    $this->storePic($store['id'], $this->pengendalidokumen, $this->pemohon);
+                    $this->storePic($store['id'], "Document Controller 1");
+                    $this->storePic($store['id'], "Document Controller 2");
                 }
                 if ($this->managerdeqa != null) {
-                    $this->storePic($store['id'], $this->managerdeqa, $this->pemohon);
+                    $this->storePic($store['id'], $this->managerdeqa);
                 }
                 if ($this->manageriqa != null) {
-                    $this->storePic($store['id'], $this->manageriqa, $this->pemohon);
+                    $this->storePic($store['id'], $this->manageriqa);
                 }
                 if ($this->managerurel != null) {
-                    $this->storePic($store['id'], $this->managerurel, $this->pemohon);
+                    $this->storePic($store['id'], $this->managerurel);
                 }
-                if ($this->osmtth != null) {
-                    $this->storePic($store['id'], $this->osmtth, $this->pemohon);
-                }
+                // if ($this->osmtth != null) {
+                //     $this->storePic($store['id'], $this->osmtth);
+                // }
                 History::create([
                     'dokumen_id' => $store['id'],
                     'user_id' => $this->pemohon,
                     'user_name' => $this->user_name,
+                    'photo' => session('auth')[0]['photo'],
                     'judul' => 'PDS Berhasil Diupload',
-                    'pesan' => 'Dokumen ' . $store['judul'] . ' telah berhasil diupload'
+                    'pesan' => 'Dokumen <strong>' . $this->judul . '</strong> telah berhasil diupload'
                 ]);
                 $param = [
                     'for' => null,
@@ -124,12 +126,11 @@ class UploadPds extends Component
             }
         }
     }
-    public function storePic($dokumen_id, $roleid, $pic)
+    public function storePic($dokumen_id, $roleid)
     {
         Pic::create([
             'dokumen_id' => $dokumen_id,
-            'role_id' => $roleid,
-            'pic' => $pic
+            'role_id' => $roleid
         ]);
     }
     public function closeX()

@@ -1,4 +1,4 @@
-<div class="position-absolute modal-custom modal-custom-upload {{ $modalUpload }} d-flex" id="modal-upload-targeted"
+<div class="position-absolute modal-custom modal-custom-upload {{ $active }} d-flex" id="modal-upload-targeted"
     style="z-index: 10000;">
     <div class="close-modal position-absolute " wire:click='closeX()'>
     </div>
@@ -8,8 +8,9 @@
             <i class="bi bi-x-lg" style="cursor: pointer;" wire:click='closeX()'></i>
         </div>
         <div class="box-modal-content p-3 overflow-auto">
-            <form wire:submit.prevent="storepds" enctype="multipart/form-data">
+            <form wire:submit.prevent="updatepds" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" wire:model='idUpdate'>
                 <input type="hidden" wire:model='pemohon'>
                 <input type="hidden" wire:model='status'>
                 <input type="hidden" wire:model='user_name'>
@@ -48,9 +49,9 @@
                             <select class="form-select p-2 box-radius-10 @error('jenisdokumen') is-invalid @enderror"
                                 id="jenisdokumen" aria-label="Default select example" wire:model='jenisdokumen'
                                 required>
-                                <option selected>Pilih Jenis Dokumen</option>
                                 @foreach ($jenisdok as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}">
+                                        {{ $item->name }}</option>
                                 @endforeach
                             </select>
                             @error('jenisdokumen')
@@ -64,7 +65,6 @@
                             <select class="form-select p-2 box-radius-10 @error('jenispermohonan') is-invalid @enderror"
                                 id="jenispermohonan" aria-label="Default select example" wire:model='jenispermohonan'
                                 required>
-                                <option selected>Pilih Jenis Permohonan</option>
                                 @foreach ($jenisper as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
@@ -93,7 +93,8 @@
                                     Manager UREL</label>
                                 <input type="checkbox" wire:model.defer="managerdeqa" class="d-none btn-check-custom"
                                     id="manager-deqa" value="Lab Manager DEQA">
-                                <label for="manager-deqa" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
+                                <label for="manager-deqa" class="btn-checkbox"><i
+                                        class="bi bi-check-circle-fill"></i>
                                     Manager DEQA</label>
                                 {{-- <input type="checkbox" wire:model.defer="osmtth" class="d-none btn-check-custom"
                                     id="osm-tth" value="2">

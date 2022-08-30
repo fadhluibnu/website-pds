@@ -17,7 +17,7 @@ class CreatePicsTable extends Migration
             $table->id();
             $table->foreignId('dokumen_id');
             $table->string('role_id');
-            $table->string('pic');
+            $table->string('pic')->nullable();
             $table->string('status')->default(false);
             $table->timestamps();
         });

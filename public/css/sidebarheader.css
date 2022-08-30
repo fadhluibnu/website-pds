@@ -27,7 +27,6 @@
     width: 123px;
     height: 123px;
     border-radius: 50%;
-    background-image: url(assets/thomeas.png);
     background-size: cover;
     background-position: center;
 }
@@ -50,7 +49,7 @@ p.role-sidebar {
     color: #9e9e9e;
 }
 .sidebar-menu {
-    margin-top: 142px;
+    margin-top: 122px;
 }
 
 .sidebar-menu .nav-link {

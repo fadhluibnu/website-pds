@@ -54,20 +54,26 @@
                     <h3 class="fs-6 fw-semibold p-2 bg-primary text-white rounded-top m-0">History</h3>
                     <div class="border border-top-0 p-2 rounded-bottom text-color">
                         @for ($i = $item->histories->count() - 1; $i >= 0; $i--)
-                            <div class="box-history border rounded p-2 mb-2">
+                            <div
+                                class="box-history border @if ($item->histories[$i]->type == 'catatan') border-danger @endif rounded p-2 mb-2">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h3 class="fs-6 fw-semibold m-0">
+                                    <h3 class="fw-semibold m-0" style="font-size: 14px;">
                                         {{ $item->histories[$i]->judul }}</h3>
                                     <p class="m-0" style="font-size: 14px;">
                                         {{ $item->histories[$i]->created_at->diffForHumans() }}</p>
                                 </div>
-                                <div class="d-flex mt-2">
-                                    <div class="profile"></div>
-                                    <div class="text ms-2">
-                                        <h3 class="fs-6 fw-medium m-0">
+                                <div class="d-flex mt-2 justify-content-between">
+                                    <div class="profile detail{{ $item->histories[$i]->user_id }}"></div>
+                                    <style>
+                                        .content .modal-custom .profile.detail{{ $item->histories[$i]->user_id }} {
+                                            background-image: url({{ 'http://127.0.0.1:9009/storage/' . $item->histories[$i]->photo }})
+                                        }
+                                    </style>
+                                    <div class="text ms-2" style="width: 566px;">
+                                        <h3 class="fw-medium m-0" style="font-size: 14px;">
                                             {{ $item->histories[$i]->user_name }}</h3>
-                                        <p class="m-0">
-                                            {{ $item->histories[$i]->pesan }}</p>
+                                        <p class="m-0" style="font-size: 14px;">
+                                            {!! $item->histories[$i]->pesan !!}</p>
                                     </div>
                                 </div>
                             </div>

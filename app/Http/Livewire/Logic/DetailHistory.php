@@ -29,7 +29,6 @@ class DetailHistory extends Component
     public function render()
     {
         $data = Dokumen::where('id', $this->idDokumen)->latest()->get();
-        // dd($data[0]->histories);
         return view('livewire.logic.detail-history', [
             'data' => $data
         ]);

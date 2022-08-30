@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['myauth'])->group(function () {
+Route::middleware(['HasSession'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name("logout");
     Route::get('/', Overview::class)->name("overview");
     Route::get('/pengajuan', Pengajuan::class)->name("pengajuan");
@@ -31,5 +31,5 @@ Route::middleware(['pengendali_dokumen'])->group(function () {
     Route::get('/pengguna', Pengguna::class)->name("pengguna");
     Route::get('/pengguna/detail-pengguna', DetailPengguna::class)->name("detail-pengguna");
 });
-Route::get('/login', [AuthController::class, 'index'])->name("login")->middleware('myguest');
-Route::post('/login', [AuthController::class, 'login'])->middleware('myguest');
+Route::get('/login', [AuthController::class, 'index'])->name("login")->middleware('NoSession');
+Route::post('/login', [AuthController::class, 'login'])->middleware('NoSession');

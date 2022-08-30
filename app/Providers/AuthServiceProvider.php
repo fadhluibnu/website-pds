@@ -28,31 +28,57 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('engginer', function () {
             $data = session('auth');
-            return $data['user']['role']['id'] == 1;
+            $engginer = ["Lab Device", "Lab Energy", "Lab Kabel dan Aksesoris FTTH", "Lab Transmisi", "Lab Kalibrasi"];
+            for ($i = 0; $i <= count($engginer) - 1; $i++) {
+                if ($data[0]["role"] == $engginer[$i]) {
+                    return true;
+                }
+            }
         });
-        Gate::define('osmtth', function () {
-            $data = session('auth');
-            return $data['user']['role']['id'] === 2;
-        });
+        // Gate::define('osmtth', function () {
+        //     $data = session('auth');
+
+        //     return $data['user']['role']['id'] === 2;
+        // });
         Gate::define('management', function () {
             $data = session('auth');
-            return $data['user']['role']['id'] == 3;
+            return $data[0]['role'] == "SM IAS";
         });
         Gate::define('pengendaliDokumen', function () {
             $data = session('auth');
-            return $data['user']['role']['id'] == 4;
+            if ($data[0]['role'] == "Document Controller 1" || $data[0]['role'] == "Document Controller 2") {
+                return true;
+            }
         });
         Gate::define('managerIqa', function () {
             $data = session('auth');
-            return $data['user']['role']['id'] == 5;
+            return $data[0]['role'] == "Lab Manager IQA";
         });
         Gate::define('managerUrel', function () {
             $data = session('auth');
-            return $data['user']['role']['id'] == 6;
+            return $data[0]['role'] == "Lab Manager UREL";
         });
         Gate::define('managerDeqa', function () {
             $data = session('auth');
-            return $data['user']['role']['id'] == 7;
+            return $data[0]['role'] == "Lab Manager DEQA";
+        });
+        Gate::define('picOrPihakTerkait', function () {
+            $data = session('auth')[0]['role'];
+            $for = ["Lab Manager IQA", "Lab Manager UREL", "Lab Manager DEQA", "Document Controller 1", "Document Controller 2"];
+            for ($i = 0; $i <= count($for) - 1; $i++) {
+                if ($data == $for[$i]) {
+                    return true;
+                }
+            }
+        });
+        Gate::define('manager', function () {
+            $data = session('auth')[0]['role'];
+            $for = ["Lab Manager IQA", "Lab Manager UREL", "Lab Manager DEQA"];
+            for ($i = 0; $i <= count($for) - 1; $i++) {
+                if ($data == $for[$i]) {
+                    return true;
+                }
+            }
         });
     }
 }

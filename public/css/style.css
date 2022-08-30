@@ -1,5 +1,6 @@
 hr {
     color: #c9c8c8;
+    margin-bottom: 4px;
 }
 body {
     font-family: "Poppins", sans-serif;
@@ -51,7 +52,8 @@ body {
     transition: 0.2s;
     cursor: pointer;
 }
-.btn-check-custom:checked + .btn-checkbox {
+.btn-check-custom:checked + .btn-checkbox,
+.btn-check-custom:active + .btn-checkbox {
     transition: 0.2s;
     color: #3574ee;
     border-color: #3574ee;
@@ -306,7 +308,6 @@ body {
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    background-image: url(assets/thomeas.png);
     background-size: cover;
     background-position: center;
 }
@@ -332,7 +333,7 @@ body {
     flex: 0 !important;
     width: 100% !important;
     z-index: 3;
-    opacity: 0;
+    /* opacity: 0; */
 }
 .content
     .modal-custom-tinjau
@@ -363,14 +364,15 @@ body {
 .content .status-pds .data-pds .data.active {
     border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 }
-.status-pds .data-pds::-webkit-scrollbar {
+#scroll-custom::-webkit-scrollbar {
     width: 8px;
+    margin-right: 2px;
 }
-.status-pds .data-pds::-webkit-scrollbar-thumb {
+#scroll-custom::-webkit-scrollbar-thumb {
     background: #cfcfcf;
     border-radius: 10px;
 }
-.status-pds .data-pds::-webkit-scrollbar-thumb:hover {
+#scroll-custom::-webkit-scrollbar-thumb:hover {
     background: #bdbdbd;
 }
 .status-pds .detail-monitor h2 {

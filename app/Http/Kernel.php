@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\HasSession;
 use App\Http\Middleware\IsAuth;
 use App\Http\Middleware\IsEngginer;
 use App\Http\Middleware\IsGuest;
@@ -12,6 +13,7 @@ use App\Http\Middleware\IsManagerUREL;
 use App\Http\Middleware\IsManajemen;
 use App\Http\Middleware\IsOSMTTH;
 use App\Http\Middleware\IsPengendaliDokumen;
+use App\Http\Middleware\NoSession;
 use App\Http\Middleware\Peninjauan;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -83,6 +85,8 @@ class Kernel extends HttpKernel
         'engginer' => IsEngginer::class,
         'myauth' => IsAuth::class,
         'myguest' => IsGuest::class,
-        'peninjauan' => Peninjauan::class
+        'peninjauan' => Peninjauan::class,
+        'HasSession' => HasSession::class,
+        'NoSession' => NoSession::class
     ];
 }
