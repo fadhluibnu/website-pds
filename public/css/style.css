@@ -5,7 +5,12 @@ hr {
 body {
     font-family: "Poppins", sans-serif;
 }
-
+.inputTanggal {
+    border: none;
+    background: transparent;
+    margin: auto;
+    padding: 10px;
+}
 .bg-success {
     background: #35ee5d !important;
 }

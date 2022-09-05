@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Logic;
 
+use App\Events\EventForPic;
 use App\Models\Dokumen;
 use App\Models\History;
 use Livewire\Component;
@@ -40,6 +41,7 @@ class UploadPds extends Component
     public $alertPic;
 
     public $user_name;
+    protected $event_pic = [];
 
 
     protected $rules =  [
@@ -116,6 +118,7 @@ class UploadPds extends Component
                     'judul' => 'PDS Berhasil Diupload',
                     'pesan' => 'Dokumen <strong>' . $this->judul . '</strong> telah berhasil diupload'
                 ]);
+                event(new EventForPic($this->event_pic, $store['id']));
                 $param = [
                     'for' => null,
                     'session' => 'upload'
@@ -132,6 +135,7 @@ class UploadPds extends Component
             'dokumen_id' => $dokumen_id,
             'role_id' => $roleid
         ]);
+        $this->event_pic[] = $roleid;
     }
     public function closeX()
     {

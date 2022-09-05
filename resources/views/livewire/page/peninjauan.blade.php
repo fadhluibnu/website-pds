@@ -1,19 +1,20 @@
 <div class="container-fluid" style="height: 90vh;overflow-y: auto;">
-    <form class="filter bg-white p-3 box-radius-10">
+    <form wire:submit.prevent='get_dokumen' class="filter bg-white p-3 box-radius-10">
         <div class="row">
             <div class="col-5">
                 <label for="namanomor" onmouseup="formInput('o', 'inpnamanomor')">Nama atau Nomor
                     Dokumen</label>
                 <div id="inpnamanomor" class="input-group namanomor box-radius-10 border mt-2">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-                    <input type="text" id="namanomor" class="form-control ps-0" placeholder="Nama / Nomor Dokumen">
+                    <input type="text" id="namanomor" wire:model='judul' class="form-control ps-0"
+                        placeholder="Nama / Nomor Dokumen">
                 </div>
             </div>
             <div class="col-3">
                 <label for="statusdokumen">Status Dokumen</label>
                 <select id="statusdokumen" class="form-select mt-2" aria-label="Default select example"
-                    style="padding: 10px;">
-                    <option selected>Semua</option>
+                    style="padding: 10px;" wire:model='status'>
+                    <option value="" selected>Semua</option>
                     <option value="1">Ditinjau</option>
                     <option value="2">Selesai</option>
                     <option value="3">Dikembalikan</option>
@@ -45,6 +46,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+            <input type="hidden" id='role_refresh' value="{{ session('auth')[0]['role'] }}">
+            <input type="hidden" id="jumlah" value="0">
+            <input type="hidden" id="id_new_dokumen">
+            {{-- {{ $update }} --}}
+            <div wire:click="refresh()" class="d-none btn btn-sm btn-primary p-2 px-3" id="refresh_btn">
+                {{-- wire:loading wire:target='refresh' --}}
+                <span wire:loading wire:target='refresh' class="spinner-border spinner-border-sm  me-1" role="status"
+                    aria-hidden="true"></span>
+                Perbarui : <span id="new_dokumen"></span>
+                Dokumen Baru
+            </div>
         </div>
         <!-- tabel -->
 
@@ -66,13 +78,32 @@
                         <td colspan="7">Tidak ada dokumen</td>
                     </tr>
                 @else
-                    @for ($i = 0; $i <= count($data) - 1; $i++)
+                    @php
+                        $loop = 0;
+                    @endphp
+                    @for ($i = count($data) - 1; $i >= 0; $i--)
+                        @php
+                            $loop += 1;
+                        @endphp
                         <tr class="peninjauan">
-                            <td class="py-2 px-3 pe-0">{{ $i + 1 }}</td>
+                            <td class="py-2 px-3 pe-0">{{ $loop }}</td>
                             <td class="py-2">{{ $data[$i]['nomor'] }}</td>
-                            <td class="py-2">{{ $data[$i]['judul'] }}</td>
+                            <td class="py-2">{{ $data[$i]['judul'] }}
+                                @if ($badge)
+                                    @for ($x = 0; $x <= count($badge) - 1; $x++)
+                                        @if ($badge[$x] == $data[$i]['id'])
+                                            <span id="{{ $data[$i]['nomor'] . $data[$i]['id'] . 'baru' }}"
+                                                class="badge text-bg-primary">Baru</span>
+                                        @endif
+                                    @endfor
+                                @endif
+                                <span id="{{ $data[$i]['nomor'] . $data[$i]['id'] . 'hapus' }}"
+                                    class="d-none badge text-bg-danger">Dihapus</span>
+                            </td>
                             <td class="py-2">
-                                <div class="bg-primary-status text-center p-2 rounded-pill">
+                                <div id="{{ $data[$i]['nomor'] . $data[$i]['id'] . 'status' }}"
+                                    class="bg-primary-status
+                                    text-center p-2 rounded-pill">
                                     Ditinjau
                                 </div>
                             </td>
@@ -87,7 +118,7 @@
                             <td class="py-2">{{ date('d/m/Y', strtotime($data[$i]['tgl'])) }}</td>
                             <td class="py-2 px-3 ps-0">
                                 <div class="d-flex">
-                                    <div class="box-icon bg-primary rounded-circle"
+                                    <div class="{{ 'aksi' . $data[$i]['nomor'] . $data[$i]['id'] }} box-icon bg-primary rounded-circle"
                                         wire:click='openModal("detail", {{ $data[$i]['id'] }})'
                                         onclick="wireClick('spinerDetail{{ $data[$i]['id'] }}', 'folderDetail{{ $data[$i]['id'] }}')">
                                         <span id="spinerDetail{{ $data[$i]['id'] }}"
@@ -99,7 +130,7 @@
                                             <span>Detail & History</span>
                                         </div>
                                     </div>
-                                    <div class="box-icon bg-success rounded-circle ms-2"
+                                    <div class="{{ 'aksi' . $data[$i]['nomor'] . $data[$i]['id'] }} box-icon bg-success rounded-circle ms-2"
                                         wire:click='openTinjau("tinjau", {{ $data[$i]['id'] }}, "{{ $data[$i]['pengendali'] }}", "{{ $data[$i]['manager'] }}", "{{ $data[$i]['management'] }}")'
                                         onclick="wireClick('spinerTinjau{{ $data[$i]['id'] }}', 'eyeTinjau{{ $data[$i]['id'] }}')">
                                         <span id="spinerTinjau{{ $data[$i]['id'] }}"
@@ -112,6 +143,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                {{-- <script>
+                                    let disable = document.querySelectorAll(`.aksi{{ $data[$i]['nomor'] . $data[$i]['id'] }}`);
+                                    console.log(disable.length);
+                                </script> --}}
                             </td>
                         </tr>
                     @endfor

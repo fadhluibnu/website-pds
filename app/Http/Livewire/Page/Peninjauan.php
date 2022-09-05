@@ -11,6 +11,11 @@ use Livewire\Component;
 class Peninjauan extends Component
 {
     public $title = "Peninjauan";
+    public $judul;
+    public $status;
+    // public $update;
+    public $badge;
+    protected $datas;
     public $modal = [
         'for' => 'null',
         'message' => 'null',
@@ -26,7 +31,23 @@ class Peninjauan extends Component
         'for' => 'null',
         'id' => 'null'
     ];
-    protected $listeners = ['closeModal' => 'handlerClose', 'openKembalikan' => 'handlerKembalikan', 'fromKembalikan' => 'handlerTinjau'];
+    protected $listeners = [
+        'closeModal' => 'handlerClose',
+        'openKembalikan' => 'handlerKembalikan',
+        'fromKembalikan' => 'handlerTinjau',
+        // 'echo:for_pic,EventForPic' => 'notifyNewOrder'
+    ];
+    // public function notifyNewOrder($data, $badge)
+    // {
+    //     $role = session('auth')[0]['role'];
+    //     for ($i = 0; $i < count($data['pic']) - 1; $i++) {
+    //         if ($data['pic'][$i] == $role) {
+    //             $this->update += 1;
+    //         }
+    //     }
+    //     dd($badge);
+    //     // session()->flash('badge', $badge);
+    // }
     public function openModal($for, $message)
     {
         if ($for == "delete") {
@@ -86,17 +107,27 @@ class Peninjauan extends Component
         $this->kembalikan['manager'] = $attr['manager'];
         $this->kembalikan['management'] = $attr['management'];
     }
-    public function render()
+
+    public function refresh($data)
+    {
+        $badge = explode("|", $data);
+        // dd($badge);
+        // for ($i = 0; $i <= count($badge) - 1; $i++) {
+        $this->badge = $badge;
+        // }
+        // dd($this->badge);
+    }
+    public function get_dokumen()
     {
         $data = [];
         $for_pt = [];
         if (Gate::forUser(session('auth')[0]['id'])->allows('picOrPihakTerkait')) {
             $for_pic = Dokumen::where('status', 1)->whereHas('pics', function (Builder $query) {
                 $query->where('role_id', session('auth')[0]['role'])->where('status', false);
-            })->get();
+            })->where('judul', 'like', '%' . $this->judul . '%')->get();
             $for_pihak_terkait = Dokumen::where('status', 1)->whereHas('pihakTerkaits', function (Builder $query) {
                 $query->where('role_id', session('auth')[0]['role'])->where('status', false);
-            })->get();
+            })->where('judul', 'like', '%' . $this->judul . '%')->get();
 
             if ($for_pic) {
                 foreach ($for_pic as $item) {
@@ -210,8 +241,14 @@ class Peninjauan extends Component
                 ];
             }
         }
+        return $this->datas = $data;
+    }
+
+    public function render()
+    {
+        $this->get_dokumen();
         return view('livewire.page.peninjauan', [
-            'data' => $data
+            'data' => $this->datas
         ])->extends("main")->section('content')->layoutData(['title' => $this->title]);
     }
 }

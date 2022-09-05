@@ -6,6 +6,10 @@ function wireClick(spiner, eye) {
     spin.classList.remove("d-none");
 }
 
+function clearDate(param) {
+    document.getElementById(param).value = null;
+}
+
 function modalTarget(param, id) {
     if (param == "open") {
         document.getElementById(id).classList.remove("off");

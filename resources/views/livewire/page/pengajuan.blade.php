@@ -1,36 +1,42 @@
 <div class="container-fluid" style="height: 90vh;overflow-y: auto;">
-    <form class="filter bg-white p-3 box-radius-10">
+    {{-- <livewire:logic.search></livewire:logic.search> --}}
+    <form wire:submit.prevent='search' class="filter bg-white p-3 box-radius-10">
+        @csrf
+        <input type="text" wire:model='search'>
         <div class="row">
-            <div class="col-5">
-                <label for="namanomor" onmouseup="formInput('o', 'inpnamanomor')">Nama atau Nomor
-                    Dokumen</label>
+            <div class="col-4">
+                <label for="namanomor" onmouseup="formInput('o', 'inpnamanomor')">Judul Dokumen</label>
                 <div id="inpnamanomor" class="input-group namanomor box-radius-10 border mt-2">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-                    <input type="text" id="namanomor" class="form-control ps-0" placeholder="Nama / Nomor Dokumen">
+                    <input type="text" id="namanomor" wire:model.defer="judul" class="form-control ps-0"
+                        placeholder="Nama / Nomor Dokumen">
                 </div>
             </div>
             <div class="col-3">
                 <label for="statusdokumen">Status Dokumen</label>
-                <select id="statusdokumen" class="form-select mt-2" aria-label="Default select example"
-                    style="padding: 10px;">
-                    <option selected>Semua</option>
-                    <option value="1">Ditinjau</option>
-                    <option value="2">Selesai</option>
-                    <option value="3">Dikembalikan</option>
+                <select id="statusdokumen" class="form-select mt-2 box-radius-10" aria-label="Default select example"
+                    style="padding: 10px;" wire:model.defer='status'>
+                    <option value="" selected>Semua</option>
+                    <option value="Ditinjau">Ditinjau</option>
+                    <option value="Selesai">Selesai</option>
+                    <option value="Dikembalikan">Dikembalikan</option>
                 </select>
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 <label for="datepicker">Tanggal</label>
-                <div class="input-group date border box-radius-10 mt-2">
-                    <input id="datepicker" type="text" class="form-control" placeholder="Semua">
-                    <label for="datepicker" class="input-group-text" id="basic-addon2"><i
-                            class="bi bi-calendar-week-fill"></i></label>
+                <div class="input-group mt-2 box-radius-10">
+                    <a wire:click='clear' class="btn btn-outline-secondary" type="button" id="button-addon1"
+                        style="padding: 10px;margin: auto;">Clear
+                    </a>
+                    <input id="dateinput" wire:model.defer='tanggal' type="date"
+                        class="inputTanggal form-control border" placeholder="Semua"
+                        aria-label="Example text with button addon" aria-describedby="button-addon1">
                 </div>
             </div>
             <div class="col-2">
                 <div class="d-flex flex-column justify-content-between" style="height: 100%;">
                     <div class="bg-white p-1"></div>
-                    <button type="button" class="btn btn-primary" style="padding: 10px;">Terapkan</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 10px;">Terapkan</button>
                 </div>
             </div>
         </div>
@@ -208,8 +214,8 @@
         <livewire:logic.edit-pds :idDokumen="$modal['message']"></livewire:logic.edit-pds>
     @endif
     @if ($modal['for'] == 'delete')
-        <div class="position-absolute modal-custom modal-custom-perbaiki active d-flex" id="modal-delete-targeted"
-            style="z-index: 100000;">
+        <div class="position-absolute modal-custom modal-custom-perbaiki {{ $modal['delete'] }} d-flex"
+            id="modal-delete-targeted" style="z-index: 100000;">
             <div class="close-modal position-absolute" wire:click='closeDelete'>
             </div>
             <div class="modal-content">
@@ -269,7 +275,7 @@
                             </div>
                         </button>
                         <button class="btn btn-danger p-2 px-4 rounded-pill ms-2" wire:loading.remove
-                            wire:click='deletePds({{ $modal['message'] }})'>Hapus</button>
+                            wire:click='deletePds({{ $modal['message'] }}, {{ $deleteNomor }})'>Hapus</button>
                     </div>
                 </div>
             </div>
