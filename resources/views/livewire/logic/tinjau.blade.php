@@ -11,7 +11,7 @@
             <div class="modal-pengaju border-bottom">
                 <div class="d-flex align-items-center">
                     <div class="modal-prof-circle"
-                        style="background-image: url({{ 'http://127.0.0.1:9009/storage/' . $api[0]['photo'] }})"></div>
+                        style="background-image: url({{ env('URL_WEB_API') . 'storage/' . $api[0]['photo'] }})"></div>
                     <div class="text-modal-prof ms-2">
                         <h1>{{ $api[0]['name'] }}</h1>
                         <p>{{ $api[0]['role'] }}</p>

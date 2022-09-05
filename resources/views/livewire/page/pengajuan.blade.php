@@ -2,7 +2,7 @@
     {{-- <livewire:logic.search></livewire:logic.search> --}}
     <form wire:submit.prevent='search' class="filter bg-white p-3 box-radius-10">
         @csrf
-        <input type="text" wire:model='search'>
+        <input type="hidden" wire:model='search'>
         <div class="row">
             <div class="col-4">
                 <label for="namanomor" onmouseup="formInput('o', 'inpnamanomor')">Judul Dokumen</label>
@@ -105,44 +105,91 @@
                             </td>
                             <td class="py-2">{{ date('d/m/Y', strtotime($item->created_at)) }}</td>
                             <td class="py-2 px-3 ps-0">
-                                <div class="d-flex">
-                                    <div class="box-icon rounded-circle bg-primary"
-                                        wire:click='openModal("detail", {{ $item->id }})'
-                                        onclick="wireClick('spinerDetail{{ $item->id }}', 'folderDetail{{ $item->id }}')">
-                                        <span id="spinerDetail{{ $item->id }}"
-                                            class="spinner-border spinner-border-sm m-auto d-none" role="status"
-                                            aria-hidden="true"></span>
-                                        <i id="folderDetail{{ $item->id }}" class="bi bi-folder-fill"></i>
-                                        <div class="my-tooltip d-none">
-                                            <div class="segitiga"></div>
-                                            <span>Detail & History</span>
+                                @if ($item->status == 1)
+                                    <div class="d-flex">
+                                        <div class="box-icon rounded-circle bg-primary"
+                                            wire:click='openModal("detail", {{ $item->id }})'
+                                            onclick="wireClick('spinerDetail{{ $item->id }}', 'folderDetail{{ $item->id }}')">
+                                            <span id="spinerDetail{{ $item->id }}"
+                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                                aria-hidden="true"></span>
+                                            <i id="folderDetail{{ $item->id }}" class="bi bi-folder-fill"></i>
+                                            <div class="my-tooltip d-none">
+                                                <div class="segitiga"></div>
+                                                <span>Detail & History</span>
+                                            </div>
+                                        </div>
+                                        <div class="box-icon rounded-circle bg-warning ms-1"
+                                            wire:click='openModal("edit", {{ $item->id }})'
+                                            onclick="wireClick('spinerEdit{{ $item->id }}', 'penEdit{{ $item->id }}')">
+                                            <span id="spinerEdit{{ $item->id }}"
+                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                                aria-hidden="true"></span>
+                                            <i id="penEdit{{ $item->id }}" class="bi bi-pen-fill"></i>
+                                            <div class="my-tooltip d-none">
+                                                <div class="segitiga"></div>
+                                                <span>Edit</span>
+                                            </div>
+                                        </div>
+                                        <div class="box-icon rounded-circle bg-danger ms-1"
+                                            wire:click='openModal("delete", {{ $item->id }})'
+                                            onclick="wireClick('spinerDelete{{ $item->id }}', 'penDelete{{ $item->id }}')">
+                                            <span id="spinerDelete{{ $item->id }}"
+                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                                aria-hidden="true"></span>
+                                            <i id="penDelete{{ $item->id }}" class="bi bi-trash-fill"></i>
+                                            <div class="my-tooltip d-none">
+                                                <div class="segitiga"></div>
+                                                <span>Delete</span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="box-icon rounded-circle bg-warning ms-1"
-                                        wire:click='openModal("edit", {{ $item->id }})'
-                                        onclick="wireClick('spinerEdit{{ $item->id }}', 'penEdit{{ $item->id }}')">
-                                        <span id="spinerEdit{{ $item->id }}"
-                                            class="spinner-border spinner-border-sm m-auto d-none" role="status"
-                                            aria-hidden="true"></span>
-                                        <i id="penEdit{{ $item->id }}" class="bi bi-pen-fill"></i>
-                                        <div class="my-tooltip d-none">
-                                            <div class="segitiga"></div>
-                                            <span>Edit</span>
+                                @endif
+                                @if ($item->status == 2)
+                                    <div class="d-flex">
+                                        <div class="bg-danger w-100 p-2 py-0 text-center fw-medium text-white rounded-pill"
+                                            style="cursor: pointer;"
+                                            onclick="modalTarget('open', 'modal-perbaiki-targeted')">
+                                            Perbaiki
                                         </div>
                                     </div>
-                                    <div class="box-icon rounded-circle bg-danger ms-1"
-                                        wire:click='openModal("delete", {{ $item->id }})'
-                                        onclick="wireClick('spinerDelete{{ $item->id }}', 'penDelete{{ $item->id }}')">
-                                        <span id="spinerDelete{{ $item->id }}"
-                                            class="spinner-border spinner-border-sm m-auto d-none" role="status"
-                                            aria-hidden="true"></span>
-                                        <i id="penDelete{{ $item->id }}" class="bi bi-trash-fill"></i>
-                                        <div class="my-tooltip d-none">
-                                            <div class="segitiga"></div>
-                                            <span>Delete</span>
+                                @endif
+                                @if ($item->status == 3)
+                                    <div class="d-flex">
+                                        <div class="box-icon rounded-circle bg-primary"
+                                            wire:click='openModal("detail", {{ $item->id }})'
+                                            onclick="wireClick('spinerDetail{{ $item->id }}', 'folderDetail{{ $item->id }}')">
+                                            <span id="spinerDetail{{ $item->id }}"
+                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                                aria-hidden="true"></span>
+                                            <i id="folderDetail{{ $item->id }}" class="bi bi-folder-fill"></i>
+                                            <div class="my-tooltip d-none">
+                                                <div class="segitiga"></div>
+                                                <span>Detail & History</span>
+                                            </div>
+                                        </div>
+                                        <div class="box-icon disable rounded-circle bg-warning ms-1">
+                                            <span id="spinerEdit{{ $item->id }}"
+                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                                aria-hidden="true"></span>
+                                            <i id="penEdit{{ $item->id }}" class="bi bi-pen-fill"></i>
+                                            <div class="my-tooltip d-none">
+                                                <div class="segitiga"></div>
+                                                <span>Edit</span>
+                                            </div>
+                                        </div>
+                                        <div class="box-icon disable rounded-circle bg-danger ms-1">
+                                            <span id="spinerDelete{{ $item->id }}"
+                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                                aria-hidden="true"></span>
+                                            <i id="penDelete{{ $item->id }}" class="bi bi-trash-fill"></i>
+                                            <div class="my-tooltip d-none">
+                                                <div class="segitiga"></div>
+                                                <span>Delete</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -240,29 +287,6 @@
                         </button>
                         <button class="btn bg-primary-status p-2 px-4 rounded-pill" wire:loading.remove
                             wire:click='closeDelete'>Batal</button>
-
-                        {{-- <div wire:loading.remove>
-                            <button type="submit"
-                                class="btn btn-primary rounded-pill d-flex justity-content-center m-auto"
-                                style="width: 100%;height:54px; padding:14px 0px;">
-                                <div class="m-auto">
-                                    Submit
-                                </div>
-                            </button>
-                        </div>
-                        <div wire:loading style="width: 100%;">
-                            <button disabled
-                                class="btn bg-primary-status p-2 px-4 rounded-pill"
-                                style="width: 100%;height:54px; padding:14px 0px;">
-                                <div class="d-flex m-auto align-items-center">
-                                    <div class="loader d-flex">
-                                        <div class="point-loader rounded-circle point-loader1 bg-white"></div>
-                                        <div class="point-loader rounded-circle point-loader2 bg-white"></div>
-                                        <div class="point-loader rounded-circle point-loader3 bg-white"></div>
-                                    </div>
-                                </div>
-                            </button>
-                        </div> --}}
 
                         <button wire:loading wire:target='deletePds' disabled
                             class="btn btn-danger p-3 px-4 rounded-pill ms-2">

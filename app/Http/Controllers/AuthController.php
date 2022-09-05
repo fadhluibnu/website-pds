@@ -27,14 +27,16 @@ class AuthController extends Controller
     }
     public function login(Request $request)
     {
-        $response = Http::post('http://127.0.0.1:9009/api/login', [
+        // echo env("URL_API") . "login"
+        $response = Http::post(env("URL_API_LOGIN"), [
             'name' => $request->name,
             'email' => $request->email,
         ]);
         $json = $response->json();
+        // dd($json);
         // return $json['success'];
         if ($json["success"] == true) {
-            $user = Http::get("http://127.0.0.1:9009/api/user/" . $request->email);
+            $user = Http::get(env("URL_API_USER") . $request->email);
             $user = $user->json();
             session(['auth' => $user]);
             return redirect()->route('overview');

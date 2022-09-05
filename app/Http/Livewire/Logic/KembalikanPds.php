@@ -38,7 +38,7 @@ class KembalikanPds extends Component
             'judul' => 'PDS Dikembalikan',
             'pesan' => $this->komentar
         ]);
-        if ($dokumen && $pic && $pihak_terkait && $history) {
+        if ($dokumen || $pic || $pihak_terkait || $history) {
             $this->active = 'off';
             $param = [
                 'for' => 'kembalikan',
@@ -75,7 +75,7 @@ class KembalikanPds extends Component
     {
         // dd($this->attrKembalikan);
         $data = Dokumen::where('id', $this->attrKembalikan['id'])->get();
-        $http = Http::get("http://127.0.0.1:9009/api/user-id/" . $data[0]->pemohon);
+        $http = Http::get(env("URL_API") . 'user-id/' . $data[0]->pemohon);
         return view('livewire.logic.kembalikan-pds', [
             'data' => $data,
             'api' => $http

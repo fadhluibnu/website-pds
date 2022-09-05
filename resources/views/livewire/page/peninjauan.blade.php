@@ -110,7 +110,7 @@
                             <td class="py-2">
                                 <div class="d-flex align-items-center">
                                     <div class="prof-circle"
-                                        style="background-image: url({{ 'http://127.0.0.1:9009/storage/' . $data[$i]['photo'] }});">
+                                        style="background-image: url({{ env('URL_WEB_API') . 'storage/' . $data[$i]['photo'] }});">
                                     </div>
                                     <span class="fw-medium ms-2 m-0">{{ $data[$i]['pemohon'] }}</span>
                                 </div>

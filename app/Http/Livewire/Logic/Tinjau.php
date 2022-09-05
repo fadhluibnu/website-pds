@@ -214,7 +214,7 @@ class Tinjau extends Component
         $this->management = $this->attrTinjau['management'];
         $this->role = session('auth')[0]['role'];
         $this->pic = session('auth')[0]['id'];
-        $http = Http::get("http://127.0.0.1:9009/api/user-id/" . $data[0]->pemohon);
+        $http = Http::get(env("URL_API") . 'user-id/' . $data[0]->pemohon);
         return view('livewire.logic.tinjau', [
             'data' => $data,
             'api' => $http

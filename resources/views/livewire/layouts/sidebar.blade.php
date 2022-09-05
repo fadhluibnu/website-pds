@@ -36,12 +36,13 @@
         </div>
         <div class="prof-side px-3">
             <div class="circle-shadow m-auto mt-4 d-flex">
-                <div class="profile m-auto"></div>
-                <style>
+                <div class="profile m-auto"
+                    style="background-image: url({{ env('URL_WEB_API') . 'storage/' . $user['photo'] }})"></div>
+                {{-- <style>
                     .sidebar .profile {
-                        background-image: url({{ 'http://127.0.0.1:9009/storage/' . $user['photo'] }})
+                        background-image: url({{ env('URL_WEB_API') . 'storage/' . $user['photo'] }})
                     }
-                </style>
+                </style> --}}
             </div>
             <div class="detail-profil-sidebar text-center">
                 <p class="nama-sidebar">{{ $user['name'] }}</p>

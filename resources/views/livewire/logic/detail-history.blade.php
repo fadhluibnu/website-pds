@@ -66,7 +66,7 @@
                                     <div class="profile detail{{ $item->histories[$i]->user_id }}"></div>
                                     <style>
                                         .content .modal-custom .profile.detail{{ $item->histories[$i]->user_id }} {
-                                            background-image: url({{ 'http://127.0.0.1:9009/storage/' . $item->histories[$i]->photo }})
+                                            background-image: url({{ env('URL_WEB_API') . 'storage/' . $item->histories[$i]->photo }})
                                         }
                                     </style>
                                     <div class="text ms-2" style="width: 566px;">
