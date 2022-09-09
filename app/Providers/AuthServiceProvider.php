@@ -28,18 +28,13 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('engginer', function () {
             $data = session('auth');
-            $engginer = ["Lab Device", "Lab Energy", "Lab Kabel dan Aksesoris FTTH", "Lab Transmisi", "Lab Kalibrasi"];
+            $engginer = ["Bagian UREL", "Lab Device", "Lab Energy", "Lab Kabel dan Aksesoris FTTH", "Lab Transmisi", "Lab Kalibrasi"];
             for ($i = 0; $i <= count($engginer) - 1; $i++) {
                 if ($data[0]["role"] == $engginer[$i]) {
                     return true;
                 }
             }
         });
-        // Gate::define('osmtth', function () {
-        //     $data = session('auth');
-
-        //     return $data['user']['role']['id'] === 2;
-        // });
         Gate::define('management', function () {
             $data = session('auth');
             return $data[0]['role'] == "SM IAS";

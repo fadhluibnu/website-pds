@@ -23,22 +23,24 @@ class AuthController extends Controller
         //     return redirect()->route('login');
         // }
         session()->forget(['auth']);
+        session()->forget(['token']);
         return redirect()->route('overview');
     }
     public function login(Request $request)
     {
         // echo env("URL_API") . "login"
         $response = Http::post(env("URL_API_LOGIN"), [
-            'name' => $request->name,
-            'email' => $request->email,
+            'id' => $request->id,
+            'password' => $request->password,
         ]);
         $json = $response->json();
         // dd($json);
-        // return $json['success'];
+        // return $json;
         if ($json["success"] == true) {
-            $user = Http::get(env("URL_API_USER") . $request->email);
+            $user = Http::get(env("URL_API_GET_USER") . $request->id);
             $user = $user->json();
             session(['auth' => $user]);
+            session(['token' => $json['token']]);
             return redirect()->route('overview');
         }
         session()->flash('status', 'Gagal Masuk');

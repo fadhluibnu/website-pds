@@ -38,14 +38,10 @@ window.Echo.channel("for_pic").listen("EventForPic", (event) => {
     let for_role = event.pic;
     for (let i = 0; i <= for_role.length - 1; i++) {
         if (role == for_role[i]) {
-            console.log(for_role[i] + " : " + i);
             id.value += "|" + event.badge;
             btn.setAttribute("wire:click", `refresh('${id.value}')`);
             jumlah.value = plus + 1;
-            // // if (plus >= 0) {
-            // //     plus.value += 1;
             btn.classList.remove("d-none");
-            // // }
             dokumen.innerHTML = jumlah.value;
         }
     }
@@ -67,3 +63,25 @@ window.Echo.channel("delete_pds").listen("EventDeleteDokumen", (event) => {
     status.classList.add("bg-danger-status");
     status.classList.remove("bg-primary-status");
 });
+window.Echo.channel("for_pihak_terkait").listen(
+    "EventForPihakTerkait",
+    (event) => {
+        let value = event.pihak_terkait;
+        let role = document.getElementById("role_refresh").value;
+        let btn = document.getElementById("refresh_btn");
+        let dokumen = document.getElementById("new_dokumen");
+        let jumlah = document.getElementById("jumlah");
+        let id = document.getElementById("id_new_dokumen");
+        let plus = parseInt(jumlah.value);
+        for (let index = 0; index < value.length; index++) {
+            if (value[index].role_id == role) {
+                console.log(value[index].role_id);
+                id.value += "|" + event.badge;
+                btn.setAttribute("wire:click", `refresh('${id.value}')`);
+                jumlah.value = plus + 1;
+                btn.classList.remove("d-none");
+                dokumen.innerHTML = jumlah.value;
+            }
+        }
+    }
+);

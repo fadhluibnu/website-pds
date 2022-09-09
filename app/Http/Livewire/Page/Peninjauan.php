@@ -111,11 +111,7 @@ class Peninjauan extends Component
     public function refresh($data)
     {
         $badge = explode("|", $data);
-        // dd($badge);
-        // for ($i = 0; $i <= count($badge) - 1; $i++) {
         $this->badge = $badge;
-        // }
-        // dd($this->badge);
     }
     public function get_dokumen()
     {
@@ -131,7 +127,7 @@ class Peninjauan extends Component
 
             if ($for_pic) {
                 foreach ($for_pic as $item) {
-                    $get_pemohon = Http::get(env("URL_API") . 'user-id/' . $item->pemohon);
+                    $get_pemohon = Http::get(env("URL_API_GET_USER") . $item->pemohon);
                     $data[] = [
                         'id' => $item->id,
                         'nomor' => $item->nomor,
@@ -156,7 +152,7 @@ class Peninjauan extends Component
                         }
                     }
                     if (count($for_pt) == 0) {
-                        $get_pemohon = Http::get(env("URL_API") . 'user-id/' . $item->pemohon);
+                        $get_pemohon = Http::get(env("URL_API_GET_USER") . $item->pemohon);
                         $data[] = [
                             'id' => $item->id,
                             'nomor' => $item->nomor,
@@ -194,7 +190,7 @@ class Peninjauan extends Component
                 if ($item->pengendali != null) {
                     $last = 'last_view';
                 }
-                $get_pemohon = Http::get(env("URL_API") . 'user-id/' . $item->pemohon);
+                $get_pemohon = Http::get(env("URL_API_GET_USER") . $item->pemohon);
                 $data[] = [
                     'id' => $item->id,
                     'nomor' => $item->nomor,
@@ -226,7 +222,7 @@ class Peninjauan extends Component
             }
             $filters = collect($for_pengendali)->whereNotIn('id', $data_pengendali)->all();
             foreach ($filters as $item) {
-                $get_pemohon = Http::get(env("URL_API") . 'user-id/' . $item->pemohon);
+                $get_pemohon = Http::get(env("URL_API_GET_USER") . $item->pemohon);
                 $data[] = [
                     'id' => $item->id,
                     'nomor' => $item->nomor,
