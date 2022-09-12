@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Logic;
 
 use App\Events\EventForPihakTerkait;
+use App\Events\EventManajemenPengendali;
+use App\Events\ForManagement;
 use App\Models\Dokumen;
 use App\Models\History;
 use App\Models\Pic;
@@ -46,12 +48,13 @@ class Tinjau extends Component
     {
         $id_user = session('auth')[0]['id'];
         $dokumen = Dokumen::where('id', $this->idDock);
+        $event = $dokumen->get();
         if ($this->pengendali == "as_pic" || $this->manager == "as_pic") {
             $this->for_pic();
-            $event = $dokumen->get();
-            $this->event_for_pihakterkait($this->idDock, $event[0]->nomor);
+            $this->event_for_pihakterkait($this->idDock);
         } elseif ($this->pengendali == "as_pihak_terkait" || $this->manager == "as_pihak_terkait") {
             $this->pihak_terkait();
+            $this->event_for_management($this->idDock, "SM IAS");
         } elseif ($this->pengendali == "not_pic_and_pihak_terkait") {
             $latst = $dokumen->update([
                 'status' => 3,
@@ -72,6 +75,7 @@ class Tinjau extends Component
                 $management = $dokumen->update([
                     'management' => $this->pic,
                 ]);
+                event(new EventManajemenPengendali($this->idDock, "Document Controller 1"));
             }
             if ($management) {
                 $this->operation = true;
@@ -140,7 +144,7 @@ class Tinjau extends Component
         }
     }
 
-    public function event_for_pihakterkait($id, $nomor)
+    public function event_for_pihakterkait($id)
     {
         $check = Pic::where('dokumen_id', $id)->where('status', false)->get();
         if (count($check) == 0) {
@@ -150,7 +154,15 @@ class Tinjau extends Component
                 ->distinct()
                 ->get();
 
-            event(new EventForPihakTerkait($pt, $nomor . $id, $id));
+            event(new EventForPihakTerkait($pt, $id));
+        }
+    }
+
+    public function event_for_management($id, $for)
+    {
+        $check = PihakTerkait::where('dokumen_id', $id)->where('status', false)->get();
+        if (count($check) == 0) {
+            event(new ForManagement($id, $for));
         }
     }
 

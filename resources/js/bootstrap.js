@@ -29,23 +29,78 @@ window.Echo = new Echo({
     disableStats: true,
 });
 window.Echo.channel("for_pic").listen("EventForPic", (event) => {
+    eventTinjau("for_pic", event);
+});
+
+window.Echo.channel("for_pihak_terkait").listen(
+    "EventForPihakTerkait",
+    (event) => {
+        eventTinjau("for_pihak_terkait", event);
+    }
+);
+window.Echo.channel("for_management").listen("ForManagement", (event) => {
+    eventTinjau("for_management", event);
+});
+window.Echo.channel("manajemen-pengendali").listen(
+    "EventManajemenPengendali",
+    (event) => {
+        eventTinjau("manajemen-pengendali", event);
+    }
+);
+
+function eventTinjau(type, event) {
     let role = document.getElementById("role_refresh").value;
     let btn = document.getElementById("refresh_btn");
     let dokumen = document.getElementById("new_dokumen");
     let jumlah = document.getElementById("jumlah");
     let id = document.getElementById("id_new_dokumen");
     let plus = parseInt(jumlah.value);
-    let for_role = event.pic;
-    for (let i = 0; i <= for_role.length - 1; i++) {
-        if (role == for_role[i]) {
-            id.value += "|" + event.badge;
+    if (type == "for_pic") {
+        let for_role = event.pic;
+        for (let i = 0; i <= for_role.length - 1; i++) {
+            if (role == for_role[i]) {
+                id.value += "|" + event.id;
+                btn.setAttribute("wire:click", `refresh('${id.value}')`);
+                jumlah.value = plus + 1;
+                btn.classList.remove("d-none");
+                dokumen.innerHTML = jumlah.value;
+            }
+        }
+    }
+    if (type == "for_pihak_terkait") {
+        let value = event.pihak_terkait;
+        for (let index = 0; index < value.length; index++) {
+            if (value[index].role_id == role) {
+                id.value += "|" + event.id;
+                btn.setAttribute("wire:click", `refresh('${id.value}')`);
+                jumlah.value = plus + 1;
+                btn.classList.remove("d-none");
+                dokumen.innerHTML = jumlah.value;
+            }
+        }
+    }
+    if (type == "manajemen-pengendali") {
+        let for_role = event.for;
+        if (role == for_role) {
+            id.value += "|" + event.id;
             btn.setAttribute("wire:click", `refresh('${id.value}')`);
             jumlah.value = plus + 1;
             btn.classList.remove("d-none");
             dokumen.innerHTML = jumlah.value;
         }
     }
-});
+    if (type == "for_management") {
+        let for_role = event.for;
+        if (role == for_role) {
+            id.value += "|" + event.id;
+            btn.setAttribute("wire:click", `refresh('${id.value}')`);
+            jumlah.value = plus + 1;
+            btn.classList.remove("d-none");
+            dokumen.innerHTML = jumlah.value;
+        }
+    }
+}
+
 window.Echo.channel("delete_pds").listen("EventDeleteDokumen", (event) => {
     console.log(event.id);
     let dihapus = document.getElementById(event.id + "hapus");
@@ -63,25 +118,3 @@ window.Echo.channel("delete_pds").listen("EventDeleteDokumen", (event) => {
     status.classList.add("bg-danger-status");
     status.classList.remove("bg-primary-status");
 });
-window.Echo.channel("for_pihak_terkait").listen(
-    "EventForPihakTerkait",
-    (event) => {
-        let value = event.pihak_terkait;
-        let role = document.getElementById("role_refresh").value;
-        let btn = document.getElementById("refresh_btn");
-        let dokumen = document.getElementById("new_dokumen");
-        let jumlah = document.getElementById("jumlah");
-        let id = document.getElementById("id_new_dokumen");
-        let plus = parseInt(jumlah.value);
-        for (let index = 0; index < value.length; index++) {
-            if (value[index].role_id == role) {
-                console.log(value[index].role_id);
-                id.value += "|" + event.badge;
-                btn.setAttribute("wire:click", `refresh('${id.value}')`);
-                jumlah.value = plus + 1;
-                btn.classList.remove("d-none");
-                dokumen.innerHTML = jumlah.value;
-            }
-        }
-    }
-);

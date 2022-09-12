@@ -10,12 +10,12 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class EventForPihakTerkait implements ShouldBroadcast
+class EventManajemenPengendali implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $pihak_terkait;
     public $id;
+    public $for;
     // public $badge;
 
     /**
@@ -23,10 +23,10 @@ class EventForPihakTerkait implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($pt, $id)
+    public function __construct($id, $for)
     {
-        $this->pihak_terkait = $pt;
         $this->id = $id;
+        $this->for = $for;
         // $this->badge = $badge;
     }
 
@@ -37,6 +37,6 @@ class EventForPihakTerkait implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('for_pihak_terkait');
+        return new Channel('manajemen-pengendali');
     }
 }

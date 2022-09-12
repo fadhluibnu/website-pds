@@ -75,7 +75,6 @@ class Pengajuan extends Component
     }
     public function deletePds($id, $nomor)
     {
-        // dd($nomor . $id);
         $delete = Dokumen::destroy($id);
         $pic = Pic::where('dokumen_id', $id)->delete();
         $pt = PihakTerkait::where('dokumen_id', $id)->delete();
