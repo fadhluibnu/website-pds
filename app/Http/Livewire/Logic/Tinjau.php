@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Logic;
 
+use App\Events\EventForPengendali;
 use App\Events\EventForPihakTerkait;
 use App\Events\EventManajemenPengendali;
 use App\Events\ForManagement;
@@ -75,7 +76,7 @@ class Tinjau extends Component
                 $management = $dokumen->update([
                     'management' => $this->pic,
                 ]);
-                event(new EventManajemenPengendali($this->idDock, "Document Controller 1"));
+                event(new EventForPengendali($this->idDock, "Document Controller 1"));
             }
             if ($management) {
                 $this->operation = true;

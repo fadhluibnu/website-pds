@@ -2108,6 +2108,9 @@ window.Echo.channel("for_pihak_terkait").listen("EventForPihakTerkait", function
 window.Echo.channel("for_management").listen("ForManagement", function (event) {
   eventTinjau("for_management", event);
 });
+window.Echo.channel("for_pengendali").listen("EventForPengendali", function (event) {
+  eventTinjau("for_pengendali", event);
+});
 window.Echo.channel("manajemen-pengendali").listen("EventManajemenPengendali", function (event) {
   eventTinjau("manajemen-pengendali", event);
 });
@@ -2160,7 +2163,7 @@ function eventTinjau(type, event) {
     }
   }
 
-  if (type == "for_management") {
+  if (type == "for_management" || type == "for_pengendali") {
     var _for_role2 = event["for"];
 
     if (role == _for_role2) {
@@ -2170,7 +2173,17 @@ function eventTinjau(type, event) {
       btn.classList.remove("d-none");
       dokumen.innerHTML = jumlah.value;
     }
-  }
+  } // if (type == "for_pengendali") {
+  //     let for_role = event.for;
+  //     if (role == for_role) {
+  //         id.value += "|" + event.id;
+  //         btn.setAttribute("wire:click", `refresh('${id.value}')`);
+  //         jumlah.value = plus + 1;
+  //         btn.classList.remove("d-none");
+  //         dokumen.innerHTML = jumlah.value;
+  //     }
+  // }
+
 }
 
 window.Echo.channel("delete_pds").listen("EventDeleteDokumen", function (event) {

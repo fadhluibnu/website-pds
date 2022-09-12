@@ -41,6 +41,9 @@ window.Echo.channel("for_pihak_terkait").listen(
 window.Echo.channel("for_management").listen("ForManagement", (event) => {
     eventTinjau("for_management", event);
 });
+window.Echo.channel("for_pengendali").listen("EventForPengendali", (event) => {
+    eventTinjau("for_pengendali", event);
+});
 window.Echo.channel("manajemen-pengendali").listen(
     "EventManajemenPengendali",
     (event) => {
@@ -89,7 +92,7 @@ function eventTinjau(type, event) {
             dokumen.innerHTML = jumlah.value;
         }
     }
-    if (type == "for_management") {
+    if (type == "for_management" || type == "for_pengendali") {
         let for_role = event.for;
         if (role == for_role) {
             id.value += "|" + event.id;
@@ -99,6 +102,16 @@ function eventTinjau(type, event) {
             dokumen.innerHTML = jumlah.value;
         }
     }
+    // if (type == "for_pengendali") {
+    //     let for_role = event.for;
+    //     if (role == for_role) {
+    //         id.value += "|" + event.id;
+    //         btn.setAttribute("wire:click", `refresh('${id.value}')`);
+    //         jumlah.value = plus + 1;
+    //         btn.classList.remove("d-none");
+    //         dokumen.innerHTML = jumlah.value;
+    //     }
+    // }
 }
 
 window.Echo.channel("delete_pds").listen("EventDeleteDokumen", (event) => {
