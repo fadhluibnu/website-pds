@@ -2173,18 +2173,45 @@ function eventTinjau(type, event) {
       btn.classList.remove("d-none");
       dokumen.innerHTML = jumlah.value;
     }
-  } // if (type == "for_pengendali") {
-  //     let for_role = event.for;
-  //     if (role == for_role) {
-  //         id.value += "|" + event.id;
-  //         btn.setAttribute("wire:click", `refresh('${id.value}')`);
-  //         jumlah.value = plus + 1;
-  //         btn.classList.remove("d-none");
-  //         dokumen.innerHTML = jumlah.value;
-  //     }
-  // }
+  }
+} // event status dokumen
 
+
+window.Echo.channel("event_status").listen("EventStatus", function (event) {
+  var ditinjau = document.getElementById(event.id + "ditinjau");
+  var detail = document.getElementById(event.id + "detail");
+  var edit = document.getElementById(event.id + "edit");
+  var hapus = document.getElementById(event.id + "hapus");
+  var perbaiki = document.getElementById(event.id + "perbaiki");
+
+  if (event.status == "selesai") {
+    console.log("oke");
+    ditinjau.innerHTML = "Selesai";
+    ditinjau.classList.remove("bg-primary-status");
+    ditinjau.classList.add("bg-success-status");
+    statusSelesai(edit);
+    statusSelesai(hapus);
+  } else if (event.status == "dikembalikan") {
+    ditinjau.innerHTML = "Dikembalikan";
+    statusDikembalikan(detail);
+    statusDikembalikan(edit);
+    statusDikembalikan(hapus);
+    perbaiki.classList.remove("d-none");
+    ditinjau.classList.remove("bg-primary-status");
+    ditinjau.classList.add("bg-danger-status");
+  }
+});
+
+function statusSelesai(param) {
+  param.classList.add("disable");
+  param.removeAttribute("wire:click");
+  param.removeAttribute("onclick");
 }
+
+function statusDikembalikan(param) {
+  param.classList.add("d-none");
+} // event delete pds
+
 
 window.Echo.channel("delete_pds").listen("EventDeleteDokumen", function (event) {
   console.log(event.id);

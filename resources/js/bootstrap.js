@@ -102,18 +102,44 @@ function eventTinjau(type, event) {
             dokumen.innerHTML = jumlah.value;
         }
     }
-    // if (type == "for_pengendali") {
-    //     let for_role = event.for;
-    //     if (role == for_role) {
-    //         id.value += "|" + event.id;
-    //         btn.setAttribute("wire:click", `refresh('${id.value}')`);
-    //         jumlah.value = plus + 1;
-    //         btn.classList.remove("d-none");
-    //         dokumen.innerHTML = jumlah.value;
-    //     }
-    // }
 }
 
+// event status dokumen
+window.Echo.channel("event_status").listen("EventStatus", (event) => {
+    let ditinjau = document.getElementById(event.id + "ditinjau");
+    let detail = document.getElementById(event.id + "detail");
+    let edit = document.getElementById(event.id + "edit");
+    let hapus = document.getElementById(event.id + "hapus");
+    let perbaiki = document.getElementById(event.id + "perbaiki");
+    if (event.status == "selesai") {
+        console.log("oke");
+        ditinjau.innerHTML = "Selesai";
+        ditinjau.classList.remove("bg-primary-status");
+        ditinjau.classList.add("bg-success-status");
+        statusSelesai(edit);
+        statusSelesai(hapus);
+    } else if (event.status == "dikembalikan") {
+        ditinjau.innerHTML = "Dikembalikan";
+        statusDikembalikan(detail);
+        statusDikembalikan(edit);
+        statusDikembalikan(hapus);
+        perbaiki.classList.remove("d-none");
+        ditinjau.classList.remove("bg-primary-status");
+        ditinjau.classList.add("bg-danger-status");
+    }
+});
+
+function statusSelesai(param) {
+    param.classList.add("disable");
+    param.removeAttribute("wire:click");
+    param.removeAttribute("onclick");
+}
+
+function statusDikembalikan(param) {
+    param.classList.add("d-none");
+}
+
+// event delete pds
 window.Echo.channel("delete_pds").listen("EventDeleteDokumen", (event) => {
     console.log(event.id);
     let dihapus = document.getElementById(event.id + "hapus");

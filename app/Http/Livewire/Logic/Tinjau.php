@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Logic;
 use App\Events\EventForPengendali;
 use App\Events\EventForPihakTerkait;
 use App\Events\EventManajemenPengendali;
+use App\Events\EventStatus;
 use App\Events\ForManagement;
 use App\Models\Dokumen;
 use App\Models\History;
@@ -61,6 +62,7 @@ class Tinjau extends Component
                 'status' => 3,
                 'pengendali' => $this->pic,
             ]);
+            event(new EventStatus($this->idDock, "selesai"));
             if ($latst) {
                 $this->operation = true;
             }
@@ -72,6 +74,7 @@ class Tinjau extends Component
                     'status' => 3,
                     'management' => $this->pic,
                 ]);
+                event(new EventStatus($this->idDock, "selesai"));
             } elseif ($this->management == 'null') {
                 $management = $dokumen->update([
                     'management' => $this->pic,

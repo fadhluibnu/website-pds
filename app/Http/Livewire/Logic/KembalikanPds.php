@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Logic;
 
+use App\Events\EventStatus;
 use App\Models\Dokumen;
 use App\Models\History;
 use App\Models\Pic;
@@ -39,6 +40,7 @@ class KembalikanPds extends Component
             'pesan' => $this->komentar
         ]);
         if ($dokumen || $pic || $pihak_terkait || $history) {
+            event(new EventStatus($id, "dikembalikan"));
             $this->active = 'off';
             $param = [
                 'for' => 'kembalikan',
@@ -75,7 +77,7 @@ class KembalikanPds extends Component
     {
         // dd($this->attrKembalikan);
         $data = Dokumen::where('id', $this->attrKembalikan['id'])->get();
-        $http = Http::get(env("URL_API") . 'user-id/' . $data[0]->pemohon);
+        $http = Http::get(env("URL_API_GET_USER") . $data[0]->pemohon);
         return view('livewire.logic.kembalikan-pds', [
             'data' => $data,
             'api' => $http
