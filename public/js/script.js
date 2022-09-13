@@ -24,11 +24,13 @@ function modalTarget(param, id) {
     }
 }
 
-function getNameFile(input, place) {
+function getNameFile(form, input, place) {
     let inp = document.getElementById(input).value;
     let display = document.getElementById(place);
+    let formupload = document.getElementById(form);
     let name = inp.substr(inp.lastIndexOf("\\") + 1);
     display.value = name;
+    formupload.setAttribute("wire:submit.prevent", `storepds("${name}")`);
 }
 
 function checkBox(param) {

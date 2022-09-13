@@ -201,9 +201,9 @@ class Tinjau extends Component
         }
     }
 
-    public function export($path)
+    public function export($path, $judul)
     {
-        return Storage::disk('public')->download($path);
+        return Storage::disk('public')->download($path, $judul);
     }
     public function closeX($default)
     {

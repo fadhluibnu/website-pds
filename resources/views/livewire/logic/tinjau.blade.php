@@ -17,7 +17,7 @@
                         <p>{{ $api[0]['role'] }}</p>
                     </div>
                 </div>
-                <button style="width: 80%;" wire:click='export("{{ $data[0]->file }}")'
+                <button style="width: 80%;" wire:click='export("{{ $data[0]->file }}", "{{ $data[0]->judul }}")'
                     class="btn d-flex border p-3 mt-3 box-radius-10 dokumen align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <svg width="27" height="26" viewBox="0 0 27 26" fill="none"

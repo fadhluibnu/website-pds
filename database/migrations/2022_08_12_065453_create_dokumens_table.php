@@ -21,6 +21,7 @@ class CreateDokumensTable extends Migration
             $table->foreignId('jenispermohonan');
             $table->text('deskripsi')->nullable();
             $table->string('file');
+            $table->string('file_name')->nullable();
             $table->foreignId('status');
             $table->string('pemohon');
             $table->string('management')->nullable();

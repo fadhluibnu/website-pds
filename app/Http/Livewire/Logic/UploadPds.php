@@ -27,6 +27,7 @@ class UploadPds extends Component
     public $jenispermohonan;
     public $deskripsi;
     public $file;
+    // public $file_name;
     public $pemohon;
     public $status = 1;
     public $management;
@@ -50,7 +51,7 @@ class UploadPds extends Component
         'jenisdokumen' => 'required',
         'jenispermohonan' => 'required',
         'deskripsi' => 'required',
-        'file' => 'required',
+        'file' => 'required|mimes:docx',
         'status' => 'required',
         'pemohon' => 'required',
     ];
@@ -88,7 +89,7 @@ class UploadPds extends Component
                 ];
             }
             $validatedData = $this->validate();
-
+            // dd(basename($validatedData['file']));
             $validatedData['file'] = $this->file->store('dokumen-pds', 'public');
 
             $store = Dokumen::create($validatedData);

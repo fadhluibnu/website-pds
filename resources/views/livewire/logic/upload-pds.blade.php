@@ -8,7 +8,7 @@
             <i class="bi bi-x-lg" style="cursor: pointer;" wire:click='closeX()'></i>
         </div>
         <div class="box-modal-content p-3 overflow-auto">
-            <form wire:submit.prevent="storepds" enctype="multipart/form-data">
+            <form id="formupload" method="POST" wire:submit.prevent="storepds" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" wire:model='pemohon'>
                 <input type="hidden" wire:model='status'>
@@ -93,7 +93,8 @@
                                     Manager UREL</label>
                                 <input type="checkbox" wire:model.defer="managerdeqa" class="d-none btn-check-custom"
                                     id="manager-deqa" value="Lab Manager DEQA">
-                                <label for="manager-deqa" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
+                                <label for="manager-deqa" class="btn-checkbox"><i
+                                        class="bi bi-check-circle-fill"></i>
                                     Manager DEQA</label>
                                 {{-- <input type="checkbox" wire:model.defer="osmtth" class="d-none btn-check-custom"
                                     id="osm-tth" value="2">
@@ -109,16 +110,21 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="fileUpload">Lampirkan Dokumen</label>
-                            <div class="box-file position-relative border box-radius-10 overflow-hidden"
+                            <div class="box-file position-relative border box-radius-10 overflow-hidden @error('file') is-invalid @enderror"
                                 style="width:100%;">
                                 <input type="file" id="fileUpload" class="bg-light position-absolute"
-                                    style="width:100%;padding:86px;opacity:0;" wire:model='file'
-                                    onchange="getNameFile('fileUpload', 'nameFile')">
+                                    style="width:100%;padding:86px;opacity:0;" wire:model.defer='file'
+                                    onchange="getNameFile('formupload', 'fileUpload', 'displayname')">
                                 <div class="display d-flex" style="width: 100%;height:200px">
-                                    <input type="text" id="nameFile" class="border-0 form-control m-auto"
-                                        style="height:35px;text-align: center;">
+                                    <input name="file_name" type="text" id="displayname"
+                                        class="border-0 form-control m-auto" style="height:35px;text-align: center;">
                                 </div>
                             </div>
+                            @error('file')
+                                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                 </div>
