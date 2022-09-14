@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Logic;
 
+use App\Events\EventForPic;
 use App\Models\Dokumen;
 use App\Models\History;
+use App\Models\Pic;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -42,6 +44,12 @@ class Perbaiki extends Component
                     'for' => null,
                     'session' => 'perbaiki'
                 ];
+                $pic = Pic::where('dokumen_id', $this->idDokumen)->get();
+                $event = [];
+                foreach ($pic as $item) {
+                    $event[] = $item->role_id;
+                }
+                event(new EventForPic($pic, $this->idDokumen));
                 $this->emit('closeModal', $param);
             }
         }
