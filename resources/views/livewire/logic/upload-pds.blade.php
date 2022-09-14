@@ -113,7 +113,7 @@
                             <div class="box-file position-relative border box-radius-10 overflow-hidden @error('file') is-invalid @enderror"
                                 style="width:100%;">
                                 <input type="file" id="fileUpload" class="bg-light position-absolute"
-                                    style="width:100%;padding:86px;opacity:0;" wire:model.defer='file'
+                                    style="width:100%;padding:86px;opacity:0;" wire:model='file'
                                     onchange="getNameFile('formupload', 'fileUpload', 'displayname')">
                                 <div class="display d-flex" style="width: 100%;height:200px">
                                     <input name="file_name" type="text" id="displayname"

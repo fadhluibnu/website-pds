@@ -30,8 +30,11 @@ class KembalikanPds extends Component
             'pihak_terkait' => null,
             'status' => false
         ]);
+        $history_lama = History::where('dokumen_id', $id)->where('type', 'catatan_now')->update([
+            'type' => 'catatan'
+        ]);
         $history = History::create([
-            'type' => 'catatan',
+            'type' => 'catatan_now',
             'dokumen_id' => $id,
             'user_id' => $user['id'],
             'user_name' => $user['name'],
@@ -39,7 +42,7 @@ class KembalikanPds extends Component
             'judul' => 'PDS Dikembalikan',
             'pesan' => $this->komentar
         ]);
-        if ($dokumen || $pic || $pihak_terkait || $history) {
+        if ($dokumen || $pic || $pihak_terkait || $history || $history_lama) {
             event(new EventStatus($id, "dikembalikan"));
             $this->active = 'off';
             $param = [

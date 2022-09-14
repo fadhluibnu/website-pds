@@ -55,7 +55,7 @@
                     <div class="border border-top-0 p-2 rounded-bottom text-color">
                         @for ($i = $item->histories->count() - 1; $i >= 0; $i--)
                             <div
-                                class="box-history border @if ($item->histories[$i]->type == 'catatan') border-danger @endif rounded p-2 mb-2">
+                                class="box-history border @if ($item->histories[$i]->type == 'catatan' || $item->histories[$i]->type == 'catatan_now') border-danger @endif rounded p-2 mb-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h3 class="fw-semibold m-0" style="font-size: 14px;">
                                         {{ $item->histories[$i]->judul }}</h3>

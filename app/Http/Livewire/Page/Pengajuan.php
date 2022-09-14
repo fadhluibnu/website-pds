@@ -65,6 +65,9 @@ class Pengajuan extends Component
         if ($attr['session'] == 'edit') {
             session()->flash('action', "PDS Berhasil Di Edit");
         }
+        if ($attr['session'] == 'perbaiki') {
+            session()->flash('action', "PDS Berhasil Di Perbaiki");
+        }
         $this->modal['for'] = $attr['for'];
         $this->modal['message'] = 'null';
     }

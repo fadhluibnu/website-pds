@@ -152,7 +152,7 @@
                                         <div id="{{ $item->id . 'perbaiki' }}"
                                             class="d-none bg-danger w-100 p-2 py-0 text-center fw-medium text-white rounded-pill"
                                             style="cursor: pointer;"
-                                            onclick="modalTarget('open', 'modal-perbaiki-targeted')">
+                                            wire:click='openModal("perbaiki", {{ $item->id }})'>
                                             Perbaiki
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@
                                     <div id="{{ $item->id . 'perbaiki' }}" class="d-flex">
                                         <div class="bg-danger w-100 p-2 py-0 text-center fw-medium text-white rounded-pill"
                                             style="cursor: pointer;"
-                                            onclick="modalTarget('open', 'modal-perbaiki-targeted')">
+                                            wire:click='openModal("perbaiki", {{ $item->id }})'>
                                             Perbaiki
                                         </div>
                                     </div>
@@ -210,59 +210,6 @@
                     @endforeach
 
                 @endif
-                {{-- <tr class="pengajuan">
-                    <td class="py-2 px-3 pe-0">2</td>
-                    <td class="py-2">123457ADB</td>
-                    <td class="py-2">Lorem ipsum dolor sit amet</td>
-                    <td class="py-2">
-                        <div class="bg-danger-status text-center p-2 rounded-pill">
-                            Dikembalikan
-                        </div>
-                    </td>
-                    <td class="py-2">17/01/2022</td>
-                    <td class="py-2 px-3 ps-0">
-                        <div class="d-flex">
-                            <div class="bg-danger w-100 p-2 text-center fw-medium text-white rounded-pill"
-                                style="cursor: pointer;" onclick="modalTarget('open', 'modal-perbaiki-targeted')">
-                                Perbaiki
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="pengajuan">
-                    <td class="py-2 px-3 pe-0">3</td>
-                    <td class="py-2">123457ADB</td>
-                    <td class="py-2">Lorem ipsum dolor sit amet</td>
-                    <td class="py-2">
-                        <div class="bg-success-status text-center p-2 rounded-pill">
-                            Selesai
-                        </div>
-                    </td>
-                    <td class="py-2">17/01/2022</td>
-                    <td class="py-2 px-3 ps-0">
-                        <div class="d-flex">
-                            <div class="box-icon rounded-circle bg-primary"><i class="bi bi-folder-fill"></i>
-                                <div class="my-tooltip d-none">
-                                    <div class="segitiga"></div>
-                                    <span>Detail & History</span>
-                                </div>
-                            </div>
-                            <div class="box-icon disable rounded-circle bg-warning ms-1"><i
-                                    class="bi bi-pen-fill"></i>
-                                <div class="my-tooltip d-none">
-                                    <div class="segitiga"></div>
-                                    <span>Edit</span>
-                                </div>
-                            </div>
-                            <div class="box-icon rounded-circle bg-danger ms-1"><i class="bi bi-trash-fill"></i>
-                                <div class="my-tooltip d-none">
-                                    <div class="segitiga"></div>
-                                    <span>Delete</span>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr> --}}
             </tbody>
         </table>
     </div>
@@ -274,6 +221,9 @@
     @endif
     @if ($modal['for'] == 'edit')
         <livewire:logic.edit-pds :idDokumen="$modal['message']"></livewire:logic.edit-pds>
+    @endif
+    @if ($modal['for'] == 'perbaiki')
+        <livewire:logic.perbaiki :idDokumen="$modal['message']"></livewire:logic.perbaiki>
     @endif
     @if ($modal['for'] == 'delete')
         <div class="position-absolute modal-custom modal-custom-perbaiki {{ $modal['delete'] }} d-flex"
@@ -319,58 +269,5 @@
                 </div>
             </div>
         </div>
-    @endif
-    @if ($modal['for'] == 'perbaiki')
-        {
-        <div class="position-absolute modal-custom modal-custom-perbaiki active d-flex" id="modal-perbaiki-targeted"
-            style="z-index: 10000;">
-            <div class="close-modal position-absolute " onclick="modalTarget('close','modal-perbaiki-targeted')">
-            </div>
-            <div class="modal-content">
-                <div class="header-modal border-bottom d-flex align-items-center justify-content-between">
-                    <h1>Perbaiki PDS : nama</h1>
-                    <i class="bi bi-x-lg" style="cursor: pointer;"
-                        onclick="modalTarget('close', 'modal-perbaiki-targeted')"></i>
-                </div>
-                <div class="box-modal-content p-3 overflow-auto">
-                    <div
-                        class="catatan-perbaikan border border-danger p-3 box-radius-10 position-relative mb-3 border-opacity-50">
-                        <h1 class="m-0 fs-6 position-absolute fw-medium text-danger px-1"
-                            style="top: -12px;background:white;">
-                            Catatan Perbaikan
-                        </h1>
-                    </div>
-                    <form action="">
-                        <div class="mb-3">
-                            <label class="form-label">Lampirkan Dokumen</label>
-                            <div class="border p-3 box-radius-10 dragdrop d-flex " style="height: 245px;">
-                                <div class="d-flex flex-column align-items-center m-auto">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M22 15.3335V19.7779C22 20.3673 21.7659 20.9325 21.3491 21.3493C20.9324 21.766 20.3671 22.0002 19.7778 22.0002H4.22222C3.63285 22.0002 3.06762 21.766 2.65087 21.3493C2.23413 20.9325 2 20.3673 2 19.7779V15.3335"
-                                            stroke="#4E5764" stroke-width="2.5" stroke-linecap="round"
-                                            stroke-linejoin="round" />
-                                        <path d="M17.5554 7.55556L11.9999 2L6.44434 7.55556" stroke="#4E5764"
-                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M12 2V15.3333" stroke="#4E5764" stroke-width="2.5"
-                                            stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                    <span>Seret File Disini</span>
-                                    <span>atau</span>
-                                    <label for="file-upload-browse" class="text-primary"
-                                        style="cursor:pointer;">Pilih
-                                        File</label>
-                                    <input type="file" id="file-upload-browse" class="d-none">
-                                </div>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary rounded-pill"
-                            style="width: 100%; padding:14px 0px;">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        }
     @endif
 </div>
