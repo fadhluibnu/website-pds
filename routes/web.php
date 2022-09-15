@@ -27,7 +27,7 @@ Route::middleware(['HasSession'])->group(function () {
     Route::get('/pengaturan', Pengaturan::class)->name("pengaturan");
 });
 Route::get('/peninjauan', Peninjauan::class)->name("peninjauan")->middleware('peninjauan');
-Route::middleware(['pengendali_dokumen'])->group(function () {
+Route::middleware(['peninjauan'])->group(function () {
     Route::get('/pengguna', Pengguna::class)->name("pengguna");
     Route::get('/pengguna/detail-pengguna', DetailPengguna::class)->name("detail-pengguna");
 });

@@ -37,26 +37,30 @@
         </div>
     </form>
     <div class="pds-terbaru bg-white box-radius-10 pb-3 mt-3">
-        <div class="d-flex align-items-center p-3 @if (session()->has('action')) py-1 @endif">
+        <div class="d-flex align-items-center p-3 @if (session()->has('action')) py-2 @endif">
             <h1 class="title m-0 me-4">Need Follow Up</h1>
             @if (session()->has('action'))
                 <div class="alert alert-success alert-dismissible fade show m-0 me-auto" role="alert"
-                    style="width: 400px;">
-                    {{ session('action') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    style="width: 600px;padding:10px 10px !important;">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span>{{ session('action') }}</span>
+                        <button type="button" class="btn-close p-0" data-bs-dismiss="alert" aria-label="Close"
+                            style="position: unset !important"></button>
+                    </div>
                 </div>
             @endif
-            <input type="text" id='role_refresh' value="{{ session('auth')[0]['role'] }}">
+            <input type="hidden" id='role_refresh' value="{{ session('auth')[0]['role'] }}">
             <input type="hidden" id="jumlah" value="0">
             <input type="hidden" id="id_new_dokumen">
             {{-- {{ $update }} --}}
-            <div wire:click="refresh()" class="d-none btn btn-sm btn-primary p-2 px-3" id="refresh_btn">
+            <div wire:click="refresh()" class="d-none btn btn-sm btn-primary p-2 px-3 me-auto" id="refresh_btn">
                 {{-- wire:loading wire:target='refresh' --}}
                 <span wire:loading wire:target='refresh' class="spinner-border spinner-border-sm  me-1" role="status"
                     aria-hidden="true"></span>
                 Perbarui : <span id="new_dokumen"></span>
                 Dokumen Baru
             </div>
+
         </div>
         <!-- tabel -->
 

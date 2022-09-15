@@ -46,9 +46,12 @@
             <h1 class="title m-0 me-4">Semua Dokumen</h1>
             @if (session()->has('action'))
                 <div class="alert alert-success alert-dismissible fade show m-0 me-auto" role="alert"
-                    style="width: 400px;">
-                    {{ session('action') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    style="width: 600px;padding:10px 10px !important;">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span>{{ session('action') }}</span>
+                        <button type="button" class="btn-close p-0" data-bs-dismiss="alert" aria-label="Close"
+                            style="position: unset !important"></button>
+                    </div>
                 </div>
             @endif
             <button wire:click='openModal("upload", "active")' onclick="wireClick('spinerUpload', 'eyeUpload')"
