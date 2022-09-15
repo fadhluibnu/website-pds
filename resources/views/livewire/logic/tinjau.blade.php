@@ -49,14 +49,14 @@
             </div>
             <form wire:submit.prevent='tinjau_pds' class="mt-3" id="form-setujui" enctype="multipart/form-data">
                 @csrf
-                <input type="text" wire:model='idDock'>
-                <input type="text" wire:model='judul'>
-                <input type="text" wire:model='pengendali'>
-                <input type="text" wire:model='manager'>
-                <input type="text" wire:model='management'>
-                <input type="text" wire:model='role'>
-                <input type="text" wire:model='pic'>
-                <input type="text" wire:model='old_file'>
+                <input type="hidden" wire:model='idDock'>
+                <input type="hidden" wire:model='judul'>
+                <input type="hidden" wire:model='pengendali'>
+                <input type="hidden" wire:model='manager'>
+                <input type="hidden" wire:model='management'>
+                <input type="hidden" wire:model='role'>
+                <input type="hidden" wire:model='pic'>
+                <input type="hidden" wire:model='old_file'>
                 @if ($pengendali != 'as_pihak_terkait' &&
                     $manager != 'as_pihak_terkait' &&
                     $manager != 'null' &&
