@@ -533,6 +533,46 @@ body {
     height: 100px;
 }
 
+.body {
+    margin: 0;
+    padding: 0;
+}
+
+.profil {
+    height: 160px;
+    width: 160px;
+    position: relative;
+    border: 5px solid #ffff;
+    border-radius: 50%;
+    background: tomato;
+    overflow: hidden;
+}
+
+.my_type {
+    left: 34%;
+    position: absolute;
+    bottom: 0;
+    outline: none;
+    color: transparent;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px 10px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.my_type::-webkit-file-upload-button{
+    visibility: hidden;
+}
+
+.my_type::before{
+    content: '\F220';
+    font-family: 'Bootstrap-icons';
+    font-size: 30px;
+    color: white;
+
+}
+
 /* file upload */
 
 .upload-container {
