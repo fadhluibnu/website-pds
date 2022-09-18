@@ -19,6 +19,7 @@ class CreateHistoriesTable extends Migration
             $table->string('user_id');
             $table->string('user_name');
             $table->string('photo')->nullable();
+            $table->string('file')->nullable();
             $table->string('type')->nullable();
             $table->string('judul');
             $table->text('pesan');

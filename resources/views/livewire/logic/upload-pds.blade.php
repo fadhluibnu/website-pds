@@ -96,10 +96,10 @@
                                 <label for="manager-deqa" class="btn-checkbox"><i
                                         class="bi bi-check-circle-fill"></i>
                                     Manager DEQA</label>
-                                {{-- <input type="checkbox" wire:model.defer="osmtth" class="d-none btn-check-custom"
-                                    id="osm-tth" value="2">
+                                <input type="checkbox" wire:model.defer="smias" class="d-none btn-check-custom"
+                                    id="osm-tth" value="SM IAS">
                                 <label for="osm-tth" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                    OSM TTH</label> --}}
+                                    OSM TTH</label>
                             </div>
                         </div>
                     </div>

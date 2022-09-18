@@ -83,7 +83,7 @@ class Pengajuan extends Component
         $pt = PihakTerkait::where('dokumen_id', $id)->delete();
         if ($delete && $pic || $pt) {
             session()->flash('action', "PDS Berhasil Di Hapus");
-            event(new EventDeleteDokumen($nomor . $id));
+            // event(new EventDeleteDokumen($nomor . $id));
             $this->modal['delete'] = 'off';
             $this->modal['for'] = "null";
             $this->modal['message'] = "null";

@@ -25,7 +25,7 @@ class Peninjauan extends Component
         'id' => 'null',
         'pengendali' => 'null',
         'manager' => 'null',
-        'management' => 'null'
+        'manajemen' => 'null'
     ];
     public $kembalikan = [
         'for' => 'null',
@@ -57,13 +57,13 @@ class Peninjauan extends Component
         $this->modal['for'] = $for;
         $this->modal['message'] = $message;
     }
-    public function openTinjau($for, $id, $pengendali, $manager, $management)
+    public function openTinjau($for, $id, $pengendali, $manager, $manajemen)
     {
         $this->tinjau['for'] = $for;
         $this->tinjau['id'] = $id;
         $this->tinjau['pengendali'] = $pengendali;
         $this->tinjau['manager'] = $manager;
-        $this->tinjau['management'] = $management;
+        $this->tinjau['manajemen'] = $manajemen;
     }
     public function handlerTinjau($attr)
     {
@@ -113,138 +113,118 @@ class Peninjauan extends Component
         $badge = explode("|", $data);
         $this->badge = $badge;
     }
-    public function get_dokumen()
+    public function data_dokumen($value, $get_pemohon, $status)
+    {
+        $data = [
+            'id' => $value->id,
+            'identitas' => $value->id . 'ditinjau',
+            'nomor' => $value->nomor,
+            'judul' => $value->judul,
+            'status' => $status,
+            'pemohon' => $get_pemohon[0]['name'],
+            'photo' => $get_pemohon[0]['photo'],
+            'tgl' => $value->created_at,
+            'pengendali' => 'as_pic',
+            'manager' => 'as_pic',
+            'manajemen' => 'as_pic'
+        ];
+        return $data;
+    }
+    public function render()
     {
         $data = [];
-        $for_pt = [];
+        $dokumen = new Dokumen();
         if (Gate::forUser(session('auth')[0]['id'])->allows('picOrPihakTerkait')) {
-            $for_pic = Dokumen::where('status', 1)->whereHas('pics', function (Builder $query) {
-                $query->where('role_id', session('auth')[0]['role'])->where('status', false);
-            })->where('judul', 'like', '%' . $this->judul . '%')->get();
-            $for_pihak_terkait = Dokumen::where('status', 1)->whereHas('pihakTerkaits', function (Builder $query) {
-                $query->where('role_id', session('auth')[0]['role'])->where('status', false);
-            })->where('judul', 'like', '%' . $this->judul . '%')->get();
+            $pic_query = $dokumen->whereHas('pics', function (Builder $query) {
+                $query->where('role_id', session('auth')[0]['role']);
+            })->get();
 
-            if ($for_pic) {
-                foreach ($for_pic as $item) {
-                    $get_pemohon = Http::get(env("URL_API_GET_USER") . $item->pemohon);
-                    $data[] = [
-                        'id' => $item->id,
-                        'nomor' => $item->nomor,
-                        'judul' => $item->judul,
-                        'status' => $item->status,
-                        'pemohon' => $get_pemohon[0]['name'],
-                        'photo' => $get_pemohon[0]['photo'],
-                        'tgl' => $item->created_at,
-                        'pengendali' => 'as_pic',
-                        'manager' => 'as_pic',
-                        'management' => 'null'
-                    ];
-                }
-            }
-            if ($for_pihak_terkait) {
-                foreach ($for_pihak_terkait as $item) {
-                    foreach ($item->pics as $pt) {
-                        if ($pt->dokumen_id == $item->id && $pt->status == false) {
-                            $for_pt = [
-                                'dokumen_id' => $pt->dokumen_id
-                            ];
+            if ($pic_query) {
+                foreach ($pic_query as $value) {
+                    $get_pemohon = Http::get(env("URL_API_GET_USER") . $value->pemohon);
+                    $pics = collect($value->pics);
+                    foreach ($pics->diff('role_id')->all() as $pic) {
+                        if ($value->status != 2 && $pic->role_id == session('auth')[0]['role']) {
+                            if ($pic->status == false) {
+                                $data[] = $this->data_dokumen($value, $get_pemohon, 1);
+                            } elseif ($value->status == true) {
+                                $data[] = $this->data_dokumen($value, $get_pemohon, 3);
+                            }
+                        } elseif ($value->status == 2 && $pic->role_id == session('auth')[0]['role']) {
+                            $data[] = $this->data_dokumen($value, $get_pemohon, 2);
                         }
                     }
-                    if (count($for_pt) == 0) {
-                        $get_pemohon = Http::get(env("URL_API_GET_USER") . $item->pemohon);
-                        $data[] = [
-                            'id' => $item->id,
-                            'nomor' => $item->nomor,
-                            'judul' => $item->judul,
-                            'status' => $item->status,
-                            'pemohon' => $get_pemohon[0]['name'],
-                            'photo' => $get_pemohon[0]['photo'],
-                            'tgl' => $item->created_at,
-                            'pengendali' => 'as_pihak_terkait',
-                            'manager' => 'as_pihak_terkait',
-                            'management' => 'null'
-                        ];
+                }
+            }
+            $pihakterkait_query = $dokumen->whereHas('pihakTerkaits', function (Builder $query) {
+                $query->where('role_id', session('auth')[0]['role']);
+            })->get();
+
+            if ($pihakterkait_query) {
+                foreach ($pihakterkait_query as $value) {
+                    $get_pemohon = Http::get(env("URL_API_GET_USER") . $value->pemohon);
+                    $pihakterkaits = collect($value->pihakTerkaits);
+                    $pihakterkaits = $pihakterkaits->where('role_id', session('auth')[0]['role'])->first();
+                    if ($pihakterkaits->role_id == session('auth')[0]['role'] && $value->status != 2 && $value->pic_status == true) {
+                        if ($pihakterkaits->status == false) {
+                            $data[] = $this->data_dokumen($value, $get_pemohon, 1);
+                        } elseif ($pihakterkaits->role_id == session('auth')[0]['role'] && $pihakterkaits->status == true) {
+                            $data[] = $this->data_dokumen($value, $get_pemohon, 3);
+                        }
+                    } elseif ($pihakterkaits->role_id == session('auth')[0]['role'] && $value->status == 2 && $value->pic_status == false) {
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 2);
                     }
                 }
             }
         }
         if (Gate::forUser(session('auth')[0]['id'])->allows('management')) {
-            $data_management = [];
-            $for_management = Dokumen::where('status', 1)->WhereNull('management')->get();
-            foreach ($for_management as $item) {
-                foreach ($item->pihakTerkaits as $key) {
-                    if ($key->dokumen_id == $item->id  && $key->status == false) {
-                        $data_management[] = $item->id;
+            $management_query = $dokumen->where('pic_status', true)->where('pihakterkait_status', true)->get();
+            foreach ($management_query as $value) {
+                $get_pemohon = Http::get(env("URL_API_GET_USER") . $value->pemohon);
+                if ($value->status != 2 && $value->pic_status == true && $value->pihakterkait_status == true) {
+                    if ($value->management_status == true) {
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 3);
+                    } elseif ($value->management_status == false) {
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 1);
                     }
+                } elseif ($value->status == 2 && $value->pic_status == false && $value->pihakterkait_status == false) {
+                    $data[] = $this->data_dokumen($value, $get_pemohon, 2);
                 }
-                foreach ($item->pics as $key) {
-                    if ($key->dokumen_id == $item->id  && $key->status == false) {
-                        $data_management[] = $item->id;
-                    }
-                }
-            }
-            $filters = collect($for_management)->whereNotIn('id', $data_management)->all();
-            foreach ($filters as $item) {
-                $last = 'null';
-                if ($item->pengendali != null) {
-                    $last = 'last_view';
-                }
-                $get_pemohon = Http::get(env("URL_API_GET_USER") . $item->pemohon);
-                $data[] = [
-                    'id' => $item->id,
-                    'nomor' => $item->nomor,
-                    'judul' => $item->judul,
-                    'status' => $item->status,
-                    'pemohon' => $get_pemohon[0]['name'],
-                    'photo' => $get_pemohon[0]['photo'],
-                    'tgl' => $item->created_at,
-                    'pengendali' => 'null',
-                    'manager' => 'null',
-                    'management' => $last
-                ];
             }
         }
-        if (Gate::forUser(session('auth')[0]['id'])->allows('pengendaliDokumen')) {
-            $data_pengendali = [];
-            $for_pengendali = Dokumen::where('status', 1)->WhereNotNull('management')->where('pengendali', null)->get();
-            foreach ($for_pengendali as $item) {
-                foreach ($item->pihakTerkaits as $key) {
-                    if ($key->dokumen_id == $item->id  && $key->status == false) {
-                        $data_pengendali[] = $item->id;
-                    }
-                }
-                foreach ($item->pics as $key) {
-                    if ($key->dokumen_id == $item->id  && $key->status == false) {
-                        $data_pengendali[] = $item->id;
-                    }
-                }
-            }
-            $filters = collect($for_pengendali)->whereNotIn('id', $data_pengendali)->all();
-            foreach ($filters as $item) {
-                $get_pemohon = Http::get(env("URL_API_GET_USER") . $item->pemohon);
-                $data[] = [
-                    'id' => $item->id,
-                    'nomor' => $item->nomor,
-                    'judul' => $item->judul,
-                    'status' => $item->status,
-                    'pemohon' => $get_pemohon[0]['name'],
-                    'photo' => $get_pemohon[0]['photo'],
-                    'tgl' => $item->created_at,
-                    'pengendali' => 'not_pic_and_pihak_terkait',
-                    'manager' => 'null',
-                    'management' => 'null'
-                ];
-            }
-        }
-        return $this->datas = $data;
-    }
 
-    public function render()
-    {
-        $this->get_dokumen();
+        if (Gate::forUser(session('auth')[0]['id'])->allows('pengendaliDokumen')) {
+            $pengendali_query = $dokumen->get();
+            foreach ($pengendali_query as $value) {
+                $get_pemohon = Http::get(env("URL_API_GET_USER") . $value->pemohon);
+
+                $pics_query = collect($value->pics);
+                $pihakterkait_query = collect($value->pihakTerkaits);
+                $pic = $pics_query->where('role_id', session('auth')[0]['role'])->where('status', false)->all();
+                $pihakterkait = $pihakterkait_query->where('role_id', session('auth')[0]['role'])->where('status', false)->all();
+
+                if (!$pic && !$pihakterkait && $value->status != 2 && $value->pic_status == true && $value->pihakterkait_status == true && $value->management_status == true) {
+                    if ($value->pengendali_status == true) {
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 3);
+                    } elseif ($value->pengendali_status == false) {
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 1);
+                    }
+                } elseif (!$pic && !$pihakterkait && $value->status == 2 && $value->pic_status == false && $value->pihakterkait_status == false && $value->management_status == false) {
+                    $data[] = $this->data_dokumen($value, $get_pemohon, 2);
+                }
+            }
+        }
+
+        $collect = collect($data);
+        $data = $collect->sortBy([
+            ['status', 'asc'],
+            ['id', 'asc']
+        ]);
+
+        // dd($data->all());
+
         return view('livewire.page.peninjauan', [
-            'data' => $this->datas
+            'data' => $data->all()
         ])->extends("main")->section('content')->layoutData(['title' => $this->title]);
     }
 }

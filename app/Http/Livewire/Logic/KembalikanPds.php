@@ -20,7 +20,11 @@ class KembalikanPds extends Component
     {
         $user = session('auth')[0];
         $dokumen = Dokumen::where('id', $id)->update([
-            'status' => 2
+            'status' => 2,
+            'pic_status' => false,
+            'pihakterkait_status' => false,
+            'management_status' => false,
+            'management_status' => false
         ]);
         $pic = Pic::where('dokumen_id', $id)->update([
             'pic' => null,
@@ -43,7 +47,7 @@ class KembalikanPds extends Component
             'pesan' => $this->komentar
         ]);
         if ($dokumen || $pic || $pihak_terkait || $history || $history_lama) {
-            event(new EventStatus($id, "dikembalikan"));
+            // event(new EventStatus($id, "dikembalikan"));
             $this->active = 'off';
             $param = [
                 'for' => 'kembalikan',

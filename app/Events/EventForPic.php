@@ -15,6 +15,7 @@ class EventForPic implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $pic;
+    public $identitas;
     public $id;
 
     /**
@@ -23,9 +24,10 @@ class EventForPic implements ShouldBroadcast
      * @return void
      */
 
-    public function __construct($pic, $id)
+    public function __construct($pic, $identitas, $id)
     {
         $this->pic = $pic;
+        $this->identitas = $identitas;
         $this->id = $id;
     }
 

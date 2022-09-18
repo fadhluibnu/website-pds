@@ -15,6 +15,7 @@ class EventForPihakTerkait implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $pihak_terkait;
+    public $identitas;
     public $id;
     // public $badge;
 
@@ -23,9 +24,10 @@ class EventForPihakTerkait implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($pt, $id)
+    public function __construct($pt, $identitas, $id)
     {
         $this->pihak_terkait = $pt;
+        $this->identitas = $identitas;
         $this->id = $id;
         // $this->badge = $badge;
     }

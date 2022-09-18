@@ -38,7 +38,7 @@ class UploadPds extends Component
     public $manageriqa;
     public $managerurel;
     public $managerdeqa;
-    public $osmtth;
+    public $smias;
     public $alertPic;
 
     public $user_name;
@@ -75,7 +75,7 @@ class UploadPds extends Component
 
     public function storepds()
     {
-        if ($this->pengendalidokumen == null & $this->managerdeqa == null & $this->manageriqa == null & $this->managerurel == null & $this->osmtth == null) {
+        if ($this->pengendalidokumen == null & $this->managerdeqa == null & $this->manageriqa == null & $this->managerurel == null & $this->smias == null) {
             $this->alertPic = "<script>alert('Anda belum memilih Penanggung Jawab')</script>";
         } else {
             if (Gate::forUser($this->pemohon)->allows('management')) {
@@ -88,8 +88,10 @@ class UploadPds extends Component
                     'pengendali' => 'required'
                 ];
             }
+            // if($this->smira != null){
+            //     $this->
+            // }
             $validatedData = $this->validate();
-            // dd(basename($validatedData['file']));
             $validatedData['file'] = $this->file->store('dokumen-pds', 'public');
 
             $store = Dokumen::create($validatedData);
@@ -97,7 +99,6 @@ class UploadPds extends Component
             if ($store) {
                 if ($this->pengendalidokumen != null) {
                     $this->storePic($store['id'], "Document Controller 1");
-                    $this->storePic($store['id'], "Document Controller 2");
                 }
                 if ($this->managerdeqa != null) {
                     $this->storePic($store['id'], $this->managerdeqa);
@@ -108,18 +109,19 @@ class UploadPds extends Component
                 if ($this->managerurel != null) {
                     $this->storePic($store['id'], $this->managerurel);
                 }
-                // if ($this->osmtth != null) {
-                //     $this->storePic($store['id'], $this->osmtth);
-                // }
+                if ($this->smias != null) {
+                    $this->storePic($store['id'], $this->smias);
+                }
                 History::create([
                     'dokumen_id' => $store['id'],
                     'user_id' => $this->pemohon,
                     'user_name' => $this->user_name,
+                    'file' => $validatedData['file'],
                     'photo' => session('auth')[0]['photo'],
                     'judul' => 'PDS Berhasil Diupload',
                     'pesan' => 'Dokumen <strong>' . $this->judul . '</strong> telah berhasil diupload'
                 ]);
-                event(new EventForPic($this->event_pic, $store['id']));
+                // event(new EventForPic($this->event_pic, $store['id'] . 'ditinjau', $id));
                 $param = [
                     'for' => null,
                     'session' => 'upload'
@@ -156,6 +158,5 @@ class UploadPds extends Component
             'jenisdok' => $jenisdokumen,
             'jenisper' => $jenispermohonan,
         ]);
-        // 
     }
 }

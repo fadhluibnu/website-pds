@@ -49,7 +49,6 @@ class Perbaiki extends Component
                 foreach ($pic as $item) {
                     $event[] = $item->role_id;
                 }
-                event(new EventForPic($pic, $this->idDokumen));
                 $this->emit('closeModal', $param);
             }
         }

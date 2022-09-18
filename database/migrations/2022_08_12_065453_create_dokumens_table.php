@@ -24,6 +24,10 @@ class CreateDokumensTable extends Migration
             $table->string('file_name')->nullable();
             $table->foreignId('status');
             $table->string('pemohon');
+            $table->string('pic_status')->default(false);
+            $table->string('pihakterkait_status')->default(false);
+            $table->string('management_status')->default(false);
+            $table->string('pengendali_status')->default(false);
             $table->string('management')->nullable();
             $table->string('pengendali')->nullable();
             $table->timestamps();

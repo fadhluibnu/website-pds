@@ -85,7 +85,7 @@
                     @php
                         $loop = 0;
                     @endphp
-                    @for ($i = count($data) - 1; $i >= 0; $i--)
+                    @for ($i = 0; $i <= count($data) - 1; $i++)
                         @php
                             $loop += 1;
                         @endphp
@@ -96,20 +96,34 @@
                                 @if ($badge)
                                     @for ($x = 0; $x <= count($badge) - 1; $x++)
                                         @if ($badge[$x] == $data[$i]['id'])
-                                            <span id="{{ $data[$i]['nomor'] . $data[$i]['id'] . 'baru' }}"
+                                            <span id="{{ $data[$i]['identitas'] . 'baru' }}"
                                                 class="badge text-bg-primary">Baru</span>
                                         @endif
                                     @endfor
                                 @endif
-                                <span id="{{ $data[$i]['nomor'] . $data[$i]['id'] . 'hapus' }}"
+                                <span id="{{ $data[$i]['identitas'] . 'hapus' }}"
                                     class="d-none badge text-bg-danger">Dihapus</span>
                             </td>
                             <td class="py-2">
-                                <div id="{{ $data[$i]['nomor'] . $data[$i]['id'] . 'status' }}"
-                                    class="bg-primary-status
+                                @if ($data[$i]['status'] == 1)
+                                    <div id="{{ $data[$i]['identitas'] . 'status' }}"
+                                        class="bg-primary-status
                                     text-center p-2 rounded-pill">
-                                    Ditinjau
-                                </div>
+                                        Ditinjau
+                                    </div>
+                                @endif
+                                @if ($data[$i]['status'] == 2)
+                                    <div id="{{ $data[$i]['identitas'] . 'dikembalikan' }}"
+                                        class="bg-danger-status text-center p-2 rounded-pill">
+                                        Dikembalikan
+                                    </div>
+                                @endif
+                                @if ($data[$i]['status'] == 3)
+                                    <div id="{{ $data[$i]['identitas'] . 'selesai' }}"
+                                        class="bg-success-status text-center p-2 rounded-pill">
+                                        Selesai
+                                    </div>
+                                @endif
                             </td>
                             <td class="py-2">
                                 <div class="d-flex align-items-center">
@@ -122,30 +136,45 @@
                             <td class="py-2">{{ date('d/m/Y', strtotime($data[$i]['tgl'])) }}</td>
                             <td class="py-2 px-3 ps-0">
                                 <div class="d-flex">
-                                    <div class="{{ 'aksi' . $data[$i]['nomor'] . $data[$i]['id'] }} box-icon bg-primary rounded-circle"
+                                    <div class="{{ 'aksi' . $data[$i]['identitas'] }} box-icon bg-primary rounded-circle"
                                         wire:click='openModal("detail", {{ $data[$i]['id'] }})'
-                                        onclick="wireClick('spinerDetail{{ $data[$i]['id'] }}', 'folderDetail{{ $data[$i]['id'] }}')">
-                                        <span id="spinerDetail{{ $data[$i]['id'] }}"
+                                        onclick="wireClick('spinerDetail{{ $data[$i]['identitas'] }}', 'folderDetail{{ $data[$i]['identitas'] }}')">
+                                        <span id="spinerDetail{{ $data[$i]['identitas'] }}"
                                             class="spinner-border spinner-border-sm m-auto d-none" role="status"
                                             aria-hidden="true"></span>
-                                        <i id="folderDetail{{ $data[$i]['id'] }}" class="bi bi-folder-fill"></i>
+                                        <i id="folderDetail{{ $data[$i]['identitas'] }}"
+                                            class="bi bi-folder-fill"></i>
                                         <div class="my-tooltip d-none">
                                             <div class="segitiga"></div>
                                             <span>Detail & History</span>
                                         </div>
                                     </div>
-                                    <div class="{{ 'aksi' . $data[$i]['nomor'] . $data[$i]['id'] }} box-icon bg-success rounded-circle ms-2"
-                                        wire:click='openTinjau("tinjau", {{ $data[$i]['id'] }}, "{{ $data[$i]['pengendali'] }}", "{{ $data[$i]['manager'] }}", "{{ $data[$i]['management'] }}")'
-                                        onclick="wireClick('spinerTinjau{{ $data[$i]['id'] }}', 'eyeTinjau{{ $data[$i]['id'] }}')">
-                                        <span id="spinerTinjau{{ $data[$i]['id'] }}"
-                                            class="spinner-border spinner-border-sm m-auto d-none" role="status"
-                                            aria-hidden="true"></span>
-                                        <i id="eyeTinjau{{ $data[$i]['id'] }}" class="bi bi-eye-fill"></i>
-                                        <div class="my-tooltip d-none">
-                                            <div class="segitiga"></div>
-                                            <span>Tinjau</span>
+                                    @if ($data[$i]['status'] != 1)
+                                        <div
+                                            class="{{ 'aksi' . $data[$i]['identitas'] }} disable box-icon bg-success rounded-circle ms-2">
+                                            <span id="spinerTinjau{{ $data[$i]['id'] }}"
+                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                                aria-hidden="true"></span>
+                                            <i id="eyeTinjau{{ $data[$i]['id'] }}" class="bi bi-eye-fill"></i>
+                                            <div class="my-tooltip d-none">
+                                                <div class="segitiga"></div>
+                                                <span>Tinjau</span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @else
+                                        <div class="{{ 'aksi' . $data[$i]['identitas'] }} box-icon bg-success rounded-circle ms-2"
+                                            wire:click='openTinjau("tinjau", {{ $data[$i]['id'] }}, "{{ $data[$i]['pengendali'] }}", "{{ $data[$i]['manager'] }}", "{{ $data[$i]['manajemen'] }}")'
+                                            onclick="wireClick('spinerTinjau{{ $data[$i]['identitas'] }}', 'eyeTinjau{{ $data[$i]['identitas'] }}')">
+                                            <span id="spinerTinjau{{ $data[$i]['identitas'] }}"
+                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                                aria-hidden="true"></span>
+                                            <i id="eyeTinjau{{ $data[$i]['identitas'] }}" class="bi bi-eye-fill"></i>
+                                            <div class="my-tooltip d-none">
+                                                <div class="segitiga"></div>
+                                                <span>Tinjau</span>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                                 {{-- <script>
                                     let disable = document.querySelectorAll(`.aksi{{ $data[$i]['nomor'] . $data[$i]['id'] }}`);

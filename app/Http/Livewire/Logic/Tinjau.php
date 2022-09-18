@@ -29,9 +29,9 @@ class Tinjau extends Component
     public $judul;
     public $pengendali;
     public $manager;
-    public $management;
+    public $manajemen;
     public $role;
-    public $pic;
+    public $id_peninjau;
     public $file;
     public $komentar;
     public $old_file;
@@ -40,7 +40,7 @@ class Tinjau extends Component
     public $manageriqa;
     public $managerurel;
     public $managerdeqa;
-    public $osmtth;
+    public $smias;
     public $alertPic;
 
     protected $operation;
@@ -51,52 +51,50 @@ class Tinjau extends Component
         $id_user = session('auth')[0]['id'];
         $dokumen = Dokumen::where('id', $this->idDock);
         $event = $dokumen->get();
-        if ($this->pengendali == "as_pic" || $this->manager == "as_pic") {
-            $this->for_pic();
-            $this->event_for_pihakterkait($this->idDock);
-        } elseif ($this->pengendali == "as_pihak_terkait" || $this->manager == "as_pihak_terkait") {
-            $this->pihak_terkait();
-            $this->event_for_management($this->idDock, "SM IAS");
-        } elseif ($this->pengendali == "not_pic_and_pihak_terkait") {
-            $latst = $dokumen->update([
-                'status' => 3,
-                'pengendali' => $this->pic,
-            ]);
-            event(new EventStatus($this->idDock, "selesai"));
-            if ($latst) {
-                $this->operation = true;
+
+        if (Gate::forUser(session('auth')[0]['id'])->allows('picOrPihakTerkait')) {
+            if ($this->pengendali == "as_pic" || $this->manager == "as_pic") {
+                $this->for_pic();
+            } elseif ($this->pengendali == "as_pihak_terkait" || $this->manager == "as_pihak_terkait") {
+                $this->pihak_terkait();
+            } elseif ($this->pengendali == "not_pic_and_pihak_terkait") {
+                $latst = $dokumen->update([
+                    'status' => 3,
+                    'pengendali_status' => true,
+                    'pengendali' => $this->id_peninjau,
+                ]);
+                if ($latst) {
+                    $this->operation = true;
+                }
             }
         }
 
         if (Gate::forUser($id_user)->allows('management')) {
-            if ($this->management == 'last_view') {
-                $management = $dokumen->update([
-                    'status' => 3,
-                    'management' => $this->pic,
+            $check = $dokumen->first();
+            if ($check->management_status == false) {
+                $dokumen->update([
+                    'management_status' => true,
                 ]);
-                event(new EventStatus($this->idDock, "selesai"));
-            } elseif ($this->management == 'null') {
-                $management = $dokumen->update([
-                    'management' => $this->pic,
-                ]);
-                event(new EventForPengendali($this->idDock, "Document Controller 1"));
             }
-            if ($management) {
+            if ($check->management == null) {
+                $dokumen->update([
+                    'management' => $this->id_peninjau,
+                ]);
+            }
+            $this->operation = true;
+        }
+        $file_now = null;
+        if ($this->file != null && $this->operation) {
+            // $delete = Storage::disk('public')->delete($this->old_file);
+            // if ($delete) {
+            $file_now = $this->file->store('dokumen-pds', 'public');
+            $update = $dokumen->update([
+                'file' => $file_now
+            ]);
+            if ($update) {
                 $this->operation = true;
             }
-        }
-
-        if ($this->file != null && $this->operation) {
-            $delete = Storage::disk('public')->delete($this->old_file);
-            if ($delete) {
-                $file_now = $this->file->store('dokumen-pds', 'public');
-                $update = $dokumen->update([
-                    'file' => $file_now
-                ]);
-                if ($update) {
-                    $this->operation = true;
-                }
-            }
+            // }
         }
 
         if ($this->operation) {
@@ -104,6 +102,7 @@ class Tinjau extends Component
                 'dokumen_id' => $this->idDock,
                 'user_id' => $id_user,
                 'user_name' => session('auth')[0]['name'],
+                'file' => $file_now,
                 'photo' => session('auth')[0]['photo'],
                 'judul' => 'PDS Telah Disetujui',
                 'pesan' => $this->komentar
@@ -126,14 +125,13 @@ class Tinjau extends Component
 
     public function for_pic()
     {
-        if ($this->pengendalidokumen == null & $this->managerdeqa == null & $this->manageriqa == null & $this->managerurel == null & $this->osmtth == null) {
+        if ($this->pengendalidokumen == null & $this->managerdeqa == null & $this->manageriqa == null & $this->managerurel == null & $this->smias == null) {
             $this->alertPic = "<script>alert('Anda belum memilih Penanggung Jawab')</script>";
         } else {
             $this->Pic();
             if ($this->operation) {
                 if ($this->pengendalidokumen != null) {
                     $this->store_pihak_terkait($this->idDock, "Document Controller 1");
-                    $this->store_pihak_terkait($this->idDock, "Document Controller 2");
                 }
                 if ($this->managerdeqa != null) {
                     $this->store_pihak_terkait($this->idDock, $this->managerdeqa);
@@ -144,49 +142,25 @@ class Tinjau extends Component
                 if ($this->managerurel != null) {
                     $this->store_pihak_terkait($this->idDock, $this->managerurel);
                 }
+                if ($this->smias != null) {
+                    $this->store_pihak_terkait($this->idDock, $this->smias);
+                }
             }
         }
     }
-
-    public function event_for_pihakterkait($id)
-    {
-        $check = Pic::where('dokumen_id', $id)->where('status', false)->get();
-        if (count($check) == 0) {
-            $pt = DB::table('pihak_terkaits')
-                ->select('role_id')
-                ->where('dokumen_id', $id)
-                ->distinct()
-                ->get();
-
-            event(new EventForPihakTerkait($pt, $id));
-        }
-    }
-
-    public function event_for_management($id, $for)
-    {
-        $check = PihakTerkait::where('dokumen_id', $id)->where('status', false)->get();
-        if (count($check) == 0) {
-            event(new ForManagement($id, $for));
-        }
-    }
-
     public function Pic()
     {
         $pic = Pic::where('dokumen_id', $this->idDock)->where('role_id', $this->role)->update([
-            'pic' => $this->pic,
+            'pic' => $this->id_peninjau,
             'status' => true
         ]);
         if ($pic) {
-            $this->operation = true;
-        }
-    }
-    public function pihak_terkait()
-    {
-        $pt = PihakTerkait::where('dokumen_id', $this->idDock)->where('role_id', $this->role)->update([
-            'pihak_terkait' => $this->pic,
-            'status' => true
-        ]);
-        if ($pt) {
+            $check = Pic::where('dokumen_id', $this->idDock)->where('status', false)->get();
+            if (count($check) == 0) {
+                Dokumen::where('id', $this->idDock)->update([
+                    'pic_status' => true
+                ]);
+            }
             $this->operation = true;
         }
     }
@@ -200,10 +174,52 @@ class Tinjau extends Component
             $this->operation = true;
         }
     }
-
+    public function pihak_terkait()
+    {
+        $query = PihakTerkait::where('dokumen_id', $this->idDock);
+        $pt = $query->where('role_id', $this->role)->update([
+            'pihak_terkait' => $this->id_peninjau,
+            'status' => true
+        ]);
+        $check = PihakTerkait::where('dokumen_id', $this->idDock)->where('status', false)->get();
+        if ($pt) {
+            if (count($check) == 0) {
+                Dokumen::where('id', $this->idDock)->update([
+                    'pihakterkait_status' => true
+                ]);
+            }
+            $this->operation = true;
+        }
+    }
     public function export($path, $judul)
     {
         return Storage::disk('public')->download($path, $judul);
+    }
+    public function event_for_pihakterkait($id)
+    {
+        $check = Pic::where('dokumen_id', $id)->where('status', false)->get();
+        if (count($check) == 0) {
+            $dokumen = Dokumen::where('id', $id)->update([
+                'pic_status' => true
+            ]);
+            if ($dokumen) {
+                $pihakterkaits = DB::table('pihak_terkaits')
+                    ->select('role_id')
+                    ->where('dokumen_id', $id)
+                    ->distinct()
+                    ->get();
+
+                // event(new EventForPihakTerkait($pihakterkaits, $id . "ditinjau", $id));
+            }
+        }
+    }
+
+    public function event_for_management($id, $for)
+    {
+        $check = PihakTerkait::where('dokumen_id', $id)->where('status', false)->get();
+        if (count($check) == 0) {
+            event(new ForManagement($id, $for));
+        }
     }
     public function closeX($default)
     {
@@ -241,9 +257,9 @@ class Tinjau extends Component
         $this->idDock = $data[0]['id'];
         $this->pengendali = $this->attrTinjau['pengendali'];
         $this->manager = $this->attrTinjau['manager'];
-        $this->management = $this->attrTinjau['management'];
+        $this->manajemen = $this->attrTinjau['manajemen'];
         $this->role = session('auth')[0]['role'];
-        $this->pic = session('auth')[0]['id'];
+        $this->id_peninjau = session('auth')[0]['id'];
         $http = Http::get(env("URL_API_GET_USER") . $data[0]->pemohon);
         return view('livewire.logic.tinjau', [
             'data' => $data,

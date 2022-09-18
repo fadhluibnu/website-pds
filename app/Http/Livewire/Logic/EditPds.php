@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Logic;
 
+use App\Events\EventForPic;
 use App\Models\Dokumen;
 use App\Models\History;
 use App\Models\JenisDokumen;
@@ -39,6 +40,7 @@ class EditPds extends Component
     public $alertPic;
 
     public $user_name;
+    protected $event_pic = [];
 
     protected $rules =  [
         'nomor' => 'required',
@@ -108,39 +110,6 @@ class EditPds extends Component
                         $this->create_pic($this->idDokumen, $this->managerurel);
                     }
                 }
-                // $data = new Pic;
-                // $pic = Pic::where('dokumen_id', $this->idDokumen)->get();
-                // foreach ($pic as $item) {
-                //     if ($this->pengendalidokumen == null & $item->role_id == "Document Controller 1") {
-                //         $this->delete_pic($item->id);
-                //     } elseif ($this->pengendalidokumen != null & $item->role_id != "Document Controller 1") {
-                //         $this->create_pic($this->idDokumen, "Document Controller 1");
-                //     }
-
-                //     if ($this->pengendalidokumen == null & $item->role_id == "Document Controller 2") {
-                //         $this->delete_pic($item->id);
-                //     } elseif ($this->pengendalidokumen != null  & $item->role_id != "Document Controller 2") {
-                //         $this->create_pic($this->idDokumen, "Document Controller 2");
-                //     }
-
-                //     if ($this->manageriqa == null & $item->role_id == $this->manageriqa) {
-                //         $this->delete_pic($item->id);
-                //     } elseif ($this->manageriqa != null  & $item->role_id != $this->manageriqa) {
-                //         $this->create_pic($this->idDokumen, $this->manageriqa);
-                //     }
-
-                //     if ($this->managerurel == null & $item->role_id == $this->managerurel) {
-                //         $this->delete_pic($item->id);
-                //     } elseif ($this->managerurel != null & $item->role_id != $this->managerurel) {
-                //         $this->create_pic($this->idDokumen, $this->managerurel);
-                //     }
-
-                //     if ($this->managerdeqa == null & $item->role_id == $this->managerdeqa) {
-                //         $this->delete_pic($item->id);
-                //     } elseif ($this->managerdeqa != null & $item->role_id != $this->managerdeqa) {
-                //         $this->create_pic($this->idDokumen, $this->managerdeqa);
-                //     }
-                // }
                 History::create([
                     'dokumen_id' => $this->idDokumen,
                     'user_id' => $this->pemohon,
@@ -149,6 +118,7 @@ class EditPds extends Component
                     'judul' => 'PDS Berhasil Diedit',
                     'pesan' => 'Dokumen <strong>' . $this->judul . '</strong> telah mengalami perubahan pada ' . $has_change
                 ]);
+                event(new EventForPic($this->event_pic, $this->idDokumen . 'ditinjau', $id));
                 $param = [
                     'for' => null,
                     'session' => 'edit'
@@ -169,6 +139,7 @@ class EditPds extends Component
             'dokumen_id' => $dokumen_id,
             'role_id' => $roleid
         ]);
+        $this->event_pic[] = $roleid;
     }
 
     public function closeX()

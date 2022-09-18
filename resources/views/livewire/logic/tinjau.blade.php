@@ -49,18 +49,20 @@
             </div>
             <form wire:submit.prevent='tinjau_pds' class="mt-3" id="form-setujui" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" wire:model='idDock'>
-                <input type="hidden" wire:model='judul'>
-                <input type="hidden" wire:model='pengendali'>
-                <input type="hidden" wire:model='manager'>
-                <input type="hidden" wire:model='management'>
-                <input type="hidden" wire:model='role'>
-                <input type="hidden" wire:model='pic'>
-                <input type="hidden" wire:model='old_file'>
+                <input type="text" wire:model='idDock'>
+                <input type="text" wire:model='judul'>
+                <input type="text" wire:model='pengendali'>
+                <input type="text" wire:model='manager'>
+                <input type="text" wire:model='manajemen'>
+                <input type="text" wire:model='role'>
+                <input type="text" wire:model='id_peninjau'>
+                <input type="text" wire:model='old_file'>
                 @if ($pengendali != 'as_pihak_terkait' &&
                     $manager != 'as_pihak_terkait' &&
+                    $manajemen != 'as_pihak_terkait' &&
                     $manager != 'null' &&
-                    $pengendali != 'null')
+                    $pengendali != 'null' &&
+                    $manajemen != 'null')
                     <div class="mb-3">
                         <label for="pihakterkait" class="form-label">Pihak Terkait</label>
                         <div class="d-flex flex-wrap">
@@ -81,10 +83,10 @@
                                 id="manager-deqa" value="Lab Manager DEQA">
                             <label for="manager-deqa" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
                                 Manager DEQA</label>
-                            {{-- <input type="checkbox" wire:model.defer="osmtth" class="d-none btn-check-custom"
-                            id="osm-tth" value="2">
-                        <label for="osm-tth" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                            OSM TTH</label> --}}
+                            <input type="checkbox" wire:model.defer="smias" class="d-none btn-check-custom"
+                                id="osm-tth" value="SM IAS">
+                            <label for="osm-tth" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
+                                OSM TTH</label>
                         </div>
                     </div>
                 @endif
@@ -118,25 +120,22 @@
 
                     <button wire:loading.remove wire:target='komentar,file,tinjau_pds'
                         class="btn btn-primary my-btn-primary box-radius-10" type="submit">Submit</button>
-                    @if ($pengendali != 'as_pihak_terkait' &&
-                        $manager != 'as_pihak_terkait' &&
-                        $manager != 'null' &&
-                        $pengendali != 'null')
-                        <div wire:loading wire:target='kembalikan' disabled
-                            class="btn btn-primary my-btn-danger box-radius-10 ms-3 text-danger">
-                            <div class="d-flex m-auto align-items-center px-1 py-1">
-                                <div class="loader d-flex">
-                                    <div class="point-loader rounded-circle point-loader1 bg-danger"></div>
-                                    <div class="point-loader rounded-circle point-loader2 bg-danger"></div>
-                                    <div class="point-loader rounded-circle point-loader3 bg-danger"></div>
-                                </div>
+                    {{-- @if ($pengendali != 'as_pihak_terkait' && $manager != 'as_pihak_terkait' && $manajemen != 'as_pihak_terkait' && $manager != 'null' && $pengendali != 'null' && $manajemen != 'null') --}}
+                    <div wire:loading wire:target='kembalikan' disabled
+                        class="btn btn-primary my-btn-danger box-radius-10 ms-3 text-danger">
+                        <div class="d-flex m-auto align-items-center px-1 py-1">
+                            <div class="loader d-flex">
+                                <div class="point-loader rounded-circle point-loader1 bg-danger"></div>
+                                <div class="point-loader rounded-circle point-loader2 bg-danger"></div>
+                                <div class="point-loader rounded-circle point-loader3 bg-danger"></div>
                             </div>
                         </div>
-                        <div type="button" class="btn btn-danger my-btn-danger box-radius-10 ms-3"
-                            wire:loading.remove wire:target='kembalikan' {{-- {{ $data[$i]['id'] }}, "{{ $data[$i]['pengendali'] }}", "{{ $data[$i]['manager'] }}", "{{ $data[$i]['management'] }}" --}}
-                            wire:click='kembalikan({{ $idDock }}, "{{ $pengendali }}", "{{ $manager }}", "{{ $management }}")'>
-                            Kembalikan</div>
-                    @endif
+                    </div>
+                    <div type="button" class="btn btn-danger my-btn-danger box-radius-10 ms-3" wire:loading.remove
+                        wire:target='kembalikan' {{-- {{ $data[$i]['id'] }}, "{{ $data[$i]['pengendali'] }}", "{{ $data[$i]['manager'] }}", "{{ $data[$i]['management'] }}" --}}
+                        wire:click='kembalikan({{ $idDock }}, "{{ $pengendali }}", "{{ $manager }}", "{{ $manajemen }}")'>
+                        Kembalikan</div>
+                    {{-- @endif --}}
                 </div>
                 {!! $alertPic !!}
             </form>

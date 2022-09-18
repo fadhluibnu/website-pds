@@ -59,7 +59,7 @@ class AuthServiceProvider extends ServiceProvider
         });
         Gate::define('picOrPihakTerkait', function () {
             $data = session('auth')[0]['role'];
-            $for = ["Lab Manager IQA", "Lab Manager UREL", "Lab Manager DEQA", "Document Controller 1", "Document Controller 2"];
+            $for = ["Lab Manager IQA", "Lab Manager UREL", "Lab Manager DEQA", "Document Controller 1", "SM IAS"];
             for ($i = 0; $i <= count($for) - 1; $i++) {
                 if ($data == $for[$i]) {
                     return true;
