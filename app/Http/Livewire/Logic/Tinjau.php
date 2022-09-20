@@ -31,6 +31,7 @@ class Tinjau extends Component
     public $manager;
     public $manajemen;
     public $role;
+    public $location;
     public $id_peninjau;
     public $file;
     public $komentar;
@@ -53,9 +54,9 @@ class Tinjau extends Component
         $event = $dokumen->get();
 
         if (Gate::forUser(session('auth')[0]['id'])->allows('picOrPihakTerkait')) {
-            if ($this->pengendali == "as_pic" || $this->manager == "as_pic") {
+            if ($this->pengendali == "as_pic" || $this->manager == "as_pic" || $this->manajemen == "as_pic") {
                 $this->for_pic();
-            } elseif ($this->pengendali == "as_pihak_terkait" || $this->manager == "as_pihak_terkait") {
+            } elseif ($this->pengendali == "as_pihak_terkait" || $this->manager == "as_pihak_terkait" || $this->manajemen == "as_pihak_terkait") {
                 $this->pihak_terkait();
             } elseif ($this->pengendali == "not_pic_and_pihak_terkait") {
                 $latst = $dokumen->update([
@@ -66,27 +67,40 @@ class Tinjau extends Component
                 if ($latst) {
                     $this->operation = true;
                 }
+            } elseif ($this->manajemen == "manajemen") {
+                // dd("oke");
+                $check = $dokumen->first();
+                if ($check->management_status == false) {
+                    $dokumen->update([
+                        'management_status' => true,
+                    ]);
+                }
+                if ($check->management == null) {
+                    $dokumen->update([
+                        'management' => $this->id_peninjau,
+                    ]);
+                }
+                $this->operation = true;
             }
         }
 
-        if (Gate::forUser($id_user)->allows('management')) {
-            $check = $dokumen->first();
-            if ($check->management_status == false) {
-                $dokumen->update([
-                    'management_status' => true,
-                ]);
-            }
-            if ($check->management == null) {
-                $dokumen->update([
-                    'management' => $this->id_peninjau,
-                ]);
-            }
-            $this->operation = true;
-        }
+        // if ($this->manajemen == null) {
+        //     dd("oke");
+        //     $check = $dokumen->first();
+        //     if ($check->management_status == false) {
+        //         $dokumen->update([
+        //             'management_status' => true,
+        //         ]);
+        //     }
+        //     if ($check->management == null) {
+        //         $dokumen->update([
+        //             'management' => $this->id_peninjau,
+        //         ]);
+        //     }
+        //     $this->operation = true;
+        // }
         $file_now = null;
         if ($this->file != null && $this->operation) {
-            // $delete = Storage::disk('public')->delete($this->old_file);
-            // if ($delete) {
             $file_now = $this->file->store('dokumen-pds', 'public');
             $update = $dokumen->update([
                 'file' => $file_now
@@ -94,7 +108,6 @@ class Tinjau extends Component
             if ($update) {
                 $this->operation = true;
             }
-            // }
         }
 
         if ($this->operation) {
@@ -233,7 +246,7 @@ class Tinjau extends Component
             $this->emit('openKembalikan', $default);
         }
     }
-    public function kembalikan($id, $pengendali, $manager, $management)
+    public function kembalikan($id, $location, $pengendali, $manager, $management)
     {
         $this->active = 'off';
         $param = [
@@ -245,7 +258,8 @@ class Tinjau extends Component
             'id' => $id,
             'pengendali' => $pengendali,
             'manager' => $manager,
-            'management' => $management
+            'management' => $management,
+            'location' => $location
         ];
         $this->emit('openKembalikan', $arr);
     }
@@ -258,6 +272,7 @@ class Tinjau extends Component
         $this->pengendali = $this->attrTinjau['pengendali'];
         $this->manager = $this->attrTinjau['manager'];
         $this->manajemen = $this->attrTinjau['manajemen'];
+        $this->location = $this->attrTinjau['location'];
         $this->role = session('auth')[0]['role'];
         $this->id_peninjau = session('auth')[0]['id'];
         $http = Http::get(env("URL_API_GET_USER") . $data[0]->pemohon);

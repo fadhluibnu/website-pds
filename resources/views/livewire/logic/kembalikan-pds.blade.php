@@ -42,6 +42,7 @@
                         <i class="bi bi-download"></i>
                     </div>
                 </button>
+                <input type="text" value="{{ $attrKembalikan['location'] }}">
                 <div class="deskripsi-kebutuhan mt-2 mb-3 ">
                     <h1>Deskripsi Kebutuhan :</h1>
                     <p>{{ $data[0]->deskripsi }}</p>

@@ -32,7 +32,7 @@
         <div class="d-flex p-3 pb-1 justify-content-between">
             <h1 class="title">Need Follow Up</h1>
             <form action="">
-                <input class="form-control" type="search" placeholder="Search Document"
+                <input class="form-control" wire:model='q_tinjau' type="search" placeholder="Search Document"
                     aria-label="default input example">
             </form>
         </div>
@@ -41,113 +41,50 @@
                 <div class="row ps-3">
                     <div class="col-1">No</div>
                     <div class="col-2">Nomor Dokumen</div>
-                    <div class="col-3">Nama Dokumen</div>
+                    <div class="col-3">Judul Dokumen</div>
                     <div class="col-2">Pemohon</div>
                     <div class="col-2">Tgl Upload</div>
                     <div class="col-2">Aksi</div>
                 </div>
             </div>
             <div class="data-table px-4">
-                <div class="row ps-3 align-items-center border-bottom">
-                    <div class="col-1">1.</div>
-                    <div class="col-2">12345ABCD</div>
-                    <div class="col-3 nama-dokumen">Lorem Ipsum Dolor</div>
-                    <div class="col-2 d-flex align-items-center">
-                        <div class="prof-circle"></div>
-                        <span class="nama ms-2 m-0">Thomeas</span>
-                    </div>
-                    <div class="col-2">12/01/2022</div>
-                    <div class="col-2">
-                        <button wire:click='tinjau("hallo")' onclick="wireClick('spiner2', 'eye2')" type="button"
-                            class="btn btn-primary">
-                            <div class="d-flex">
-                                <div id="spiner2" class="d-none">
-                                    <span class="spinner-border spinner-border-sm  me-2" role="status"
-                                        aria-hidden="true"></span>
+                @if ($data->isEmpty())
+                    <tr>
+                        <td colspan="7">Tidak ada dokumen</td>
+                    </tr>
+                @else
+                    @foreach ($data as $item)
+                        <div class="row ps-3 align-items-center border-bottom">
+                            <div class="col-1">1.</div>
+                            <div class="col-2">{{ $item['nomor'] }}</div>
+                            <div class="col-3 nama-dokumen">{{ $item['judul'] }}</div>
+                            <div class="col-2 d-flex align-items-center">
+                                <div class="prof-circle"
+                                    @if ($item['photo'] == null) style="background-image: url({{ asset('assets/default.jpg') }})"
+                        {{-- @else --}} @endif>
                                 </div>
-                                <div id="eye2">
-                                    <i class="bi bi-eye-fill me-2"></i>
-                                </div> <span>Tinjau</span>
+                                <span class="nama ms-2 m-0">{{ $item['pemohon'] }}</span>
                             </div>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="row ps-3 align-items-center border-bottom">
-                    <div class="col-1">2.</div>
-                    <div class="col-2">12345ABCD</div>
-                    <div class="col-3 nama-dokumen">Lorem Ipsum Dolor</div>
-                    <div class="col-2 d-flex align-items-center">
-                        <div class="prof-circle"></div>
-                        <span class="nama ms-2 m-0">Thomeas</span>
-                    </div>
-                    <div class="col-2">12/01/2022</div>
-                    <div class="col-2">
-                        <button wire:click='tinjau("Hai")' onclick="wireClick('spiner3', 'eye3')" type="button"
-                            class="btn btn-primary">
-                            <div class="d-flex">
-                                <div class="d-none" id="spiner3">
-                                    <span class="spinner-border spinner-border-sm  me-2" role="status"
-                                        aria-hidden="true"></span>
-                                </div>
-                                <div id="eye3">
-                                    <i class="bi bi-eye-fill me-2"></i>
-                                </div> <span>Tinjau</span>
+                            <div class="col-2">{{ date('d/m/Y', strtotime($item['tgl'])) }}</div>
+                            <div class="col-2">
+                                <button
+                                    wire:click='openTinjau("tinjau", {{ $item['id'] }}, "{{ $item['pengendali'] }}", "{{ $item['manager'] }}", "{{ $item['manajemen'] }}", "{{ $item['location'] }}")'
+                                    onclick="wireClick('spiner{{ $item['id'] }}', 'eye{{ $item['id'] }}')"
+                                    type="button" class="btn btn-primary">
+                                    <div class="d-flex">
+                                        <div id="spiner{{ $item['id'] }}" class="d-none">
+                                            <span class="spinner-border spinner-border-sm  me-2" role="status"
+                                                aria-hidden="true"></span>
+                                        </div>
+                                        <div id="eye{{ $item['id'] }}">
+                                            <i class="bi bi-eye-fill me-2"></i>
+                                        </div> <span>Tinjau</span>
+                                    </div>
+                                </button>
                             </div>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="row ps-3 align-items-center border-bottom">
-                    <div class="col-1">3.</div>
-                    <div class="col-2">12345ABCD</div>
-                    <div class="col-3 nama-dokumen">Lorem Ipsum Dolor</div>
-                    <div class="col-2 d-flex align-items-center">
-                        <div class="prof-circle"></div>
-                        <span class="nama ms-2 m-0">Thomeas</span>
-                    </div>
-                    <div class="col-2">12/01/2022</div>
-                    <div class="col-2">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
-                            <i class="bi bi-eye-fill me-2"></i>Tinjau
-                        </button>
-                    </div>
-                </div>
-
-                <div class="row ps-3 align-items-center border-bottom">
-                    <div class="col-1">4.</div>
-                    <div class="col-2">12345ABCD</div>
-                    <div class="col-3 nama-dokumen">Lorem Ipsum Dolor</div>
-                    <div class="col-2 d-flex align-items-center">
-                        <div class="prof-circle"></div>
-                        <span class="nama ms-2 m-0">Thomeas</span>
-                    </div>
-                    <div class="col-2">12/01/2022</div>
-                    <div class="col-2">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
-                            <i class="bi bi-eye-fill me-2"></i>Tinjau
-                        </button>
-                    </div>
-                </div>
-
-                <div class="row ps-3 align-items-center border-bottom">
-                    <div class="col-1">5.</div>
-                    <div class="col-2">12345ABCD</div>
-                    <div class="col-3 nama-dokumen">Lorem Ipsum Dolor</div>
-                    <div class="col-2 d-flex align-items-center">
-                        <div class="prof-circle"></div>
-                        <span class="nama ms-2 m-0">Thomeas</span>
-                    </div>
-                    <div class="col-2">12/01/2022</div>
-                    <div class="col-2">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
-                            <i class="bi bi-eye-fill me-2"></i>Tinjau
-                        </button>
-                    </div>
-                </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>
@@ -164,8 +101,7 @@
                 type="button" class="btn btn-primary box-radius-10 mybutton">
                 <div class="d-flex">
                     <div id="spinerUpload" class="d-none">
-                        <span class="spinner-border spinner-border-sm  me-2" role="status"
-                            aria-hidden="true"></span>
+                        <span class="spinner-border spinner-border-sm  me-2" role="status" aria-hidden="true"></span>
                     </div>
                     <div id="eyeUpload">
                         <i class="bi bi-file-earmark-arrow-up-fill me-1"></i>
@@ -185,141 +121,263 @@
                             Status
                         </div>
                     </div>
-                    <div class="d-flex data active align-items-center box-radius-20 mt-2"
-                        onclick="tracking('LoremIpsumissimply')">
-                        <div class="nama px-2">
-                            Lorem Ipsum is simply
-                        </div>
-                        <div class="status">
-                            <div class="bg-primary-status text-center p-2 rounded-pill">
-                                Ditinjau
+                    @if ($tracking->isEmpty())
+                    @else
+                        @foreach ($tracking as $item)
+                            <div wire:click="showInMonitor({{ $item['id'] }})"
+                                class="d-flex data @if ($monitor['id'] == $item['id']) active @endif align-items-center box-radius-20 mt-2"
+                                style="cursor: pointer">
+                                <div class="nama px-2">
+                                    {{ $item['judul'] }}
+                                </div>
+
+                                @if ($item['status'] == 1)
+                                    <div class="status">
+                                        <div class="bg-primary-status text-center p-2 rounded-pill">
+                                            Ditinjau
+                                        </div>
+                                    </div>
+                                @elseif($item['status'] == 2)
+                                    <div class="status">
+                                        <div class="bg-danger-status text-center p-2 rounded-pill">
+                                            Dikembalikan
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
-                        </div>
-                    </div>
-                    <div class="d-flex data align-items-center box-radius-20 mt-2">
-                        <div class="nama px-2">
-                            Lorem is simply Ipsum
-                        </div>
-                        <div class="status">
-                            <div class="bg-danger-status text-center p-2 rounded-pill">
-                                Dikembalikan
-                            </div>
-                        </div>
-                    </div>
-                    {{-- <div style="height: 200px;"></div> --}}
+                        @endforeach
+                    @endif
                 </div>
             </div>
             <div class="col-7">
                 <div class="box-radius-20 p-3 monitor" id="monitor">
                     <!-- monitor 1 -->
                     <div id="LoremIpsumissimply">
-                        <div class="d-flex align-items-center">
-                            <h1>Pantau dokumen</h1>
-                            <h2 class="bg-secondary p-2 rounded ms-2"><i class="bi bi-chevron-right"></i>
-                                Pengajuan Alat Ukur</h2>
-                        </div>
-                        <div class="box-monitor d-flex mt-2 flex-column align-items-end">
-                            <div class="d-flex justify-content-between" style="width: 100%;">
-                                <div class="point start active p-3 px-4 rounded-pill">
-                                    Start
-                                </div>
-                                <div class="rell-start-to-pic d-flex flex-column justify-content-evenly">
-                                    <div class="red d-flex justify-content-between align-items-center ">
-                                        <div class="circle rounded-circle off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="circle rounded-circle off"></div>
+                        @if ($monitor != null)
+                            <div class="d-flex align-items-center">
+                                <h1>Pantau dokumen</h1>
+                                <h2 class="bg-secondary p-2 rounded ms-2"><i class="bi bi-chevron-right"></i>
+                                    {{ $monitor['judul'] }}</h2>
+                            </div>
+                            <div class="box-monitor d-flex mt-2 flex-column align-items-end">
+                                <div class="d-flex justify-content-between" style="width: 100%;">
+                                    <div class="point start active p-3 px-4 rounded-pill">
+                                        Start
                                     </div>
-                                    <div class="blue d-flex justify-content-between align-items-center ">
-                                        <div class="circle rounded-circle active"></div>
-                                        <div class="square rounded-pill active"></div>
-                                        <div class="square rounded-pill active"></div>
-                                        <div class="square rounded-pill active"></div>
-                                        <div class="square rounded-pill active"></div>
-                                        <div class="circle rounded-circle active"></div>
+                                    @php
+                                        $rellToPicRed = 'off';
+                                        $rellToPicBlue = 'active';
+                                        $pic = 'active on';
+                                    @endphp
+                                    @if ($monitor['pic_status'] == true)
+                                        @php
+                                            $pic = 'active';
+                                        @endphp
+                                    @endif
+                                    @if ($monitor['pengembali_dokumen'] == 'PIC')
+                                        @php
+                                            $rellToPicRed = 'active';
+                                            $rellToPicBlue = 'off';
+                                            $pic = 'bg-danger text-white';
+                                        @endphp
+                                    @endif
+                                    <div class="rell-start-to-pic d-flex flex-column justify-content-evenly">
+                                        <div class="red d-flex justify-content-between align-items-center ">
+                                            <div class="circle rounded-circle {{ $rellToPicRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPicRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPicRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPicRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPicRed }}"></div>
+                                            <div class="circle rounded-circle {{ $rellToPicRed }}"></div>
+                                        </div>
+                                        <div class="blue d-flex justify-content-between align-items-center ">
+                                            <div class="circle rounded-circle {{ $rellToPicBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPicBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPicBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPicBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPicBlue }}"></div>
+                                            <div class="circle rounded-circle {{ $rellToPicBlue }}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="point pic {{ $pic }} p-3 px-5 rounded-pill">
+                                        PIC
+                                    </div>
+                                    @php
+                                        $pihakterkait = 'off';
+                                        $rellToPihakTerkaitRed = 'off';
+                                        $rellToPihakTerkaitBlue = 'off';
+                                    @endphp
+                                    @if ($monitor['pic_status'] == true)
+                                        @php
+                                            $rellToPihakTerkaitRed = 'off';
+                                            $rellToPihakTerkaitBlue = 'active';
+                                            $pihakterkait = 'active';
+                                        @endphp
+                                    @endif
+                                    @if ($monitor['pic_status'] == false &&
+                                        $monitor['pengembali_dokumen'] != 'PIC' &&
+                                        $monitor['pengembali_dokumen'] != null)
+                                        @php
+                                            $rellToPihakTerkaitRed = 'off';
+                                            $rellToPihakTerkaitBlue = 'active';
+                                            $pihakterkait = 'active on';
+                                        @endphp
+                                    @endif
+                                    @if ($monitor['pengembali_dokumen'] == 'Pihak Terkait')
+                                        @php
+                                            $rellToPihakTerkaitRed = 'active';
+                                            $rellToPihakTerkaitBlue = 'off';
+                                            $pihakterkait = 'bg-danger text-white';
+                                        @endphp
+                                    @endif
+                                    <div class="rell-pic-to-pihakterkait d-flex flex-column justify-content-evenly">
+                                        <div class="red d-flex justify-content-between align-items-center ">
+                                            <div class="circle rounded-circle {{ $rellToPihakTerkaitRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPihakTerkaitRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPihakTerkaitRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPihakTerkaitRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPihakTerkaitRed }}"></div>
+                                            <div class="circle rounded-circle {{ $rellToPihakTerkaitRed }}"></div>
+                                        </div>
+                                        <div class="blue d-flex justify-content-between align-items-center ">
+                                            <div class="circle rounded-circle {{ $rellToPihakTerkaitBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPihakTerkaitBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPihakTerkaitBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPihakTerkaitBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPihakTerkaitBlue }}"></div>
+                                            <div class="circle rounded-circle {{ $rellToPihakTerkaitBlue }}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="point pihakterkait {{ $pihakterkait }} p-3 px-4 rounded-pill">
+                                        Pihak Terkait
                                     </div>
                                 </div>
-                                <div class="point pic active on p-3 px-5 rounded-pill">
-                                    PIC
-                                </div>
-                                <div class="rell-pic-to-pihakterkait d-flex flex-column justify-content-evenly">
-                                    <div class="red d-flex justify-content-between align-items-center ">
-                                        <div class="circle rounded-circle off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="circle rounded-circle off"></div>
+                                @php
+                                    $manajemen = 'off';
+                                    $rellToManagemenRed = 'off';
+                                    $rellToManagemenBlue = 'off';
+                                @endphp
+                                @if ($monitor['pihakterkait_status'] == true)
+                                    @php
+                                        $rellToManagemenRed = 'off';
+                                        $rellToManagemenBlue = 'active';
+                                        $manajemen = 'active';
+                                    @endphp
+                                @endif
+                                @if ($monitor['pihakterkait_status'] == false &&
+                                    $monitor['pengembali_dokumen'] != 'PIC' &&
+                                    $monitor['pengembali_dokumen'] != 'Pihak Terkait' &&
+                                    $monitor['pengembali_dokumen'] != null)
+                                    @php
+                                        $rellToManagemenRed = 'off';
+                                        $rellToManagemenBlue = 'active';
+                                        $manajemen = 'active on';
+                                    @endphp
+                                @endif
+                                @if ($monitor['pengembali_dokumen'] == 'Manajemen')
+                                    @php
+                                        $rellToManagemenRed = 'active';
+                                        $rellToManagemenBlue = 'off';
+                                        $manajemen = 'bg-danger text-white';
+                                    @endphp
+                                @endif
+                                <div class="rell-pihakterkait-to-manajemen d-flex justify-content-evenly mt-1 mb-1">
+                                    <div class="blue d-flex flex-column justify-content-between align-items-center ">
+                                        <div class="circle rounded-circle {{ $rellToManagemenBlue }}"></div>
+                                        <div class="square rounded-pill {{ $rellToManagemenBlue }}"></div>
+                                        <div class="circle rounded-circle {{ $rellToManagemenBlue }}"></div>
                                     </div>
-                                    <div class="blue d-flex justify-content-between align-items-center ">
-                                        <div class="circle rounded-circle off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="circle rounded-circle off"></div>
+                                    <div class="red d-flex flex-column justify-content-between align-items-center ">
+                                        <div class="circle rounded-circle {{ $rellToManagemenRed }}"></div>
+                                        <div class="square rounded-pill {{ $rellToManagemenRed }}"></div>
+                                        <div class="circle rounded-circle {{ $rellToManagemenRed }}"></div>
                                     </div>
                                 </div>
-                                <div class="point pihakterkait off p-3 px-4 rounded-pill">
-                                    Pihak Terkait
+                                <div class="d-flex justify-content-between" style="width: 100%;">
+                                    @php
+                                        $finish = 'off';
+                                        $rellToFinishRed = 'off';
+                                        $rellToFinishBlue = 'off';
+                                    @endphp
+                                    @if ($monitor['status'] == 3)
+                                        @php
+                                            $finish = 'active';
+                                            $rellToFinishRed = 'off';
+                                            $rellToFinishBlue = 'active';
+                                        @endphp
+                                    @endif
+                                    <div class="point finish {{ $finish }} p-3 px-4 rounded-pill">
+                                        Finish
+                                    </div>
+                                    <div
+                                        class="rell-pengendalidokumen-to-finish d-flex flex-column justify-content-evenly mt-1">
+                                        <div class="red d-flex justify-content-between align-items-center ">
+                                            <div class="circle rounded-circle {{ $rellToFinishRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToFinishRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToFinishRed }}"></div>
+                                            <div class="circle rounded-circle {{ $rellToFinishRed }}"></div>
+                                        </div>
+                                        <div class="blue d-flex justify-content-between align-items-center ">
+                                            <div class="circle rounded-circle {{ $rellToFinishBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToFinishBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToFinishBlue }}"></div>
+                                            <div class="circle rounded-circle {{ $rellToFinishBlue }}"></div>
+                                        </div>
+                                    </div>
+                                    @php
+                                        $pengendali = 'off';
+                                        $rellToPengendaliRed = 'off';
+                                        $rellToPengendaliBlue = 'off';
+                                    @endphp
+                                    @if ($monitor['management_status'] == true)
+                                        @php
+                                            $rellToPengendaliRed = 'off';
+                                            $rellToPengendaliBlue = 'active';
+                                            $pengendali = 'active';
+                                        @endphp
+                                    @endif
+                                    @if ($monitor['management_status'] == false &&
+                                        $monitor['pengembali_dokumen'] != 'PIC' &&
+                                        $monitor['pengembali_dokumen'] != 'Pihak Terkait' &&
+                                        $monitor['pengembali_dokumen'] != 'Manajemen' &&
+                                        $monitor['pengembali_dokumen'] != null)
+                                        @php
+                                            $rellToPengendaliRed = 'off';
+                                            $rellToPengendaliBlue = 'active';
+                                            $pengendali = 'active on';
+                                        @endphp
+                                    @endif
+                                    @if ($monitor['pengembali_dokumen'] == 'Pengendali')
+                                        @php
+                                            $rellToPengendaliRed = 'active';
+                                            $rellToPengendaliBlue = 'off';
+                                            $pengendali = 'bg-danger text-white';
+                                        @endphp
+                                    @endif
+                                    <div class="point pengendalidokumen {{ $pengendali }} p-3 px-4 rounded-pill">
+                                        Pengendali Dokumen
+                                    </div>
+                                    <div
+                                        class="rell-manajemen-to-pengendalidokumen d-flex flex-column justify-content-evenly mt-1">
+                                        <div class="red d-flex justify-content-between align-items-center ">
+                                            <div class="circle rounded-circle {{ $rellToPengendaliRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPengendaliRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPengendaliRed }}"></div>
+                                            <div class="circle rounded-circle {{ $rellToPengendaliRed }}"></div>
+                                        </div>
+                                        <div class="blue d-flex justify-content-between align-items-center ">
+                                            <div class="circle rounded-circle {{ $rellToPengendaliBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPengendaliBlue }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPengendaliBlue }}"></div>
+                                            <div class="circle rounded-circle {{ $rellToPengendaliBlue }}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="point manajemen {{ $manajemen }} p-3 px-4 rounded-pill">
+                                        Manajemen
+                                    </div>
                                 </div>
                             </div>
-                            <div class="rell-pihakterkait-to-manajemen d-flex justify-content-evenly mt-1 mb-1">
-                                <div class="red d-flex flex-column justify-content-between align-items-center ">
-                                    <div class="circle rounded-circle off"></div>
-                                    <div class="square rounded-pill off"></div>
-                                    <div class="circle rounded-circle off"></div>
-                                </div>
-                                <div class="blue d-flex flex-column justify-content-between align-items-center ">
-                                    <div class="circle rounded-circle off"></div>
-                                    <div class="square rounded-pill off"></div>
-                                    <div class="circle rounded-circle off"></div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between" style="width: 100%;">
-                                <div class="point finish off p-3 px-4 rounded-pill">
-                                    Finish
-                                </div>
-                                <div
-                                    class="rell-pengendalidokumen-to-finish d-flex flex-column justify-content-evenly mt-1">
-                                    <div class="red d-flex justify-content-between align-items-center ">
-                                        <div class="circle rounded-circle off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="circle rounded-circle off"></div>
-                                    </div>
-                                    <div class="blue d-flex justify-content-between align-items-center ">
-                                        <div class="circle rounded-circle off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="circle rounded-circle off"></div>
-                                    </div>
-                                </div>
-                                <div class="point pengendalidokumen off p-3 px-4 rounded-pill">
-                                    Pengendali Dokumen
-                                </div>
-                                <div
-                                    class="rell-manajemen-to-pengendalidokumen d-flex flex-column justify-content-evenly mt-1">
-                                    <div class="red d-flex justify-content-between align-items-center ">
-                                        <div class="circle rounded-circle off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="circle rounded-circle off"></div>
-                                    </div>
-                                    <div class="blue d-flex justify-content-between align-items-center ">
-                                        <div class="circle rounded-circle off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="square rounded-pill off"></div>
-                                        <div class="circle rounded-circle off"></div>
-                                    </div>
-                                </div>
-                                <div class="point manajemen off p-3 px-4 rounded-pill">
-                                    Manajemen
-                                </div>
-                            </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -329,6 +387,12 @@
     {{-- @if ($modal) --}}
     @if ($modal['for'] == 'upload')
         <livewire:logic.upload-pds :modalUpload="$modal['message']"></livewire:logic.upload-pds>
+    @endif
+    @if ($tinjau['for'] == 'tinjau')
+        <livewire:logic.tinjau :attrTinjau="$tinjau"></livewire:logic.tinjau>
+    @endif
+    @if ($kembalikan['for'] == 'kembalikan')
+        <livewire:logic.kembalikan-pds :attrKembalikan="$kembalikan"></livewire:logic.kembalikan-pds>
     @endif
     {{-- @endif --}}
 

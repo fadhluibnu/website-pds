@@ -30,6 +30,7 @@ class CreateDokumensTable extends Migration
             $table->string('pengendali_status')->default(false);
             $table->string('management')->nullable();
             $table->string('pengendali')->nullable();
+            $table->string('pengembali_dokumen')->nullable();
             $table->timestamps();
         });
     }

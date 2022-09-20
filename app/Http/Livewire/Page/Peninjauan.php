@@ -25,7 +25,8 @@ class Peninjauan extends Component
         'id' => 'null',
         'pengendali' => 'null',
         'manager' => 'null',
-        'manajemen' => 'null'
+        'manajemen' => 'null',
+        'location' => 'null'
     ];
     public $kembalikan = [
         'for' => 'null',
@@ -35,19 +36,7 @@ class Peninjauan extends Component
         'closeModal' => 'handlerClose',
         'openKembalikan' => 'handlerKembalikan',
         'fromKembalikan' => 'handlerTinjau',
-        // 'echo:for_pic,EventForPic' => 'notifyNewOrder'
     ];
-    // public function notifyNewOrder($data, $badge)
-    // {
-    //     $role = session('auth')[0]['role'];
-    //     for ($i = 0; $i < count($data['pic']) - 1; $i++) {
-    //         if ($data['pic'][$i] == $role) {
-    //             $this->update += 1;
-    //         }
-    //     }
-    //     dd($badge);
-    //     // session()->flash('badge', $badge);
-    // }
     public function openModal($for, $message)
     {
         if ($for == "delete") {
@@ -57,13 +46,14 @@ class Peninjauan extends Component
         $this->modal['for'] = $for;
         $this->modal['message'] = $message;
     }
-    public function openTinjau($for, $id, $pengendali, $manager, $manajemen)
+    public function openTinjau($for, $id, $pengendali, $manager, $manajemen, $location)
     {
         $this->tinjau['for'] = $for;
         $this->tinjau['id'] = $id;
         $this->tinjau['pengendali'] = $pengendali;
         $this->tinjau['manager'] = $manager;
         $this->tinjau['manajemen'] = $manajemen;
+        $this->tinjau['location'] = $location;
     }
     public function handlerTinjau($attr)
     {
@@ -72,6 +62,15 @@ class Peninjauan extends Component
         $this->tinjau['pengendali'] = $attr['pengendali'];
         $this->tinjau['manager'] = $attr['manager'];
         $this->tinjau['management'] = $attr['management'];
+    }
+    public function handlerKembalikan($attr)
+    {
+        $this->kembalikan['for'] = 'kembalikan';
+        $this->kembalikan['id'] = $attr['id'];
+        $this->kembalikan['pengendali'] = $attr['pengendali'];
+        $this->kembalikan['manager'] = $attr['manager'];
+        $this->kembalikan['management'] = $attr['management'];
+        $this->kembalikan['location'] = $attr['location'];
     }
     public function handlerClose($attr)
     {
@@ -99,21 +98,13 @@ class Peninjauan extends Component
             $this->modal['message'] = 'null';
         }
     }
-    public function handlerKembalikan($attr)
-    {
-        $this->kembalikan['for'] = 'kembalikan';
-        $this->kembalikan['id'] = $attr['id'];
-        $this->kembalikan['pengendali'] = $attr['pengendali'];
-        $this->kembalikan['manager'] = $attr['manager'];
-        $this->kembalikan['management'] = $attr['management'];
-    }
 
     public function refresh($data)
     {
         $badge = explode("|", $data);
         $this->badge = $badge;
     }
-    public function data_dokumen($value, $get_pemohon, $status)
+    public function data_dokumen($value, $get_pemohon, $status, $pengendali, $manager, $manajemen, $location)
     {
         $data = [
             'id' => $value->id,
@@ -124,9 +115,10 @@ class Peninjauan extends Component
             'pemohon' => $get_pemohon[0]['name'],
             'photo' => $get_pemohon[0]['photo'],
             'tgl' => $value->created_at,
-            'pengendali' => 'as_pic',
-            'manager' => 'as_pic',
-            'manajemen' => 'as_pic'
+            'pengendali' => $pengendali,
+            'manager' => $manager,
+            'manajemen' => $manajemen,
+            'location' => $location
         ];
         return $data;
     }
@@ -146,12 +138,12 @@ class Peninjauan extends Component
                     foreach ($pics->diff('role_id')->all() as $pic) {
                         if ($value->status != 2 && $pic->role_id == session('auth')[0]['role']) {
                             if ($pic->status == false) {
-                                $data[] = $this->data_dokumen($value, $get_pemohon, 1);
+                                $data[] = $this->data_dokumen($value, $get_pemohon, 1, 'as_pic', 'as_pic', 'as_pic', "PIC");
                             } elseif ($value->status == true) {
-                                $data[] = $this->data_dokumen($value, $get_pemohon, 3);
+                                $data[] = $this->data_dokumen($value, $get_pemohon, 3, 'as_pic', 'as_pic', 'as_pic', "PIC");
                             }
                         } elseif ($value->status == 2 && $pic->role_id == session('auth')[0]['role']) {
-                            $data[] = $this->data_dokumen($value, $get_pemohon, 2);
+                            $data[] = $this->data_dokumen($value, $get_pemohon, 2, 'as_pic', 'as_pic', 'as_pic', "PIC");
                         }
                     }
                 }
@@ -167,12 +159,12 @@ class Peninjauan extends Component
                     $pihakterkaits = $pihakterkaits->where('role_id', session('auth')[0]['role'])->first();
                     if ($pihakterkaits->role_id == session('auth')[0]['role'] && $value->status != 2 && $value->pic_status == true) {
                         if ($pihakterkaits->status == false) {
-                            $data[] = $this->data_dokumen($value, $get_pemohon, 1);
+                            $data[] = $this->data_dokumen($value, $get_pemohon, 1, 'as_pihak_terkait', 'as_pihak_terkait', 'as_pihak_terkait', "Pihak Terkait");
                         } elseif ($pihakterkaits->role_id == session('auth')[0]['role'] && $pihakterkaits->status == true) {
-                            $data[] = $this->data_dokumen($value, $get_pemohon, 3);
+                            $data[] = $this->data_dokumen($value, $get_pemohon, 3, 'as_pihak_terkait', 'as_pihak_terkait', 'as_pihak_terkait', "Pihak Terkait");
                         }
                     } elseif ($pihakterkaits->role_id == session('auth')[0]['role'] && $value->status == 2 && $value->pic_status == false) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 2);
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 2, 'as_pihak_terkait', 'as_pihak_terkait', 'as_pihak_terkait', "Pihak Terkait");
                     }
                 }
             }
@@ -183,12 +175,12 @@ class Peninjauan extends Component
                 $get_pemohon = Http::get(env("URL_API_GET_USER") . $value->pemohon);
                 if ($value->status != 2 && $value->pic_status == true && $value->pihakterkait_status == true) {
                     if ($value->management_status == true) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 3);
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 3, 'null', 'null', 'null', "Manajemen");
                     } elseif ($value->management_status == false) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 1);
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 1, 'null', 'null', 'null', "Manajemen");
                     }
                 } elseif ($value->status == 2 && $value->pic_status == false && $value->pihakterkait_status == false) {
-                    $data[] = $this->data_dokumen($value, $get_pemohon, 2);
+                    $data[] = $this->data_dokumen($value, $get_pemohon, 2, 'null', 'null', 'null', "Manajemen");
                 }
             }
         }
@@ -205,12 +197,12 @@ class Peninjauan extends Component
 
                 if (!$pic && !$pihakterkait && $value->status != 2 && $value->pic_status == true && $value->pihakterkait_status == true && $value->management_status == true) {
                     if ($value->pengendali_status == true) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 3);
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 3, "not_pic_and_pihak_terkait", "null", "null", "Pengendali");
                     } elseif ($value->pengendali_status == false) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 1);
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 1, "not_pic_and_pihak_terkait", "null", "null", "Pengendali");
                     }
                 } elseif (!$pic && !$pihakterkait && $value->status == 2 && $value->pic_status == false && $value->pihakterkait_status == false && $value->management_status == false) {
-                    $data[] = $this->data_dokumen($value, $get_pemohon, 2);
+                    $data[] = $this->data_dokumen($value, $get_pemohon, 2, "not_pic_and_pihak_terkait", "null", "null", "Pengendali");
                 }
             }
         }

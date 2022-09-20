@@ -49,7 +49,7 @@
                     </div>
                 </div>
             @endif
-            <input type="hidden" id='role_refresh' value="{{ session('auth')[0]['role'] }}">
+            <input type="text" id='role_refresh' value="{{ session('auth')[0]['role'] }}">
             <input type="hidden" id="jumlah" value="0">
             <input type="hidden" id="id_new_dokumen">
             {{-- {{ $update }} --}}
@@ -77,7 +77,97 @@
                 </tr>
             </thead>
             <tbody>
-                @if (!$data)
+                @foreach ($data as $item)
+                    <tr class="peninjauan">
+                        <td class="py-2 px-3 pe-0">{{ $loop->iteration }}</td>
+                        <td class="py-2">{{ $item['nomor'] }}</td>
+                        <td class="py-2">{{ $item['judul'] }}
+                            @if ($badge)
+                                @for ($x = 0; $x <= count($badge) - 1; $x++)
+                                    @if ($badge[$x] == $item['identitas'])
+                                        <span id="{{ $item['identitas'] . 'baru' }}"
+                                            class="badge text-bg-primary">Baru</span>
+                                    @endif
+                                @endfor
+                            @endif
+                            <span id="{{ $item['identitas'] . 'hapus' }}"
+                                class="d-none badge text-bg-danger">Dihapus</span>
+                        </td>
+                        <td class="py-2">
+                            @if ($item['status'] == 1)
+                                <div id="{{ $item['identitas'] . 'status' }}"
+                                    class="bg-primary-status
+                                text-center p-2 rounded-pill">
+                                    Ditinjau
+                                </div>
+                            @endif
+                            @if ($item['status'] == 2)
+                                <div id="{{ $item['identitas'] . 'dikembalikan' }}"
+                                    class="bg-danger-status text-center p-2 rounded-pill">
+                                    Dikembalikan
+                                </div>
+                            @endif
+                            @if ($item['status'] == 3)
+                                <div id="{{ $item['identitas'] . 'selesai' }}"
+                                    class="bg-success-status text-center p-2 rounded-pill">
+                                    Selesai
+                                </div>
+                            @endif
+                        </td>
+                        <td class="py-2">
+                            <div class="d-flex align-items-center">
+                                <div class="prof-circle"
+                                    style="background-image: url({{ env('URL_WEB_API') . 'storage/' . $item['photo'] }});">
+                                </div>
+                                <span class="fw-medium ms-2 m-0">{{ $item['pemohon'] }}</span>
+                            </div>
+                        </td>
+                        <td class="py-2">{{ date('d/m/Y', strtotime($item['tgl'])) }}</td>
+                        <td class="py-2 px-3 ps-0">
+                            <div class="d-flex">
+                                <div class="{{ 'aksi' . $item['identitas'] }} box-icon bg-primary rounded-circle"
+                                    wire:click='openModal("detail", {{ $item['id'] }})'
+                                    onclick="wireClick('spinerDetail{{ $item['identitas'] }}', 'folderDetail{{ $item['identitas'] }}')">
+                                    <span id="spinerDetail{{ $item['identitas'] }}"
+                                        class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                        aria-hidden="true"></span>
+                                    <i id="folderDetail{{ $item['identitas'] }}" class="bi bi-folder-fill"></i>
+                                    <div class="my-tooltip d-none">
+                                        <div class="segitiga"></div>
+                                        <span>Detail & History</span>
+                                    </div>
+                                </div>
+                                @if ($item['status'] != 1)
+                                    <div
+                                        class="{{ 'aksi' . $item['identitas'] }} disable box-icon bg-success rounded-circle ms-2">
+                                        <span id="spinerTinjau{{ $item['id'] }}"
+                                            class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                            aria-hidden="true"></span>
+                                        <i id="eyeTinjau{{ $item['id'] }}" class="bi bi-eye-fill"></i>
+                                        <div class="my-tooltip d-none">
+                                            <div class="segitiga"></div>
+                                            <span>Tinjau</span>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="{{ 'aksi' . $item['identitas'] }} box-icon bg-success rounded-circle ms-2"
+                                        wire:click='openTinjau("tinjau", {{ $item['id'] }}, "{{ $item['pengendali'] }}", "{{ $item['manager'] }}", "{{ $item['manajemen'] }}", "{{ $item['location'] }}")'
+                                        onclick="wireClick('spinerTinjau{{ $item['identitas'] }}', 'eyeTinjau{{ $item['identitas'] }}')">
+                                        <span id="spinerTinjau{{ $item['identitas'] }}"
+                                            class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                            aria-hidden="true"></span>
+                                        <i id="eyeTinjau{{ $item['identitas'] }}" class="bi bi-eye-fill"></i>
+                                        <div class="my-tooltip d-none">
+                                            <div class="segitiga"></div>
+                                            <span>Tinjau</span>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+                {{-- @if (!$data)
                     <tr>
                         <td colspan="7">Tidak ada dokumen</td>
                     </tr>
@@ -95,7 +185,7 @@
                             <td class="py-2">{{ $data[$i]['judul'] }}
                                 @if ($badge)
                                     @for ($x = 0; $x <= count($badge) - 1; $x++)
-                                        @if ($badge[$x] == $data[$i]['id'])
+                                        @if ($badge[$x] == $data[$i]['identitas'])
                                             <span id="{{ $data[$i]['identitas'] . 'baru' }}"
                                                 class="badge text-bg-primary">Baru</span>
                                         @endif
@@ -176,14 +266,10 @@
                                         </div>
                                     @endif
                                 </div>
-                                {{-- <script>
-                                    let disable = document.querySelectorAll(`.aksi{{ $data[$i]['nomor'] . $data[$i]['id'] }}`);
-                                    console.log(disable.length);
-                                </script> --}}
                             </td>
                         </tr>
                     @endfor
-                @endif
+                @endif --}}
                 {{-- <tr class="peninjauan">
                     <td class="py-2 px-3 pe-0">2</td>
                     <td class="py-2">123457ADB</td>

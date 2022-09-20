@@ -499,12 +499,14 @@ body {
 }
 .rell-start-to-pic .red .active,
 .rell-pic-to-pihakterkait .red .active,
-.rell-pihakterkait-to-manajemen .red .active {
+.rell-pihakterkait-to-manajemen .red .active,
+.rell-manajemen-to-pengendalidokumen .red .active {
     background: #ed0226;
 }
 .rell-start-to-pic .blue .active,
 .rell-pic-to-pihakterkait .blue .active,
-.rell-pihakterkait-to-manajemen .blue .active {
+.rell-pihakterkait-to-manajemen .blue .active,
+.rell-manajemen-to-pengendalidokumen .blue .active {
     background: #3574ee;
 }
 
@@ -561,16 +563,15 @@ body {
     transition: 0.5s;
 }
 
-.my_type::-webkit-file-upload-button{
+.my_type::-webkit-file-upload-button {
     visibility: hidden;
 }
 
-.my_type::before{
-    content: '\F220';
-    font-family: 'Bootstrap-icons';
+.my_type::before {
+    content: "\F220";
+    font-family: "Bootstrap-icons";
     font-size: 30px;
     color: white;
-
 }
 
 /* file upload */

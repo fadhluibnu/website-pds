@@ -71,7 +71,9 @@
         });
         // });
     </script>
-    <script src="{{ mix('js/app.js') }}"></script>
+    @if ($title == 'Peninjauan')
+        <script src="{{ asset('js/event.js') }}"></script>
+    @endif
     @livewireScripts
 
 </body>

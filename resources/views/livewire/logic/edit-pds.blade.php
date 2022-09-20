@@ -78,8 +78,8 @@
                         <div class="mb-3">
                             <label for="penanggungjawab" class="form-label">Penanggung Jawab</label>
                             <div class="d-flex flex-wrap">
-                                <input type="checkbox" wire:model="pengendalidokumen" class="d-none btn-check-custom"
-                                    id="pengendali-dokumen" value="Document Controller">
+                                <input type="checkbox" wire:model.defer="pengendalidokumen"
+                                    class="d-none btn-check-custom" id="pengendali-dokumen" value="Document Controller">
                                 <label for="pengendali-dokumen" class="btn-checkbox"><i
                                         class="bi bi-check-circle-fill"></i> Pengendali
                                     Dokumen</label>
@@ -96,10 +96,10 @@
                                 <label for="manager-deqa" class="btn-checkbox"><i
                                         class="bi bi-check-circle-fill"></i>
                                     Manager DEQA</label>
-                                {{-- <input type="checkbox" wire:model.defer="osmtth" class="d-none btn-check-custom"
+                                <input type="checkbox" wire:model.defer="smias" class="d-none btn-check-custom"
                                     id="osm-tth" value="2">
                                 <label for="osm-tth" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                    OSM TTH</label> --}}
+                                    OSM TTH</label>
                             </div>
                         </div>
                     </div>

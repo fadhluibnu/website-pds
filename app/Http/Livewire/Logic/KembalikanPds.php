@@ -24,7 +24,8 @@ class KembalikanPds extends Component
             'pic_status' => false,
             'pihakterkait_status' => false,
             'management_status' => false,
-            'management_status' => false
+            'management_status' => false,
+            'pengembali_dokumen' => $this->attrKembalikan['location']
         ]);
         $pic = Pic::where('dokumen_id', $id)->update([
             'pic' => null,

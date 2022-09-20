@@ -23,6 +23,7 @@
             <form method="POST" wire:submit.prevent='update_file' enctype="multipart/form-data">
                 @csrf
                 <input type="text" wire:model="judul" value="{{ $data->judul }}">
+                {{-- <input type="text" wire:model='pengembali_dokumen'> --}}
                 <div class="mb-3">
                     <label class="form-label" for="fileUpload">Lampirkan Dokumen</label>
                     <div class="box-file position-relative border box-radius-10 overflow-hidden @error('file') is-invalid @enderror"

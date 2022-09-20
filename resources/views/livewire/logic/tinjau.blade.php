@@ -55,6 +55,7 @@
                 <input type="text" wire:model='manager'>
                 <input type="text" wire:model='manajemen'>
                 <input type="text" wire:model='role'>
+                <input type="text" wire:model='location'>
                 <input type="text" wire:model='id_peninjau'>
                 <input type="text" wire:model='old_file'>
                 @if ($pengendali != 'as_pihak_terkait' &&
@@ -133,7 +134,7 @@
                     </div>
                     <div type="button" class="btn btn-danger my-btn-danger box-radius-10 ms-3" wire:loading.remove
                         wire:target='kembalikan' {{-- {{ $data[$i]['id'] }}, "{{ $data[$i]['pengendali'] }}", "{{ $data[$i]['manager'] }}", "{{ $data[$i]['management'] }}" --}}
-                        wire:click='kembalikan({{ $idDock }}, "{{ $pengendali }}", "{{ $manager }}", "{{ $manajemen }}")'>
+                        wire:click='kembalikan({{ $idDock }}, "{{ $location }}", "{{ $pengendali }}", "{{ $manager }}", "{{ $manajemen }}")'>
                         Kembalikan</div>
                     {{-- @endif --}}
                 </div>

@@ -11,6 +11,7 @@ use App\Models\JenisDokumen;
 use App\Models\JenisPermohonan;
 use App\Models\Pic;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use League\CommonMark\Node\Block\Document;
 
 class UploadPds extends Component
@@ -98,7 +99,7 @@ class UploadPds extends Component
 
             if ($store) {
                 if ($this->pengendalidokumen != null) {
-                    $this->storePic($store['id'], "Document Controller 1");
+                    $this->storePic($store['id'], $this->pengendalidokumen);
                 }
                 if ($this->managerdeqa != null) {
                     $this->storePic($store['id'], $this->managerdeqa);
@@ -127,6 +128,7 @@ class UploadPds extends Component
                     'session' => 'upload'
                 ];
                 $this->emit('closeModal', $param);
+                $this->eventUpload($store['id']);
             } else {
                 session()->flash('action', "Data Gagal Diupload");
             }
@@ -139,6 +141,20 @@ class UploadPds extends Component
             'role_id' => $roleid
         ]);
         $this->event_pic[] = $roleid;
+    }
+    public function eventUpload($id)
+    {
+        $event = Storage::get('event_upload.json');
+        $decode = json_decode($event, true);
+        $contents = $decode;
+        $contents[] = [
+            "type" => 'upload',
+            "id" => $id,
+            'identitas' => $id . 'ditinjau',
+            'role' => $this->event_pic
+        ];
+        $contents = json_encode($contents);
+        Storage::put('event_upload.json', $contents);
     }
     public function closeX()
     {

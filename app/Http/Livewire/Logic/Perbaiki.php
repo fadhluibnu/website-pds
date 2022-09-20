@@ -18,9 +18,11 @@ class Perbaiki extends Component
     public $file;
     public $judul;
     public $status = 1;
+    public $pengembali_dokumen;
     protected $rules =  [
         'file' => 'required|mimes:docx',
-        'status' => 'required'
+        'status' => 'required',
+        // 'pengembali_dokumen' => 'required'
     ];
     public function updated($propertyName)
     {
@@ -28,6 +30,10 @@ class Perbaiki extends Component
     }
     public function update_file()
     {
+        $this->pengembali_dokumen = null;
+        $this->rules += [
+            "pengembali_dokumen" => 'nullable'
+        ];
         $validatedData = $this->validate();
         $update = Dokumen::where('id', $this->idDokumen)->update($validatedData);
         if ($update) {
@@ -44,11 +50,11 @@ class Perbaiki extends Component
                     'for' => null,
                     'session' => 'perbaiki'
                 ];
-                $pic = Pic::where('dokumen_id', $this->idDokumen)->get();
-                $event = [];
-                foreach ($pic as $item) {
-                    $event[] = $item->role_id;
-                }
+                // $pic = Pic::where('dokumen_id', $this->idDokumen)->get();
+                // $event = [];
+                // foreach ($pic as $item) {
+                //     $event[] = $item->role_id;
+                // }
                 $this->emit('closeModal', $param);
             }
         }

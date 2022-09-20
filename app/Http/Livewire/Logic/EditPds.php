@@ -36,7 +36,7 @@ class EditPds extends Component
     public $manageriqa;
     public $managerurel;
     public $managerdeqa;
-    public $osmtth;
+    public $smias;
     public $alertPic;
 
     public $user_name;
@@ -57,7 +57,7 @@ class EditPds extends Component
     }
     public function updatepds()
     {
-        if ($this->pengendalidokumen == null & $this->managerdeqa == null & $this->manageriqa == null & $this->managerurel == null & $this->osmtth == null) {
+        if ($this->pengendalidokumen == null & $this->managerdeqa == null & $this->manageriqa == null & $this->managerurel == null & $this->smias == null) {
             $this->alertPic = "<script>alert('Anda belum memilih Penanggung Jawab')</script>";
         } else {
             $has_change = "";
@@ -109,6 +109,9 @@ class EditPds extends Component
                     if ($this->managerurel != null) {
                         $this->create_pic($this->idDokumen, $this->managerurel);
                     }
+                    if ($this->smias != null) {
+                        $this->create_pic($this->idDokumen, $this->smias);
+                    }
                 }
                 History::create([
                     'dokumen_id' => $this->idDokumen,
@@ -118,7 +121,7 @@ class EditPds extends Component
                     'judul' => 'PDS Berhasil Diedit',
                     'pesan' => 'Dokumen <strong>' . $this->judul . '</strong> telah mengalami perubahan pada ' . $has_change
                 ]);
-                event(new EventForPic($this->event_pic, $this->idDokumen . 'ditinjau', $id));
+                // event(new EventForPic($this->event_pic, $this->idDokumen . 'ditinjau', $id));
                 $param = [
                     'for' => null,
                     'session' => 'edit'
