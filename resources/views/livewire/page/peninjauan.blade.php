@@ -1,37 +1,40 @@
 <div class="container-fluid" style="height: 90vh;overflow-y: auto;">
-    <form wire:submit.prevent='get_dokumen' class="filter bg-white p-3 box-radius-10">
+    <form wire:submit.prevent='fun_search' class="filter bg-white p-3 box-radius-10">
         <div class="row">
-            <div class="col-5">
+            <div class="col-4">
                 <label for="namanomor" onmouseup="formInput('o', 'inpnamanomor')">Nama atau Nomor
                     Dokumen</label>
                 <div id="inpnamanomor" class="input-group namanomor box-radius-10 border mt-2">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-                    <input type="text" id="namanomor" wire:model='judul' class="form-control ps-0"
+                    <input type="text" id="namanomor" wire:model.defer='judul' class="form-control ps-0"
                         placeholder="Nama / Nomor Dokumen">
                 </div>
             </div>
             <div class="col-3">
                 <label for="statusdokumen">Status Dokumen</label>
                 <select id="statusdokumen" class="form-select mt-2" aria-label="Default select example"
-                    style="padding: 10px;" wire:model='status'>
-                    <option value="" selected>Semua</option>
+                    style="padding: 10px;" wire:model.defer='status'>
+                    <option value="kosong" selected>Semua</option>
                     <option value="1">Ditinjau</option>
-                    <option value="2">Selesai</option>
-                    <option value="3">Dikembalikan</option>
+                    <option value="3">Selesai</option>
+                    <option value="2">Dikembalikan</option>
                 </select>
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 <label for="datepicker">Tanggal</label>
-                <div class="input-group date border box-radius-10 mt-2">
-                    <input id="datepicker" type="text" class="form-control" placeholder="Semua">
-                    <label for="datepicker" class="input-group-text" id="basic-addon2"><i
-                            class="bi bi-calendar-week-fill"></i></label>
+                <div class="input-group mt-2 box-radius-10">
+                    <a wire:click='clear' class="btn btn-outline-secondary" type="button" id="button-addon1"
+                        style="padding: 10px;margin: auto;">Clear
+                    </a>
+                    <input id="dateinput" wire:model.defer='tanggal' type="date"
+                        class="inputTanggal form-control border" placeholder="Semua"
+                        aria-label="Example text with button addon" aria-describedby="button-addon1">
                 </div>
             </div>
             <div class="col-2">
                 <div class="d-flex flex-column justify-content-between" style="height: 100%;">
                     <div class="bg-white p-1"></div>
-                    <button type="button" class="btn btn-primary" style="padding: 10px;">Terapkan</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 10px;">Terapkan</button>
                 </div>
             </div>
         </div>

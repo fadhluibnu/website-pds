@@ -13,7 +13,9 @@ class Peninjauan extends Component
     public $title = "Peninjauan";
     public $judul;
     public $status;
-    // public $update;
+    public $tanggal;
+    public $search = false;
+
     public $badge;
     protected $datas;
     public $modal = [
@@ -104,25 +106,65 @@ class Peninjauan extends Component
         $badge = explode("|", $data);
         $this->badge = $badge;
     }
-    public function data_dokumen($value, $get_pemohon, $status, $pengendali, $manager, $manajemen, $location)
+
+    public function fun_search()
     {
-        $data = [
-            'id' => $value->id,
-            'identitas' => $value->id . 'ditinjau',
-            'nomor' => $value->nomor,
-            'judul' => $value->judul,
-            'status' => $status,
-            'pemohon' => $get_pemohon[0]['name'],
-            'photo' => $get_pemohon[0]['photo'],
-            'tgl' => $value->created_at,
-            'pengendali' => $pengendali,
-            'manager' => $manager,
-            'manajemen' => $manajemen,
-            'location' => $location
-        ];
-        return $data;
+        $this->search = true;
     }
-    public function render()
+    public function clear()
+    {
+        $this->judul = $this->judul;
+        $this->status = $this->status;
+        $this->search = true;
+        $this->tanggal = null;
+    }
+    public function search_operation($data)
+    {
+        $result = [];
+        if ($this->status == null) {
+            $this->status = "kosong";
+        }
+        for ($i_data = 0; $i_data <= count($data) - 1; $i_data++) {
+            if ($this->judul != null && $this->status != "kosong" && $this->tanggal != null) {
+                $split_data_judul = explode($this->judul, $data[$i_data]['judul']);
+                if (count($split_data_judul) > 1 && $data[$i_data]['status'] == $this->status && date('Y-m-d', strtotime($data[$i_data]['tgl'])) == $this->tanggal) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul == null && $this->status == "kosong" && $this->tanggal == null) {
+                $result = $data;
+            } elseif ($this->judul != null && $this->status != "kosong" && $this->tanggal == null) {
+                $split_data_judul = explode($this->judul, $data[$i_data]['judul']);
+                if (count($split_data_judul) > 1 && $data[$i_data]['status'] == $this->status) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul != null && $this->status == "kosong" && $this->tanggal != null) {
+                $split_data_judul = explode($this->judul, $data[$i_data]['judul']);
+                if (count($split_data_judul) > 1 && date('Y-m-d', strtotime($data[$i_data]['tgl'])) == $this->tanggal) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul == null && $this->status != "kosong" && $this->tanggal != null) {
+                if ($data[$i_data]['status'] == $this->status && date('Y-m-d', strtotime($data[$i_data]['tgl'])) == $this->tanggal) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul != null && $this->status == "kosong" && $this->tanggal == null) {
+                $split_data_judul = explode($this->judul, $data[$i_data]['judul']);
+                if (count($split_data_judul) > 1) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul == null && $this->status != "kosong" && $this->tanggal == null) {
+                if ($data[$i_data]['status'] == $this->status) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul == null && $this->status == "kosong" && $this->tanggal != null) {
+                if (date('Y-m-d', strtotime($data[$i_data]['tgl'])) == $this->tanggal) {
+                    $result[] = $data[$i_data];
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function get_dokumens()
     {
         $data = [];
         $dokumen = new Dokumen();
@@ -175,12 +217,12 @@ class Peninjauan extends Component
                 $get_pemohon = Http::get(env("URL_API_GET_USER") . $value->pemohon);
                 if ($value->status != 2 && $value->pic_status == true && $value->pihakterkait_status == true) {
                     if ($value->management_status == true) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 3, 'null', 'null', 'null', "Manajemen");
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 3, 'null', 'null', "manajemen", "Manajemen");
                     } elseif ($value->management_status == false) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 1, 'null', 'null', 'null', "Manajemen");
+                        $data[] = $this->data_dokumen($value, $get_pemohon, 1, 'null', 'null', "manajemen", "Manajemen");
                     }
                 } elseif ($value->status == 2 && $value->pic_status == false && $value->pihakterkait_status == false) {
-                    $data[] = $this->data_dokumen($value, $get_pemohon, 2, 'null', 'null', 'null', "Manajemen");
+                    $data[] = $this->data_dokumen($value, $get_pemohon, 2, 'null', 'null', "manajemen", "Manajemen");
                 }
             }
         }
@@ -212,11 +254,76 @@ class Peninjauan extends Component
             ['status', 'asc'],
             ['id', 'asc']
         ]);
-
-        // dd($data->all());
+        $result = [];
+        for ($i = 0; $i <= count($data) - 1; $i++) {
+            if ($i + 1 == count($data)) {
+                if ($data[$i]['id'] != $data[0]['id'] && $data[$i]['identitas'] != $data[0]['identitas']) {
+                    $result[] = [
+                        'id' => $data[$i]['id'],
+                        'identitas' => $data[$i]['id'] . 'ditinjau',
+                        'nomor' => $data[$i]['nomor'],
+                        'judul' => $data[$i]['judul'],
+                        'status' => $data[$i]['status'],
+                        'pemohon' => $data[$i]['pemohon'],
+                        'photo' => $data[$i]['photo'],
+                        'tgl' => $data[$i]['tgl'],
+                        'pengendali' => $data[$i]['pengendali'],
+                        'manager' => $data[$i]['manager'],
+                        'manajemen' => $data[$i]['manajemen'],
+                        'location' => $data[$i]['location']
+                    ];
+                }
+            }
+            if ($i + 1 != count($data)) {
+                if ($data[$i]['id'] != $data[$i + 1]['id'] && $data[$i]['identitas'] != $data[$i + 1]['identitas']) {
+                    $result[] = [
+                        'id' => $data[$i]['id'],
+                        'identitas' => $data[$i]['id'] . 'ditinjau',
+                        'nomor' => $data[$i]['nomor'],
+                        'judul' => $data[$i]['judul'],
+                        'status' => $data[$i]['status'],
+                        'pemohon' => $data[$i]['pemohon'],
+                        'photo' => $data[$i]['photo'],
+                        'tgl' => $data[$i]['tgl'],
+                        'pengendali' => $data[$i]['pengendali'],
+                        'manager' => $data[$i]['manager'],
+                        'manajemen' => $data[$i]['manajemen'],
+                        'location' => $data[$i]['location']
+                    ];
+                }
+            }
+        }
+        return $result;
+    }
+    public function data_dokumen($value, $get_pemohon, $status, $pengendali, $manager, $manajemen, $location)
+    {
+        $data = [
+            'id' => $value->id,
+            'identitas' => $value->id . 'ditinjau',
+            'nomor' => $value->nomor,
+            'judul' => $value->judul,
+            'status' => $status,
+            'pemohon' => $get_pemohon[0]['name'],
+            'photo' => $get_pemohon[0]['photo'],
+            'tgl' => $value->created_at,
+            'pengendali' => $pengendali,
+            'manager' => $manager,
+            'manajemen' => $manajemen,
+            'location' => $location
+        ];
+        return $data;
+    }
+    public function render()
+    {
+        if ($this->search == true) {
+            $data = collect($this->get_dokumens());
+            $data = collect($this->search_operation($data));
+        } else {
+            $data = collect($this->get_dokumens());
+        }
 
         return view('livewire.page.peninjauan', [
-            'data' => $data->all()
+            'data' => $data
         ])->extends("main")->section('content')->layoutData(['title' => $this->title]);
     }
 }

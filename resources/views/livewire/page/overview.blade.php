@@ -7,7 +7,7 @@
                 </div>
                 <p class="m-0 ms-2">Dokumen <br>Diupload</p>
             </div>
-            <h1 class="m-0">100</h1>
+            <h1 class="m-0">{{ $activity['diupload'] }}</h1>
         </div>
         <div class="dokumen-disahkan p-3 bg-white box-radius-10 ms-3">
             <div class="d-flex">
@@ -16,7 +16,7 @@
                 </div>
                 <p class="m-0 ms-2">Dokumen <br>Disahkan</p>
             </div>
-            <h1 class="m-0">80</h1>
+            <h1 class="m-0">{{ $activity['disahkan'] }}</h1>
         </div>
         <div class="dalam-proses p-3 bg-white box-radius-10 ms-3">
             <div class="d-flex">
@@ -25,7 +25,7 @@
                 </div>
                 <p class="m-0 ms-2">Dalam <br>Proses</p>
             </div>
-            <h1 class="m-0">10</h1>
+            <h1 class="m-0">{{ $activity['proses'] }}</h1>
         </div>
     </div>
     <div class="pds-terbaru bg-white box-radius-20 pb-3">
@@ -91,11 +91,21 @@
     <div class="status-pds bg-white box-radius-20 mt-3 mb-3">
         <div class="d-flex p-3 align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-                <h1 class="title m-0 me-5">Tracker Document</h1>
-                <form action="">
-                    <input class="form-control" type="search" placeholder="Search Document"
+                <h1 class="title m-0 me-3">Tracker Document</h1>
+                <form action="" class="me-3">
+                    <input class="form-control" wire:model='q_tracking' type="search" placeholder="Search Document"
                         aria-label="default input example">
                 </form>
+                @if (session()->has('action'))
+                    <div class="alert alert-success alert-dismissible fade show m-0 me-auto" role="alert"
+                        style="width: 450px;padding:10px 10px !important;">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span>{{ session('action') }}</span>
+                            <button type="button" class="btn-close p-0" data-bs-dismiss="alert" aria-label="Close"
+                                style="position: unset !important"></button>
+                        </div>
+                    </div>
+                @endif
             </div>
             <button wire:click='openModal("upload", "active")' onclick="wireClick('spinerUpload', 'eyeUpload')"
                 type="button" class="btn btn-primary box-radius-10 mybutton">
