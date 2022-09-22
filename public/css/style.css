@@ -534,13 +534,16 @@ body {
     width: 100px;
     height: 100px;
 }
-
-.body {
-    margin: 0;
-    padding: 0;
+.pengaturan .form-control:disabled {
+    background-color: white !important;
 }
 
-.profil {
+/* .body {
+    margin: 0;
+    padding: 0;
+} */
+
+.pengaturan .profil {
     height: 160px;
     width: 160px;
     position: relative;
@@ -548,6 +551,9 @@ body {
     border-radius: 50%;
     background: tomato;
     overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .my_type {
