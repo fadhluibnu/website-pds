@@ -12,9 +12,9 @@
         <div class="dokumen-disahkan p-3 bg-white box-radius-10 ms-3">
             <div class="d-flex">
                 <div class="icon bg-success rounded d-flex">
-                    <i class="bi bi-file-earmark-arrow-up-fill m-auto"></i>
+                    <i class="bi bi-file-earmark-check-fill m-auto"></i>
                 </div>
-                <p class="m-0 ms-2">Dokumen <br>Disahkan</p>
+                <p class="m-0 ms-2">Dokumen <br>Selesai</p>
             </div>
             <h1 class="m-0">{{ $activity['disahkan'] }}</h1>
         </div>

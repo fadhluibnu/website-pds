@@ -43,7 +43,10 @@ class UploadPds extends Component
     public $alertPic;
 
     public $user_name;
+    public $placeholder_upload_fie = "not-active";
+    public $placeholder_name_file = "d-none";
     protected $event_pic = [];
+    public $dokumen_dipilih;
 
 
     protected $rules =  [
@@ -72,6 +75,14 @@ class UploadPds extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+        if ($this->file != null) {
+            $this->placeholder_upload_fie = 'd-none';
+            $this->placeholder_name_file = '';
+        }
+    }
+    public function dokumen_dipilih($id)
+    {
+        $this->dokumen_dipilih .= "|" . $id;
     }
 
     public function storepds()

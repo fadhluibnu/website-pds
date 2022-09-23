@@ -28,8 +28,10 @@ function getNameFile(form, input, place) {
     let inp = document.getElementById(input).value;
     let display = document.getElementById(place);
     let formupload = document.getElementById(form);
+    let placeholder = document.getElementById("placeholder_form_file");
     let name = inp.substr(inp.lastIndexOf("\\") + 1);
     display.value = name;
+    placeholder.classList.add("d-none");
     formupload.setAttribute("wire:submit.prevent", `storepds("${name}")`);
 }
 

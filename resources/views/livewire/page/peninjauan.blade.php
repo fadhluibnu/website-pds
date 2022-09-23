@@ -52,7 +52,7 @@
                     </div>
                 </div>
             @endif
-            <input type="text" id='role_refresh' value="{{ session('auth')[0]['role'] }}">
+            <input type="hidden" id='role_refresh' value="{{ session('auth')[0]['role'] }}">
             <input type="hidden" id="jumlah" value="0">
             <input type="hidden" id="id_new_dokumen">
             {{-- {{ $update }} --}}

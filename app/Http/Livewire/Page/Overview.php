@@ -103,8 +103,10 @@ class Overview extends Component
             "disahkan" => 0,
             'proses' => 0
         ];
-        $diupload_query = Dokumen::where('pemohon', session('auth')[0]['id'])->get();
-        $activity['diupload'] = count($diupload_query);
+        $diupload_query = new Dokumen();
+        $activity['diupload'] = count($diupload_query->where('pemohon', session('auth')[0]['id'])->get());
+        $activity['disahkan'] = count($diupload_query->where('pemohon', session('auth')[0]['id'])->where('status', 3)->get());
+        $activity['proses'] = count($diupload_query->where('pemohon', session('auth')[0]['id'])->where('status', 1)->get());
 
         return $activity;
     }
@@ -230,18 +232,21 @@ class Overview extends Component
 
     public function render()
     {
-        $data = $this->get_dokumens($this->q_tinjau);
-        $tracking = collect($this->tracking_document($this->q_tracking));
-        $monitor = $this->monitor($this->monitor_id);
-        if (count(collect($monitor)) == 0) {
-            $monitor = null;
-        } else {
-            $monitor = collect($monitor);
-        }
+        // $data = $this->get_dokumens($this->q_tinjau);
+        // $tracking = collect($this->tracking_document($this->q_tracking));
+        // $monitor = $this->monitor($this->monitor_id);
+        // if (count(collect($monitor)) == 0) {
+        //     $monitor = null;
+        // } else {
+        //     $monitor = collect($monitor);
+        // }
+        $data = [];
+        $tracking = [];
+        $monitor = null;
         return view('livewire.page.overview', [
             'activity' => collect($this->activity()),
-            'data' => $data,
-            'tracking' => $tracking,
+            'data' => collect($data),
+            'tracking' => collect($tracking),
             'monitor' => $monitor
         ])->extends("main")->section('content')->layoutData(['title' => $this->title]);
     }

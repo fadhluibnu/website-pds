@@ -117,14 +117,15 @@ class Pengajuan extends Component
     }
     public function render()
     {
-        if ($this->search == null) {
-            $data = $this->get_dokumen();
-        }
-        if ($this->search == true) {
-            $data = $this->search();
-        }
+        // if ($this->search == null) {
+        //     $data = $this->get_dokumen();
+        // }
+        // if ($this->search == true) {
+        //     $data = $this->search();
+        // }
+        $data = [];
         return view('livewire.page.pengajuan', [
-            'dokumen' => $data
+            'dokumen' => collect($data)
         ])->extends("main")->section('content')->layoutData(['title' => $this->title]);
     }
 }

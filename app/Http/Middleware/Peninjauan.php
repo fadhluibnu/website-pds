@@ -19,6 +19,10 @@ class Peninjauan
         $data = session('auth');
         $not_have_access = ["Bagian UREL", "Lab Device", "Lab Energy", "Lab Kabel dan Aksesoris FTTH", "Lab Transmisi", "Lab Kalibrasi"];
 
+        if (!$data) {
+            return redirect()->route('login');
+        }
+
         for ($i = 0; $i <= count($not_have_access) - 1; $i++) {
             if (!$data || $data[0]['role'] == $not_have_access[$i]) {
                 abort(403);

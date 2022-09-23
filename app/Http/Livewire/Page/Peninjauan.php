@@ -315,12 +315,13 @@ class Peninjauan extends Component
     }
     public function render()
     {
-        if ($this->search == true) {
-            $data = collect($this->get_dokumens());
-            $data = collect($this->search_operation($data));
-        } else {
-            $data = collect($this->get_dokumens());
-        }
+        // if ($this->search == true) {
+        //     $data = collect($this->get_dokumens());
+        //     $data = collect($this->search_operation($data));
+        // } else {
+        //     $data = collect($this->get_dokumens());
+        // }
+        $data = [];
 
         return view('livewire.page.peninjauan', [
             'data' => $data
