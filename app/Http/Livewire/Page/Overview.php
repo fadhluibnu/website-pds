@@ -244,7 +244,11 @@ class Overview extends Component
         $data = [];
         $tracking = [];
         $monitor = null;
-        $activity = null;
+        $activity = [
+            "diupload" => 0,
+            "disahkan" => 0,
+            'proses' => 0
+        ];;
         return view('livewire.page.overview', [
             'activity' => collect($activity),
             'data' => collect($data),
