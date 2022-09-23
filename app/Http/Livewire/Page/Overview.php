@@ -248,12 +248,19 @@ class Overview extends Component
             "diupload" => 0,
             "disahkan" => 0,
             'proses' => 0
-        ];;
+        ];
+
+        $need_follow_up_section = 'd-none';
+        if (Gate::forUser(session('auth')[0]['id'])->allows('picOrPihakTerkait')) {
+            $need_follow_up_section = '';
+        }
+
         return view('livewire.page.overview', [
             'activity' => collect($activity),
             'data' => collect($data),
             'tracking' => collect($tracking),
-            'monitor' => $monitor
+            'monitor' => $monitor,
+            'need_follow_up' => $need_follow_up_section
         ])->extends("main")->section('content')->layoutData(['title' => $this->title]);
     }
 }

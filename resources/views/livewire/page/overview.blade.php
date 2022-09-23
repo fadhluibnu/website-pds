@@ -28,7 +28,7 @@
             <h1 class="m-0">{{ $activity['proses'] }}</h1>
         </div>
     </div>
-    <div class="pds-terbaru bg-white box-radius-20 pb-3">
+    <div class="pds-terbaru bg-white box-radius-20 pb-3 {{ $need_follow_up }}">
         <div class="d-flex p-3 pb-1 justify-content-between">
             <h1 class="title">Need Follow Up</h1>
             <form action="">
