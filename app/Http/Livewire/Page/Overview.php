@@ -240,11 +240,13 @@ class Overview extends Component
         // } else {
         //     $monitor = collect($monitor);
         // }
+        // $activity =collect($this->activity());
         $data = [];
         $tracking = [];
         $monitor = null;
+        $activity = null;
         return view('livewire.page.overview', [
-            'activity' => collect($this->activity()),
+            'activity' => collect($activity),
             'data' => collect($data),
             'tracking' => collect($tracking),
             'monitor' => $monitor
