@@ -45,6 +45,7 @@ body {
     color: #35ee5e;
 }
 .btn-checkbox {
+    width: 100%;
     background: #ffffff;
     border: 1px solid #d9d9d9;
     border-radius: 8px;

@@ -25,7 +25,7 @@
                             <label for="namadokumen" class="form-label">Nama Dokumen</label>
                             <input type="text"
                                 class="form-control p-2 box-radius-10 @error('judul') is-invalid @enderror"
-                                id="namadokumen" placeholder="Pihak terkait" wire:model='judul' required>
+                                id="namadokumen" placeholder="Nama Dokumen" wire:model='judul' required>
                             @error('judul')
                                 <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                     {{ $message }}
@@ -36,7 +36,7 @@
                             <label for="nomordokumen" class="form-label">Nomor Dokumen</label>
                             <input type="text"
                                 class="form-control p-2 box-radius-10 @error('nomor') is-invalid @enderror"
-                                id="nomordokumen" placeholder="Pihak terkait" wire:model='nomor' required>
+                                id="nomordokumen" placeholder="Nomor Dokumen" wire:model='nomor' required>
                             @error('nomor')
                                 <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                     {{ $message }}
@@ -78,29 +78,38 @@
                         <div class="mb-3">
                             <label for="penanggungjawab" class="form-label">Penanggung Jawab</label>
                             <div class="d-flex flex-wrap">
-                                <input type="checkbox" wire:model.defer="pengendalidokumen"
-                                    class="d-none btn-check-custom" id="pengendali-dokumen"
-                                    value="Document Controller 1">
-                                <label for="pengendali-dokumen" class="btn-checkbox"><i
-                                        class="bi bi-check-circle-fill"></i> Pengendali
-                                    Dokumen</label>
-                                <input type="checkbox" wire:model.defer="manageriqa" class="d-none btn-check-custom"
-                                    id="manager-iqa" value="Lab Manager IQA">
-                                <label for="manager-iqa" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                    Manager IQA</label>
-                                <input type="checkbox" wire:model.defer="managerurel" class="d-none btn-check-custom"
-                                    id="manager-urel" value="Lab Manager UREL">
-                                <label for="manager-urel" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                    Manager UREL</label>
-                                <input type="checkbox" wire:model.defer="managerdeqa" class="d-none btn-check-custom"
-                                    id="manager-deqa" value="Lab Manager DEQA">
-                                <label for="manager-deqa" class="btn-checkbox"><i
-                                        class="bi bi-check-circle-fill"></i>
-                                    Manager DEQA</label>
-                                <input type="checkbox" wire:model.defer="smias" class="d-none btn-check-custom"
-                                    id="osm-tth" value="SM IAS">
-                                <label for="osm-tth" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                    OSM TTH</label>
+                                <div class="row">
+                                    <div class="col-6 pe-1">
+                                        <input type="checkbox" wire:model.defer="manageriqa" class="d-none btn-check-custom"
+                                        id="manager-iqa" value="Lab Manager IQA">
+                                        <label for="manager-iqa" class="btn-checkbox text-center"><i class="bi bi-check-circle-fill"></i>
+                                        Manager IQA</label>
+                                    </div>
+                                    <div class="col-6 ps-1">
+                                        <input type="checkbox" wire:model.defer="managerurel" class="d-none btn-check-custom"
+                                        id="manager-urel" value="Lab Manager UREL">
+                                        <label for="manager-urel" class="btn-checkbox text-center"><i class="bi bi-check-circle-fill"></i>
+                                        Manager UREL</label>
+                                    </div>
+                                    <div class="col-6 pe-1">
+                                        <input type="checkbox" wire:model.defer="managerdeqa" class="d-none btn-check-custom"
+                                        id="manager-deqa" value="Lab Manager DEQA">
+                                        <label for="manager-deqa" class="btn-checkbox text-center"><i class="bi bi-check-circle-fill"></i>
+                                        Manager DEQA</label>
+                                    </div>
+                                    <div class="col-6 ps-1">
+                                        <input type="checkbox" wire:model.defer="smias" class="d-none btn-check-custom"
+                                        id="osm-tth" value="SM IAS">
+                                        <label for="osm-tth" class="btn-checkbox text-center"><i class="bi bi-check-circle-fill"></i>
+                                        OSM TTH</label>
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="checkbox" wire:model.defer="pengendalidokumen"class="d-none btn-check-custom" 
+                                        id="pengendali-dokumen" value="Document Controller 1">
+                                        <label for="pengendali-dokumen" class="btn-checkbox text-center"><i class="bi bi-check-circle-fill"></i> 
+                                        Pengendali Dokumen</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

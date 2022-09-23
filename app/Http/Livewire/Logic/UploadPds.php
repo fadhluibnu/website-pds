@@ -128,7 +128,7 @@ class UploadPds extends Component
                     'session' => 'upload'
                 ];
                 $this->emit('closeModal', $param);
-                $this->eventUpload($store['id']);
+                // $this->eventUpload($store['id']);
             } else {
                 session()->flash('action', "Data Gagal Diupload");
             }
