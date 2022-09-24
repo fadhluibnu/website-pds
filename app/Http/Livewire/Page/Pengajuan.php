@@ -79,9 +79,7 @@ class Pengajuan extends Component
     public function deletePds($id, $nomor)
     {
         $delete = Dokumen::destroy($id);
-        $pic = Pic::where('dokumen_id', $id)->delete();
-        $pt = PihakTerkait::where('dokumen_id', $id)->delete();
-        if ($delete && $pic || $pt) {
+        if ($delete) {
             session()->flash('action', "PDS Berhasil Di Hapus");
             // event(new EventDeleteDokumen($nomor . $id));
             $this->modal['delete'] = 'off';
@@ -117,13 +115,13 @@ class Pengajuan extends Component
     }
     public function render()
     {
-        // if ($this->search == null) {
-        //     $data = $this->get_dokumen();
-        // }
-        // if ($this->search == true) {
-        //     $data = $this->search();
-        // }
-        $data = [];
+        if ($this->search == null) {
+            $data = $this->get_dokumen();
+        }
+        if ($this->search == true) {
+            $data = $this->search();
+        }
+        // $data = [];
         return view('livewire.page.pengajuan', [
             'dokumen' => collect($data)
         ])->extends("main")->section('content')->layoutData(['title' => $this->title]);

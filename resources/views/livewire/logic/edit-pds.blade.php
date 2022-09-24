@@ -13,13 +13,7 @@
                 <input type="hidden" wire:model='idUpdate'>
                 <input type="hidden" wire:model='pemohon'>
                 <input type="hidden" wire:model='status'>
-                <input type="hidden" wire:model='user_name'>
-                @if ($management)
-                    <input type="hidden" wire:model='management'>
-                @endif
-                @if ($pengendali)
-                    <input type="hidden" wire:model='pengendali'>
-                @endif
+                <input type="hidden" wire:model='location'>
                 <div class="row overflow-auto" style="height: 70vh;">
                     <div class="col-6">
                         <div class="mb-3">
@@ -49,10 +43,11 @@
                             <select class="form-select p-2 box-radius-10 @error('jenisdokumen') is-invalid @enderror"
                                 id="jenisdokumen" aria-label="Default select example" wire:model='jenisdokumen'
                                 required>
-                                @foreach ($jenisdok as $item)
-                                    <option value="{{ $item->id }}">
-                                        {{ $item->name }}</option>
-                                @endforeach
+                                <option selected>Pilih Jenis Dokumen</option>
+                                <option value="Panduan Mutu">Panduan Mutu</option>
+                                <option value="Prosedur">Prosedur</option>
+                                <option value="Instruksi Kerja">Instruksi Kerja</option>
+                                <option value="Test Procedure">Test Procedure</option>
                             </select>
                             @error('jenisdokumen')
                                 <div id="validationServerUsernameFeedback" class="invalid-feedback">
@@ -65,9 +60,10 @@
                             <select class="form-select p-2 box-radius-10 @error('jenispermohonan') is-invalid @enderror"
                                 id="jenispermohonan" aria-label="Default select example" wire:model='jenispermohonan'
                                 required>
-                                @foreach ($jenisper as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
+                                <option selected>Pilih Jenis Permohonan</option>
+                                <option value="Penerbitan Dokumen Baru">Penerbitan Dokumen Baru</option>
+                                <option value="Perubahan Dokumen">Perubahan Dokumen</option>
+                                <option value="Penghapusan Dokumen">Penghapusan Dokumen</option>
                             </select>
                             @error('jenispermohonan')
                                 <div id="validationServerUsernameFeedback" class="invalid-feedback">
@@ -78,28 +74,44 @@
                         <div class="mb-3">
                             <label for="penanggungjawab" class="form-label">Penanggung Jawab</label>
                             <div class="d-flex flex-wrap">
-                                <input type="checkbox" wire:model.defer="pengendalidokumen"
-                                    class="d-none btn-check-custom" id="pengendali-dokumen" value="Document Controller">
-                                <label for="pengendali-dokumen" class="btn-checkbox"><i
-                                        class="bi bi-check-circle-fill"></i> Pengendali
-                                    Dokumen</label>
-                                <input type="checkbox" wire:model.defer="manageriqa" class="d-none btn-check-custom"
-                                    id="manager-iqa" value="Lab Manager IQA">
-                                <label for="manager-iqa" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                    Manager IQA</label>
-                                <input type="checkbox" wire:model.defer="managerurel" class="d-none btn-check-custom"
-                                    id="manager-urel" value="Lab Manager UREL">
-                                <label for="manager-urel" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                    Manager UREL</label>
-                                <input type="checkbox" wire:model.defer="managerdeqa" class="d-none btn-check-custom"
-                                    id="manager-deqa" value="Lab Manager DEQA">
-                                <label for="manager-deqa" class="btn-checkbox"><i
-                                        class="bi bi-check-circle-fill"></i>
-                                    Manager DEQA</label>
-                                <input type="checkbox" wire:model.defer="smias" class="d-none btn-check-custom"
-                                    id="osm-tth" value="2">
-                                <label for="osm-tth" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                    OSM TTH</label>
+                                <div class="row">
+                                    <div class="col-6 pe-1">
+                                        <input type="checkbox" wire:model.defer="manageriqa"
+                                            class="d-none btn-check-custom" id="manager-iqa" value="Lab Manager IQA">
+                                        <label for="manager-iqa" class="btn-checkbox text-center"><i
+                                                class="bi bi-check-circle-fill"></i>
+                                            Manager IQA</label>
+                                    </div>
+                                    <div class="col-6 ps-1">
+                                        <input type="checkbox" wire:model.defer="managerurel"
+                                            class="d-none btn-check-custom" id="manager-urel" value="Lab Manager UREL">
+                                        <label for="manager-urel" class="btn-checkbox text-center"><i
+                                                class="bi bi-check-circle-fill"></i>
+                                            Manager UREL</label>
+                                    </div>
+                                    <div class="col-6 pe-1">
+                                        <input type="checkbox" wire:model.defer="managerdeqa"
+                                            class="d-none btn-check-custom" id="manager-deqa" value="Lab Manager DEQA">
+                                        <label for="manager-deqa" class="btn-checkbox text-center"><i
+                                                class="bi bi-check-circle-fill"></i>
+                                            Manager DEQA</label>
+                                    </div>
+                                    <div class="col-6 ps-1">
+                                        <input type="checkbox" wire:model.defer="smias"
+                                            class="d-none btn-check-custom" id="osm-tth" value="SM IAS">
+                                        <label for="osm-tth" class="btn-checkbox text-center"><i
+                                                class="bi bi-check-circle-fill"></i>
+                                            OSM TTH</label>
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="checkbox"
+                                            wire:model.defer="pengendalidokumen"class="d-none btn-check-custom"
+                                            id="pengendali-dokumen" value="Document Controller 1">
+                                        <label for="pengendali-dokumen" class="btn-checkbox text-center"><i
+                                                class="bi bi-check-circle-fill"></i>
+                                            Pengendali Dokumen</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

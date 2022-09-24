@@ -111,7 +111,7 @@
                             </td>
                             <td class="py-2">{{ date('d/m/Y', strtotime($item->created_at)) }}</td>
                             <td class="py-2 px-3 ps-0">
-                                @if ($item->status == 1)
+                                @if ($item->status == 'Ditinjau')
                                     <div class="d-flex">
                                         <div id="{{ $item->id . 'detail' }}"
                                             class="box-icon rounded-circle bg-primary"
@@ -160,7 +160,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                @if ($item->status == 2)
+                                @if ($item->status == 'Dikembalikan')
                                     <div id="{{ $item->id . 'perbaiki' }}" class="d-flex">
                                         <div class="bg-danger w-100 p-2 py-0 text-center fw-medium text-white rounded-pill"
                                             style="cursor: pointer;"
@@ -169,7 +169,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                @if ($item->status == 3)
+                                @if ($item->status == 'Selesai')
                                     <div class="d-flex">
                                         <div id="{{ $item->id . 'detail' }}"
                                             class="box-icon rounded-circle bg-primary"

@@ -5,7 +5,7 @@
     @foreach ($data as $item)
         <div class="modal-content">
             <div class="header-modal border-bottom d-flex align-items-center justify-content-between">
-                <h1>Detail Dokumen : {{ $item->judul }}</h1>
+                <h1>Detail Dokumen : {{ $item['judul'] }}</h1>
                 <i class="bi bi-x-lg" style="cursor: pointer;" wire:click='closeX()'></i>
             </div>
             <div class="box-modal-content p-3" style="max-height: 85vh;overflow-y:auto">
@@ -13,16 +13,16 @@
                     <div class="mb-3">
                         <label for="nomordokumen" class="form-label">Nomor Dokumen</label>
                         <input type="text" class="form-control p-2 box-radius-10" id="nomordokumen"
-                            placeholder="Pihak terkait" value="{{ $item->nomor }}" disabled>
+                            placeholder="Pihak terkait" value="{{ $item['nomor'] }}" disabled>
                     </div>
                     <div class="mb-3">
                         <label for="namadokumen" class="form-label">Nama Dokumen</label>
                         <input type="text" class="form-control p-2 box-radius-10" id="namadokumen"
-                            placeholder="Pihak terkait" value="{{ $item->judul }}" disabled>
+                            placeholder="Pihak terkait" value="{{ $item['judul'] }}" disabled>
                     </div>
                     <div class="mb-3">
                         <label for="downloadfile" class="form-label">Nama Dokumen</label>
-                        <div wire:click='export("{{ $item->file }}")'
+                        <div wire:click='export("{{ $item['file'] }}")'
                             class="download-file d-flex justify-content-between rounded p-2"
                             style="background: #F3F5FA;cursor:pointer;">
                             <div class="d-flex align-items-center">
@@ -53,31 +53,31 @@
                 <div class="history overflow-hidden mt-4">
                     <h3 class="fs-6 fw-semibold p-2 bg-primary text-white rounded-top m-0">History</h3>
                     <div class="border border-top-0 p-2 rounded-bottom text-color">
-                        @for ($i = $item->histories->count() - 1; $i >= 0; $i--)
+                        @foreach ($history as $item)
                             <div
-                                class="box-history border @if ($item->histories[$i]->type == 'catatan' || $item->histories[$i]->type == 'catatan_now') border-danger @endif rounded p-2 mb-2">
+                                class="box-history border @if ($item['type'] == 'catatan' || $item['type'] == 'catatan_now') border-danger @endif rounded p-2 mb-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h3 class="fw-semibold m-0" style="font-size: 14px;">
-                                        {{ $item->histories[$i]->judul }}</h3>
+                                        {{ $item['judul'] }}</h3>
                                     <p class="m-0" style="font-size: 14px;">
-                                        {{ $item->histories[$i]->created_at->diffForHumans() }}</p>
+                                        {{ $item['created_at']->diffForHumans() }}</p>
                                 </div>
                                 <div class="d-flex mt-2 justify-content-between">
-                                    <div class="profile detail{{ $item->histories[$i]->user_id }}"></div>
+                                    <div class="profile detail{{ $item['user_id'] }}"></div>
                                     <style>
-                                        .content .modal-custom .profile.detail{{ $item->histories[$i]->user_id }} {
-                                            background-image: url({{ env('URL_WEB_API') . 'storage/' . $item->histories[$i]->photo }})
+                                        .content .modal-custom .profile.detail{{ $item['user_id'] }} {
+                                            background-image: url({{ env('URL_WEB_API') . 'storage/' . $item['photo'] }})
                                         }
                                     </style>
                                     <div class="text ms-2" style="width: 566px;">
                                         <h3 class="fw-medium m-0" style="font-size: 14px;">
-                                            {{ $item->histories[$i]->user_name }}</h3>
+                                            {{ $item['user_name'] }}</h3>
                                         <p class="m-0" style="font-size: 14px;">
-                                            {!! $item->histories[$i]->pesan !!}</p>
+                                            {!! $item['pesan'] !!}</p>
                                     </div>
                                 </div>
                             </div>
-                        @endfor
+                        @endforeach
                     </div>
                 </div>
             </div>

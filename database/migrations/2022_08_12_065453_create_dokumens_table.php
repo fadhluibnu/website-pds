@@ -17,20 +17,17 @@ class CreateDokumensTable extends Migration
             $table->id();
             $table->string('nomor');
             $table->string('judul');
-            $table->foreignId('jenisdokumen');
-            $table->foreignId('jenispermohonan');
+            $table->string('status');
+            $table->string('pemohon');
+            $table->string('jenisdokumen');
+            $table->string('jenispermohonan');
             $table->text('deskripsi')->nullable();
             $table->string('file');
-            $table->string('file_name')->nullable();
-            $table->foreignId('status');
-            $table->string('pemohon');
-            $table->string('pic_status')->default(false);
-            $table->string('pihakterkait_status')->default(false);
-            $table->string('management_status')->default(false);
-            $table->string('pengendali_status')->default(false);
+            $table->string('pic')->nullable();
+            $table->string('pihak_terkait')->nullable();
             $table->string('management')->nullable();
-            $table->string('pengendali')->nullable();
-            $table->string('pengembali_dokumen')->nullable();
+            $table->string('pengendali_dokumen')->nullable();
+            $table->string('location');
             $table->timestamps();
         });
     }

@@ -232,23 +232,23 @@ class Overview extends Component
 
     public function render()
     {
-        $data = $this->get_dokumens($this->q_tinjau);
-        $tracking = collect($this->tracking_document($this->q_tracking));
-        $monitor = $this->monitor($this->monitor_id);
-        if (count(collect($monitor)) == 0) {
-            $monitor = null;
-        } else {
-            $monitor = collect($monitor);
-        }
-        $activity =collect($this->activity());
-        // $data = [];
-        // $tracking = [];
-        // $monitor = null;
-        // $activity = [
-        //     "diupload" => 0,
-        //     "disahkan" => 0,
-        //     'proses' => 0
-        // ];
+        // $data = $this->get_dokumens($this->q_tinjau);
+        // $tracking = collect($this->tracking_document($this->q_tracking));
+        // $monitor = $this->monitor($this->monitor_id);
+        // if (count(collect($monitor)) == 0) {
+        //     $monitor = null;
+        // } else {
+        //     $monitor = collect($monitor);
+        // }
+        // $activity =collect($this->activity());
+        $data = [];
+        $tracking = [];
+        $monitor = null;
+        $activity = [
+            "diupload" => 0,
+            "disahkan" => 0,
+            'proses' => 0
+        ];
 
         $need_follow_up_section = 'd-none';
         if (Gate::forUser(session('auth')[0]['id'])->allows('picOrPihakTerkait')) {

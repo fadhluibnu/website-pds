@@ -1,6 +1,6 @@
 # Install Website PDS
 
-#### Kebutuhan :
+### Requirement :
 
 -   **PHP Versi 8 Keatas**
 -   **Composer**
@@ -29,7 +29,16 @@ composer install
 php artisan key:generate
 ```
 
-### 5. Run Project
+### 5. Buka File `.env`
+
+Ubah `APP_KEY` dan `APP_DEBUG` menjadi
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+```
+
+### 6. Run Project
 
 ```
 php artisan serve
