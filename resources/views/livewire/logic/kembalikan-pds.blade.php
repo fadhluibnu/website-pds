@@ -4,7 +4,7 @@
     </div>
     <div class="modal-content">
         <div class="header-modal border-bottom d-flex align-items-center justify-content-between">
-            <h1>Tinjau Dokumen : {{ $data[0]->judul }}</h1>
+            <h1>Tinjau Dokumen : {{ $data['judul'] }}</h1>
             <i class="bi bi-x-lg" style="cursor: pointer;" wire:click='closeX("null")'></i>
         </div>
         <div id="scroll-custom" class="box-modal-content overflow-auto" style="max-height: 85vh;">
@@ -17,7 +17,7 @@
                         <p>{{ $api[0]['role'] }}</p>
                     </div>
                 </div>
-                <button style="width: 80%;" wire:click='export("{{ $data[0]->file }}")'
+                <button style="width: 80%;" wire:click='export("{{ $data['file'] }}")'
                     class="btn d-flex border p-3 mt-3 box-radius-10 dokumen align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <svg width="27" height="26" viewBox="0 0 27 26" fill="none"
@@ -42,10 +42,10 @@
                         <i class="bi bi-download"></i>
                     </div>
                 </button>
-                <input type="text" value="{{ $attrKembalikan['location'] }}">
+                <input type="text" value="{{ $data['location'] }}">
                 <div class="deskripsi-kebutuhan mt-2 mb-3 ">
                     <h1>Deskripsi Kebutuhan :</h1>
-                    <p>{{ $data[0]->deskripsi }}</p>
+                    <p>{{ $data['deskripsi'] }}</p>
                 </div>
             </div>
             <form wire:submit.prevent="kembalikan({{ $attrKembalikan['id'] }})" class="mt-3" id="form-kembalikan">

@@ -143,8 +143,7 @@
                         </div>
                     </div>
                     <div type="button" class="btn btn-danger my-btn-danger box-radius-10 ms-3" wire:loading.remove
-                        wire:target='kembalikan' {{-- {{ $data[$i]['id'] }}, "{{ $data[$i]['pengendali'] }}", "{{ $data[$i]['manager'] }}", "{{ $data[$i]['management'] }}" --}}
-                        wire:click='kembalikan({{ $idDock }}, "{{ $location }}")'>
+                        wire:target='kembalikan' wire:click='kembalikan({{ $idDock }})'>
                         Kembalikan</div>
                     {{-- @endif --}}
                 </div>

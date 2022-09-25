@@ -57,18 +57,13 @@ class Peninjauan extends Component
     {
         $this->tinjau['for'] = 'tinjau';
         $this->tinjau['id'] = $attr['id'];
-        $this->tinjau['pengendali'] = $attr['pengendali'];
-        $this->tinjau['manager'] = $attr['manager'];
-        $this->tinjau['management'] = $attr['management'];
+        $this->tinjau['as_view'] = $attr['location'];
+        $this->tinjau['location'] = $attr['location'];
     }
     public function handlerKembalikan($attr)
     {
         $this->kembalikan['for'] = 'kembalikan';
         $this->kembalikan['id'] = $attr['id'];
-        $this->kembalikan['pengendali'] = $attr['pengendali'];
-        $this->kembalikan['manager'] = $attr['manager'];
-        $this->kembalikan['management'] = $attr['management'];
-        $this->kembalikan['location'] = $attr['location'];
     }
     public function handlerClose($attr)
     {
@@ -87,7 +82,8 @@ class Peninjauan extends Component
         if ($attr['for'] == 'tinjau') {
             $this->tinjau['for'] = "null";
             $this->tinjau['id'] = "null";
-            $this->tinjau['as_pic'] = "null";
+            $this->tinjau['as_view'] = "null";
+            $this->tinjau['location'] = "null";
         } elseif ($attr['for'] == 'kembalikan') {
             $this->kembalikan['for'] = 'null';
             $this->kembalikan['id'] = 'null';
@@ -325,7 +321,11 @@ class Peninjauan extends Component
                     $pemohon = collect($all_user)->where('id', $item->pemohon)->first();
                     //sebagai pic
                     if ($pic_status[0] == session('auth')[0]['role'] && $pic_status[1] == "false") {
-                        $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'pic');
+                        if ($item->status == 'Dikembalikan') {
+                            $data[] = $this->data_dokumen($item, "Dikembalikan", $pemohon, 'pic');
+                        } elseif ($item->status == 'Ditinjau') {
+                            $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'pic');
+                        }
                     }
                     if ($pic_status[0] == session('auth')[0]['role'] && $pic_status[1] != "false") {
                         $data[] = $this->data_dokumen($item, "Selesai", $pemohon, 'pic');
@@ -345,7 +345,11 @@ class Peninjauan extends Component
                         $pihakterkait_status = explode(":", $pihakterkaits_explode[$i_explode]);
                         $pemohon = collect($all_user)->where('id', $item->pemohon)->first();
                         if ($pihakterkait_status[0] == session('auth')[0]['role'] && $pihakterkait_status[1] == "false") {
-                            $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'pihak_terkait');
+                            if ($item->status == 'Dikembalikan') {
+                                $data[] = $this->data_dokumen($item, "Dikembalikan", $pemohon, 'pihak_terkait');
+                            } elseif ($item->status == 'Ditinjau') {
+                                $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'pihak_terkait');
+                            }
                         }
                         if ($pihakterkait_status[0] == session('auth')[0]['role'] && $pihakterkait_status[1] != "false") {
                             $data[] = $this->data_dokumen($item, "Selesai", $pemohon, 'pihak_terkait');
@@ -363,7 +367,11 @@ class Peninjauan extends Component
             if (Gate::forUser(session('auth')[0]['id'])->allows('management')) {
                 if ($check_for_management == 0) {
                     if ($item->management == null) {
-                        $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'management');
+                        if ($item->status == 'Dikembalikan') {
+                            $data[] = $this->data_dokumen($item, "Dikembalikan", $pemohon, 'management');
+                        } elseif ($item->status == 'Ditinjau') {
+                            $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'management');
+                        }
                     }
                     if ($item->management != null) {
                         $data[] = $this->data_dokumen($item, "Selesai", $pemohon, 'management');
@@ -375,7 +383,11 @@ class Peninjauan extends Component
             if (Gate::forUser(session('auth')[0]['id'])->allows('pengendaliDokumen')) {
                 if ($item->management != null) {
                     if ($item->pengendali_dokumen == null) {
-                        $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'pengendali_dokumen');
+                        if ($item->status == 'Dikembalikan') {
+                            $data[] = $this->data_dokumen($item, "Dikembalikan", $pemohon, 'pengendali_dokumen');
+                        } elseif ($item->status == 'Ditinjau') {
+                            $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'pengendali_dokumen');
+                        }
                     }
                     if ($item->pengendali_dokumen != null) {
                         $data[] = $this->data_dokumen($item, "Selesai", $pemohon, 'pengendali_dokumen');

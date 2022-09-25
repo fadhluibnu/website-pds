@@ -15,40 +15,41 @@ class KembalikanPds extends Component
     public $active = 'active';
     // public $idDock;
     public $attrKembalikan;
+    public $pics;
+    public $location;
     public $komentar;
     public function kembalikan($id)
     {
         $user = session('auth')[0];
-        $dokumen = Dokumen::where('id', $id)->update([
-            'status' => 2,
-            'pic_status' => false,
-            'pihakterkait_status' => false,
-            'management_status' => false,
-            'management_status' => false,
-            'pengembali_dokumen' => $this->attrKembalikan['location']
-        ]);
-        $pic = Pic::where('dokumen_id', $id)->update([
-            'pic' => null,
-            'status' => false
-        ]);
-        $pihak_terkait = PihakTerkait::where('dokumen_id', $id)->update([
+
+        $pics = explode("|", $this->pics);
+        $reset_pic = '';
+        for ($i_reset = 1; $i_reset <= count($pics) - 1; $i_reset++) {
+            $pic_status = explode(":", $pics[$i_reset]);
+            $reset_pic .= "|" . $pic_status[0] . ":false";
+        }
+        // dd($reset_pic);
+
+        $update_dokumen = Dokumen::where('id', $id)->update([
+            'status' => 'Dikembalikan',
+            'pic' => $reset_pic,
             'pihak_terkait' => null,
-            'status' => false
+            'management' => null,
+            'pengendali_dokumen' => null
         ]);
-        $history_lama = History::where('dokumen_id', $id)->where('type', 'catatan_now')->update([
-            'type' => 'catatan'
-        ]);
-        $history = History::create([
-            'type' => 'catatan_now',
-            'dokumen_id' => $id,
-            'user_id' => $user['id'],
-            'user_name' => $user['name'],
-            'photo' => $user['photo'],
-            'judul' => 'PDS Dikembalikan',
-            'pesan' => $this->komentar
-        ]);
-        if ($dokumen || $pic || $pihak_terkait || $history || $history_lama) {
-            // event(new EventStatus($id, "dikembalikan"));
+        if ($update_dokumen) {
+            History::where('dokumen_id', $id)->where('type', 'catatan_now')->update([
+                'type' => 'catatan'
+            ]);
+            History::create([
+                'type' => 'catatan_now',
+                'dokumen_id' => $id,
+                'user_id' => $user['id'],
+                'user_name' => $user['name'],
+                'photo' => $user['photo'],
+                'judul' => 'PDS Dikembalikan',
+                'pesan' => $this->komentar
+            ]);
             $this->active = 'off';
             $param = [
                 'for' => 'kembalikan',
@@ -79,13 +80,19 @@ class KembalikanPds extends Component
             'session' => 'null'
         ];
         $this->emit('closeModal', $param);
-        $this->emit('fromKembalikan', $this->attrKembalikan);
+
+        $arr = [
+            'id' => $this->attrKembalikan['id'],
+            'location' => $this->location
+        ];
+        $this->emit('fromKembalikan', $arr);
     }
     public function render()
     {
-        // dd($this->attrKembalikan);
-        $data = Dokumen::where('id', $this->attrKembalikan['id'])->get();
-        $http = Http::get(env("URL_API_GET_USER") . $data[0]->pemohon);
+        $data = Dokumen::where('id', $this->attrKembalikan['id'])->first();
+        $this->location = $data['location'];
+        $this->pics = $data['pic'];
+        $http = Http::get(env("URL_API_GET_USER") . $data['pemohon']);
         return view('livewire.logic.kembalikan-pds', [
             'data' => $data,
             'api' => $http

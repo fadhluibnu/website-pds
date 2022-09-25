@@ -345,7 +345,7 @@ class Tinjau extends Component
             $this->emit('openKembalikan', $default);
         }
     }
-    public function kembalikan($id, $location, $pengendali, $manager, $management)
+    public function kembalikan($id)
     {
         $this->active = 'off';
         $param = [
@@ -355,10 +355,6 @@ class Tinjau extends Component
         $this->emit('closeModal', $param);
         $arr = [
             'id' => $id,
-            'pengendali' => $pengendali,
-            'manager' => $manager,
-            'management' => $management,
-            'location' => $location
         ];
         $this->emit('openKembalikan', $arr);
     }
