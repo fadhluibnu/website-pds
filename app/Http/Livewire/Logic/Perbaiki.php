@@ -17,24 +17,34 @@ class Perbaiki extends Component
     public $idDokumen;
     public $file;
     public $judul;
-    public $status = 1;
-    public $pengembali_dokumen;
-    protected $rules =  [
+    public $status;
+    public $location;
+
+    public function closeX()
+    {
+        $this->active = 'off';
+        $param = [
+            'for' => null,
+            'session' => 'null'
+        ];
+        $this->emit('closeModal', $param);
+    }
+    protected $rules = [
         'file' => 'required|mimes:docx',
         'status' => 'required',
-        // 'pengembali_dokumen' => 'required'
+        'location' => 'required'
     ];
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
     }
+
     public function update_file()
     {
-        $this->pengembali_dokumen = null;
-        $this->rules += [
-            "pengembali_dokumen" => 'nullable'
-        ];
         $validatedData = $this->validate();
+        $validatedData['file'] = $this->file->store('dokumen-pds', 'public');
+
         $update = Dokumen::where('id', $this->idDokumen)->update($validatedData);
         if ($update) {
             $history = History::create([
@@ -42,6 +52,7 @@ class Perbaiki extends Component
                 'user_id' => session('auth')[0]['id'],
                 'user_name' => session('auth')[0]['name'],
                 'photo' => session('auth')[0]['photo'],
+                'file' => $validatedData['file'],
                 'judul' => 'PDS Berhasil Diperbaiki',
                 'pesan' => 'Dokumen <strong>' . $this->judul . '</strong> telah berhasil diperbaiki'
             ]);
@@ -50,11 +61,6 @@ class Perbaiki extends Component
                     'for' => null,
                     'session' => 'perbaiki'
                 ];
-                // $pic = Pic::where('dokumen_id', $this->idDokumen)->get();
-                // $event = [];
-                // foreach ($pic as $item) {
-                //     $event[] = $item->role_id;
-                // }
                 $this->emit('closeModal', $param);
             }
         }
@@ -62,16 +68,16 @@ class Perbaiki extends Component
 
     public function render()
     {
-        $data = Dokumen::where('id', $this->idDokumen)->get();
-        $history = $data[0]->histories->where('dokumen_id', $this->idDokumen)->where('type', 'catatan_now');
-        foreach ($history as $item) {
-            if ($item->type == "catatan_now") {
-                $http = Http::get(env("URL_API_GET_USER") . $item->user_id);
-            }
-        }
+        $this->status = "Ditinjau";
+        $this->location = "PIC";
+        $data = Dokumen::where('id', $this->idDokumen)->first();
+        $this->judul = $data['judul'];
+        $history = History::where('dokumen_id', $this->idDokumen)->where('type', 'catatan_now')->first();
+        $http = Http::get(env("URL_API_GET_USER") . $history['user_id']);
         $http = $http->json();
         return view('livewire.logic.perbaiki', [
-            'data' => $data[0],
+            'data' => $data,
+            'history' => $history,
             'person' => $http[0]['name']
         ]);
     }

@@ -162,9 +162,14 @@
                                 @endif
                                 @if ($item->status == 'Dikembalikan')
                                     <div id="{{ $item->id . 'perbaiki' }}" class="d-flex">
-                                        <div class="bg-danger w-100 p-2 py-0 text-center fw-medium text-white rounded-pill"
+                                        <div class="bg-danger w-100 p-2 py-1 text-center fw-medium text-white rounded-pill"
                                             style="cursor: pointer;"
-                                            wire:click='openModal("perbaiki", {{ $item->id }})'>
+                                            wire:click='openModal("perbaiki", {{ $item->id }})'
+                                            onclick="wireClick('spinerPerbaiki{{ $item->id }}', 'folderPerbaiki{{ $item->id }}')">
+                                            <span id="spinerPerbaiki{{ $item->id }}"
+                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
+                                                aria-hidden="true"></span>
+                                            <span id="folderPerbaiki{{ $item->id }}"></span>
                                             Perbaiki
                                         </div>
                                     </div>
