@@ -97,20 +97,20 @@
                                 class="d-none badge text-bg-danger">Dihapus</span>
                         </td>
                         <td class="py-2">
-                            @if ($item['status'] == 1)
+                            @if ($item['status'] == 'Ditinjau')
                                 <div id="{{ $item['identitas'] . 'status' }}"
                                     class="bg-primary-status
                                 text-center p-2 rounded-pill">
                                     Ditinjau
                                 </div>
                             @endif
-                            @if ($item['status'] == 2)
+                            @if ($item['status'] == 'Dikembalikan')
                                 <div id="{{ $item['identitas'] . 'dikembalikan' }}"
                                     class="bg-danger-status text-center p-2 rounded-pill">
                                     Dikembalikan
                                 </div>
                             @endif
-                            @if ($item['status'] == 3)
+                            @if ($item['status'] == 'Selesai')
                                 <div id="{{ $item['identitas'] . 'selesai' }}"
                                     class="bg-success-status text-center p-2 rounded-pill">
                                     Selesai
@@ -140,7 +140,7 @@
                                         <span>Detail & History</span>
                                     </div>
                                 </div>
-                                @if ($item['status'] != 1)
+                                @if ($item['status'] != 'Ditinjau')
                                     <div
                                         class="{{ 'aksi' . $item['identitas'] }} disable box-icon bg-success rounded-circle ms-2">
                                         <span id="spinerTinjau{{ $item['id'] }}"
@@ -154,7 +154,7 @@
                                     </div>
                                 @else
                                     <div class="{{ 'aksi' . $item['identitas'] }} box-icon bg-success rounded-circle ms-2"
-                                        wire:click='openTinjau("tinjau", {{ $item['id'] }}, "{{ $item['pengendali'] }}", "{{ $item['manager'] }}", "{{ $item['manajemen'] }}", "{{ $item['location'] }}")'
+                                        wire:click='openTinjau("tinjau", {{ $item['id'] }}, "{{ $item['as_view'] }}", "{{ $item['location'] }}")'
                                         onclick="wireClick('spinerTinjau{{ $item['identitas'] }}', 'eyeTinjau{{ $item['identitas'] }}')">
                                         <span id="spinerTinjau{{ $item['identitas'] }}"
                                             class="spinner-border spinner-border-sm m-auto d-none" role="status"
@@ -170,184 +170,6 @@
                         </td>
                     </tr>
                 @endforeach
-                {{-- @if (!$data)
-                    <tr>
-                        <td colspan="7">Tidak ada dokumen</td>
-                    </tr>
-                @else
-                    @php
-                        $loop = 0;
-                    @endphp
-                    @for ($i = 0; $i <= count($data) - 1; $i++)
-                        @php
-                            $loop += 1;
-                        @endphp
-                        <tr class="peninjauan">
-                            <td class="py-2 px-3 pe-0">{{ $loop }}</td>
-                            <td class="py-2">{{ $data[$i]['nomor'] }}</td>
-                            <td class="py-2">{{ $data[$i]['judul'] }}
-                                @if ($badge)
-                                    @for ($x = 0; $x <= count($badge) - 1; $x++)
-                                        @if ($badge[$x] == $data[$i]['identitas'])
-                                            <span id="{{ $data[$i]['identitas'] . 'baru' }}"
-                                                class="badge text-bg-primary">Baru</span>
-                                        @endif
-                                    @endfor
-                                @endif
-                                <span id="{{ $data[$i]['identitas'] . 'hapus' }}"
-                                    class="d-none badge text-bg-danger">Dihapus</span>
-                            </td>
-                            <td class="py-2">
-                                @if ($data[$i]['status'] == 1)
-                                    <div id="{{ $data[$i]['identitas'] . 'status' }}"
-                                        class="bg-primary-status
-                                    text-center p-2 rounded-pill">
-                                        Ditinjau
-                                    </div>
-                                @endif
-                                @if ($data[$i]['status'] == 2)
-                                    <div id="{{ $data[$i]['identitas'] . 'dikembalikan' }}"
-                                        class="bg-danger-status text-center p-2 rounded-pill">
-                                        Dikembalikan
-                                    </div>
-                                @endif
-                                @if ($data[$i]['status'] == 3)
-                                    <div id="{{ $data[$i]['identitas'] . 'selesai' }}"
-                                        class="bg-success-status text-center p-2 rounded-pill">
-                                        Selesai
-                                    </div>
-                                @endif
-                            </td>
-                            <td class="py-2">
-                                <div class="d-flex align-items-center">
-                                    <div class="prof-circle"
-                                        style="background-image: url({{ env('URL_WEB_API') . 'storage/' . $data[$i]['photo'] }});">
-                                    </div>
-                                    <span class="fw-medium ms-2 m-0">{{ $data[$i]['pemohon'] }}</span>
-                                </div>
-                            </td>
-                            <td class="py-2">{{ date('d/m/Y', strtotime($data[$i]['tgl'])) }}</td>
-                            <td class="py-2 px-3 ps-0">
-                                <div class="d-flex">
-                                    <div class="{{ 'aksi' . $data[$i]['identitas'] }} box-icon bg-primary rounded-circle"
-                                        wire:click='openModal("detail", {{ $data[$i]['id'] }})'
-                                        onclick="wireClick('spinerDetail{{ $data[$i]['identitas'] }}', 'folderDetail{{ $data[$i]['identitas'] }}')">
-                                        <span id="spinerDetail{{ $data[$i]['identitas'] }}"
-                                            class="spinner-border spinner-border-sm m-auto d-none" role="status"
-                                            aria-hidden="true"></span>
-                                        <i id="folderDetail{{ $data[$i]['identitas'] }}"
-                                            class="bi bi-folder-fill"></i>
-                                        <div class="my-tooltip d-none">
-                                            <div class="segitiga"></div>
-                                            <span>Detail & History</span>
-                                        </div>
-                                    </div>
-                                    @if ($data[$i]['status'] != 1)
-                                        <div
-                                            class="{{ 'aksi' . $data[$i]['identitas'] }} disable box-icon bg-success rounded-circle ms-2">
-                                            <span id="spinerTinjau{{ $data[$i]['id'] }}"
-                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
-                                                aria-hidden="true"></span>
-                                            <i id="eyeTinjau{{ $data[$i]['id'] }}" class="bi bi-eye-fill"></i>
-                                            <div class="my-tooltip d-none">
-                                                <div class="segitiga"></div>
-                                                <span>Tinjau</span>
-                                            </div>
-                                        </div>
-                                    @else
-                                        <div class="{{ 'aksi' . $data[$i]['identitas'] }} box-icon bg-success rounded-circle ms-2"
-                                            wire:click='openTinjau("tinjau", {{ $data[$i]['id'] }}, "{{ $data[$i]['pengendali'] }}", "{{ $data[$i]['manager'] }}", "{{ $data[$i]['manajemen'] }}")'
-                                            onclick="wireClick('spinerTinjau{{ $data[$i]['identitas'] }}', 'eyeTinjau{{ $data[$i]['identitas'] }}')">
-                                            <span id="spinerTinjau{{ $data[$i]['identitas'] }}"
-                                                class="spinner-border spinner-border-sm m-auto d-none" role="status"
-                                                aria-hidden="true"></span>
-                                            <i id="eyeTinjau{{ $data[$i]['identitas'] }}" class="bi bi-eye-fill"></i>
-                                            <div class="my-tooltip d-none">
-                                                <div class="segitiga"></div>
-                                                <span>Tinjau</span>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                    @endfor
-                @endif --}}
-                {{-- <tr class="peninjauan">
-                    <td class="py-2 px-3 pe-0">2</td>
-                    <td class="py-2">123457ADB</td>
-                    <td class="py-2">Lorem ipsum dolor sit amet</td>
-                    <td class="py-2">
-                        <div class="bg-danger-status text-center p-2 rounded-pill">
-                            Dikembalikan
-                        </div>
-                    </td>
-                    <td class="py-2">
-                        <div class="d-flex align-items-center">
-                            <div class="prof-circle" style="background-image: url(assets/thomeas.png);">
-                            </div>
-                            <span class="fw-medium ms-2 m-0">Thomeas</span>
-                        </div>
-                    </td>
-                    <td class="py-2">17/01/2022</td>
-                    <td class="py-2 px-3 ps-0">
-                        <div class="d-flex">
-                            <div class="box-icon bg-primary rounded-circle"
-                                onclick="modalTarget('open','modal-detail-targeted')"><i
-                                    class="bi bi-folder-fill"></i>
-                                <div class="my-tooltip d-none">
-                                    <div class="segitiga"></div>
-                                    <span>Detail & History</span>
-                                </div>
-                            </div>
-                            <div class="box-icon disable bg-success rounded-circle ms-2"><i
-                                    class="bi bi-eye-fill"></i>
-                                <div class="my-tooltip d-none">
-                                    <div class="segitiga"></div>
-                                    <span>Disable</span>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="peninjauan">
-                    <td class="py-2 px-3 pe-0">3</td>
-                    <td class="py-2">123457ADB</td>
-                    <td class="py-2">Lorem ipsum dolor sit amet</td>
-                    <td class="py-2">
-                        <div class="bg-success-status text-center p-2 rounded-pill">
-                            Selesai
-                        </div>
-                    </td>
-                    <td class="py-2">
-                        <div class="d-flex align-items-center">
-                            <div class="prof-circle" style="background-image: url(assets/thomeas.png);">
-                            </div>
-                            <span class="fw-medium ms-2 m-0">Thomeas</span>
-                        </div>
-                    </td>
-                    <td class="py-2">17/01/2022</td>
-                    <td class="py-2 px-3 ps-0">
-                        <div class="d-flex">
-                            <div class="box-icon bg-primary rounded-circle"
-                                onclick="modalTarget('open','modal-detail-targeted')" onmouseover="showToolstip()"
-                                onmouseout="hideToolstip()"><i class="bi bi-folder-fill m-auto"></i>
-                                <div class="my-tooltip d-none">
-                                    <div class="segitiga"></div>
-                                    <span>Detail & History</span>
-                                </div>
-                            </div>
-                            <div class="box-icon disable bg-success rounded-circle ms-2" onmouseover="showToolstip()">
-                                <i class="bi
-                                bi-eye-fill"></i>
-                                <div class="my-tooltip d-none">
-                                    <div class="segitiga"></div>
-                                    <span>Disable</span>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr> --}}
             </tbody>
         </table>
     </div>

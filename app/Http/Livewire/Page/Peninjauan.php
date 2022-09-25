@@ -25,9 +25,7 @@ class Peninjauan extends Component
     public $tinjau = [
         'for' => 'null',
         'id' => 'null',
-        'pengendali' => 'null',
-        'manager' => 'null',
-        'manajemen' => 'null',
+        'as_view' => 'null',
         'location' => 'null'
     ];
     public $kembalikan = [
@@ -48,13 +46,11 @@ class Peninjauan extends Component
         $this->modal['for'] = $for;
         $this->modal['message'] = $message;
     }
-    public function openTinjau($for, $id, $pengendali, $manager, $manajemen, $location)
+    public function openTinjau($for, $id, $as_view, $location)
     {
         $this->tinjau['for'] = $for;
         $this->tinjau['id'] = $id;
-        $this->tinjau['pengendali'] = $pengendali;
-        $this->tinjau['manager'] = $manager;
-        $this->tinjau['manajemen'] = $manajemen;
+        $this->tinjau['as_view'] = $as_view;
         $this->tinjau['location'] = $location;
     }
     public function handlerTinjau($attr)
@@ -295,22 +291,103 @@ class Peninjauan extends Component
         }
         return $result;
     }
-    public function data_dokumen($value, $get_pemohon, $status, $pengendali, $manager, $manajemen, $location)
+    public function data_dokumen($value, $status, $get_pemohon, $as_view)
     {
         $data = [
             'id' => $value->id,
-            'identitas' => $value->id . 'ditinjau',
+            'identitas' => $value->id . $status,
             'nomor' => $value->nomor,
             'judul' => $value->judul,
             'status' => $status,
-            'pemohon' => $get_pemohon[0]['name'],
-            'photo' => $get_pemohon[0]['photo'],
+            'pemohon' => $get_pemohon['name'],
+            'photo' => $get_pemohon['photo'],
             'tgl' => $value->created_at,
-            'pengendali' => $pengendali,
-            'manager' => $manager,
-            'manajemen' => $manajemen,
-            'location' => $location
+            'location' => $value->location,
+            'as_view' =>  $as_view
         ];
+        return $data;
+    }
+
+    public function get_dokumen2()
+    {
+        $data = [];
+        $dokumen  = Dokumen::latest()->get();
+
+        $all_user_query = Http::withToken(session('token'))->get(env("URL_API_GET_USER"));
+        $all_user = $all_user_query->json();
+        foreach ($dokumen as $item) {
+            $check_for_pihakterkait = 0;
+            $check_for_management = 0;
+            if ($item->pic != null) {
+                $pics_explode = explode("|", $item->pic);
+                for ($i_explode = 1; $i_explode <= count($pics_explode) - 1; $i_explode++) {
+                    $pic_status = explode(":", $pics_explode[$i_explode]);
+                    $pemohon = collect($all_user)->where('id', $item->pemohon)->first();
+                    //sebagai pic
+                    if ($pic_status[0] == session('auth')[0]['role'] && $pic_status[1] == "false") {
+                        $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'pic');
+                    }
+                    if ($pic_status[0] == session('auth')[0]['role'] && $pic_status[1] != "false") {
+                        $data[] = $this->data_dokumen($item, "Selesai", $pemohon, 'pic');
+                    }
+
+                    // sebagai pihak terkait dan check unutuk management
+                    if ($pic_status[1] == 'false') {
+                        $check_for_pihakterkait += 1;
+                        $check_for_management += 1;
+                    }
+                }
+            }
+            if ($item->pihak_terkait != null) {
+                if ($check_for_pihakterkait == 0) {
+                    $pihakterkaits_explode = explode("|", $item->pihak_terkait);
+                    for ($i_explode = 1; $i_explode <= count($pihakterkaits_explode) - 1; $i_explode++) {
+                        $pihakterkait_status = explode(":", $pihakterkaits_explode[$i_explode]);
+                        $pemohon = collect($all_user)->where('id', $item->pemohon)->first();
+                        if ($pihakterkait_status[0] == session('auth')[0]['role'] && $pihakterkait_status[1] == "false") {
+                            $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'pihak_terkait');
+                        }
+                        if ($pihakterkait_status[0] == session('auth')[0]['role'] && $pihakterkait_status[1] != "false") {
+                            $data[] = $this->data_dokumen($item, "Selesai", $pemohon, 'pihak_terkait');
+                        }
+
+                        // check unutuk management
+                        if ($pihakterkait_status[1] == "false") {
+                            $check_for_management += 1;
+                        }
+                    }
+                }
+            }
+
+            // -sebagai management
+            if (Gate::forUser(session('auth')[0]['id'])->allows('management')) {
+                if ($check_for_management == 0) {
+                    if ($item->management == null) {
+                        $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'management');
+                    }
+                    if ($item->management != null) {
+                        $data[] = $this->data_dokumen($item, "Selesai", $pemohon, 'management');
+                    }
+                }
+            }
+
+            // sebagai pengendali dokumen
+            if (Gate::forUser(session('auth')[0]['id'])->allows('pengendaliDokumen')) {
+                if ($item->management != null) {
+                    if ($item->pengendali_dokumen == null) {
+                        $data[] = $this->data_dokumen($item, "Ditinjau", $pemohon, 'pengendali_dokumen');
+                    }
+                    if ($item->pengendali_dokumen != null) {
+                        $data[] = $this->data_dokumen($item, "Selesai", $pemohon, 'pengendali_dokumen');
+                    }
+                }
+            }
+        }
+        // dd($data);
+        $data = collect($data)->sortBy([
+            ['status', 'asc'],
+            ['identitas', 'asc'],
+        ]);
         return $data;
     }
     public function render()
@@ -321,7 +398,11 @@ class Peninjauan extends Component
         // } else {
         //     $data = collect($this->get_dokumens());
         // }
-        $data = [];
+        $data = collect($this->get_dokumen2());
+
+        // foreach ($data as $i) {
+        //     dd($i[0]['id']);
+        // }
 
         return view('livewire.page.peninjauan', [
             'data' => $data

@@ -51,43 +51,53 @@
                 @csrf
                 <input type="text" wire:model='idDock'>
                 <input type="text" wire:model='judul'>
-                <input type="text" wire:model='pengendali'>
-                <input type="text" wire:model='manager'>
-                <input type="text" wire:model='manajemen'>
+                <input type="text" wire:model='as_view'>
                 <input type="text" wire:model='role'>
                 <input type="text" wire:model='location'>
                 <input type="text" wire:model='id_peninjau'>
                 <input type="text" wire:model='old_file'>
-                @if ($pengendali != 'as_pihak_terkait' &&
-                    $manager != 'as_pihak_terkait' &&
-                    $manajemen != 'as_pihak_terkait' &&
-                    $manager != 'null' &&
-                    $pengendali != 'null' &&
-                    $manajemen != 'null')
+                @if ($location == 'PIC')
                     <div class="mb-3">
                         <label for="pihakterkait" class="form-label">Pihak Terkait</label>
                         <div class="d-flex flex-wrap">
-                            <input type="checkbox" wire:model.defer="pengendalidokumen" class="d-none btn-check-custom"
-                                id="pengendali-dokumen" value="Document Controller">
-                            <label for="pengendali-dokumen" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                Pengendali
-                                Dokumen</label>
-                            <input type="checkbox" wire:model.defer="manageriqa" class="d-none btn-check-custom"
-                                id="manager-iqa" value="Lab Manager IQA">
-                            <label for="manager-iqa" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                Manager IQA</label>
-                            <input type="checkbox" wire:model.defer="managerurel" class="d-none btn-check-custom"
-                                id="manager-urel" value="Lab Manager UREL">
-                            <label for="manager-urel" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                Manager UREL</label>
-                            <input type="checkbox" wire:model.defer="managerdeqa" class="d-none btn-check-custom"
-                                id="manager-deqa" value="Lab Manager DEQA">
-                            <label for="manager-deqa" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                Manager DEQA</label>
-                            <input type="checkbox" wire:model.defer="smias" class="d-none btn-check-custom"
-                                id="osm-tth" value="SM IAS">
-                            <label for="osm-tth" class="btn-checkbox"><i class="bi bi-check-circle-fill"></i>
-                                OSM TTH</label>
+                            <div class="row">
+                                <div class="col-6 pe-1">
+                                    <input type="checkbox" wire:model.defer="manageriqa" class="d-none btn-check-custom"
+                                        id="manager-iqa" value="Lab Manager IQA">
+                                    <label for="manager-iqa" class="btn-checkbox text-center"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        Manager IQA</label>
+                                </div>
+                                <div class="col-6 ps-1">
+                                    <input type="checkbox" wire:model.defer="managerurel"
+                                        class="d-none btn-check-custom" id="manager-urel" value="Lab Manager UREL">
+                                    <label for="manager-urel" class="btn-checkbox text-center"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        Manager UREL</label>
+                                </div>
+                                <div class="col-6 pe-1">
+                                    <input type="checkbox" wire:model.defer="managerdeqa"
+                                        class="d-none btn-check-custom" id="manager-deqa" value="Lab Manager DEQA">
+                                    <label for="manager-deqa" class="btn-checkbox text-center"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        Manager DEQA</label>
+                                </div>
+                                <div class="col-6 ps-1">
+                                    <input type="checkbox" wire:model.defer="smias" class="d-none btn-check-custom"
+                                        id="osm-tth" value="SM IAS">
+                                    <label for="osm-tth" class="btn-checkbox text-center"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        OSM TTH</label>
+                                </div>
+                                <div class="col-12">
+                                    <input type="checkbox"
+                                        wire:model.defer="pengendalidokumen"class="d-none btn-check-custom"
+                                        id="pengendali-dokumen" value="Document Controller 1">
+                                    <label for="pengendali-dokumen" class="btn-checkbox text-center"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        Pengendali Dokumen</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 @endif
@@ -134,7 +144,7 @@
                     </div>
                     <div type="button" class="btn btn-danger my-btn-danger box-radius-10 ms-3" wire:loading.remove
                         wire:target='kembalikan' {{-- {{ $data[$i]['id'] }}, "{{ $data[$i]['pengendali'] }}", "{{ $data[$i]['manager'] }}", "{{ $data[$i]['management'] }}" --}}
-                        wire:click='kembalikan({{ $idDock }}, "{{ $location }}", "{{ $pengendali }}", "{{ $manager }}", "{{ $manajemen }}")'>
+                        wire:click='kembalikan({{ $idDock }}, "{{ $location }}")'>
                         Kembalikan</div>
                     {{-- @endif --}}
                 </div>

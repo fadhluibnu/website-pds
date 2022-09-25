@@ -36,6 +36,7 @@ class Tinjau extends Component
     public $file;
     public $komentar;
     public $old_file;
+    public $as_view;
 
     public $pengendalidokumen;
     public $manageriqa;
@@ -49,161 +50,259 @@ class Tinjau extends Component
 
     public function tinjau_pds()
     {
+        $dokumen_query = Dokumen::where('id', $this->idDock);
         $id_user = session('auth')[0]['id'];
-        $dokumen = Dokumen::where('id', $this->idDock);
-        $event = $dokumen->get();
-
-        if (Gate::forUser(session('auth')[0]['id'])->allows('picOrPihakTerkait')) {
-            if ($this->pengendali == "as_pic" || $this->manager == "as_pic" || $this->manajemen == "as_pic") {
-                $this->for_pic();
-            } elseif ($this->pengendali == "as_pihak_terkait" || $this->manager == "as_pihak_terkait" || $this->manajemen == "as_pihak_terkait") {
-                $this->pihak_terkait();
-            } elseif ($this->pengendali == "not_pic_and_pihak_terkait") {
-                $latst = $dokumen->update([
-                    'status' => 3,
-                    'pengendali_status' => true,
-                    'pengendali' => $this->id_peninjau,
-                ]);
-                if ($latst) {
-                    $this->operation = true;
-                }
-            } elseif ($this->manajemen == "manajemen") {
-                // dd("oke");
-                $check = $dokumen->first();
-                if ($check->management_status == false) {
-                    $dokumen->update([
-                        'management_status' => true,
-                    ]);
-                }
-                if ($check->management == null) {
-                    $dokumen->update([
-                        'management' => $this->id_peninjau,
-                    ]);
-                }
-                $this->operation = true;
-            }
-        }
-
-        // if ($this->manajemen == null) {
-        //     dd("oke");
-        //     $check = $dokumen->first();
-        //     if ($check->management_status == false) {
-        //         $dokumen->update([
-        //             'management_status' => true,
-        //         ]);
-        //     }
-        //     if ($check->management == null) {
-        //         $dokumen->update([
-        //             'management' => $this->id_peninjau,
-        //         ]);
-        //     }
-        //     $this->operation = true;
-        // }
-        $file_now = null;
-        if ($this->file != null && $this->operation) {
-            $file_now = $this->file->store('dokumen-pds', 'public');
-            $update = $dokumen->update([
-                'file' => $file_now
-            ]);
-            if ($update) {
-                $this->operation = true;
-            }
-        }
-
-        if ($this->operation) {
-            $history = History::create([
-                'dokumen_id' => $this->idDock,
-                'user_id' => $id_user,
-                'user_name' => session('auth')[0]['name'],
-                'file' => $file_now,
-                'photo' => session('auth')[0]['photo'],
-                'judul' => 'PDS Telah Disetujui',
-                'pesan' => $this->komentar
-            ]);
-            if ($history) {
-                $this->operation = true;
-            }
-        }
-        if ($this->operation) {
-            $this->active = 'off';
-            $param = [
-                'for' => 'tinjau',
-                'session' => 'tinjau'
-            ];
-            $this->emit('closeModal', $param);
-        } else {
-            session()->flash('err', "PDS Gagal Disubmit");
-        }
-    }
-
-    public function for_pic()
-    {
-        if ($this->pengendalidokumen == null & $this->managerdeqa == null & $this->manageriqa == null & $this->managerurel == null & $this->smias == null) {
-            $this->alertPic = "<script>alert('Anda belum memilih Penanggung Jawab')</script>";
-        } else {
-            $this->Pic();
-            if ($this->operation) {
+        if ($this->as_view == 'pic') {
+            if ($this->pengendalidokumen == null & $this->managerdeqa == null & $this->manageriqa == null & $this->managerurel == null & $this->smias == null) {
+                $this->alertPic = "<script>alert('Anda belum memilih Penanggung Jawab')</script>";
+            } else {
+                $dokumen  = $dokumen_query->first();
+                $pihakterkait_selected = '';
                 if ($this->pengendalidokumen != null) {
-                    $this->store_pihak_terkait($this->idDock, "Document Controller 1");
+                    $pihakterkait_selected .= "|" . $this->pengendalidokumen . ":false";
                 }
                 if ($this->managerdeqa != null) {
-                    $this->store_pihak_terkait($this->idDock, $this->managerdeqa);
+                    $pihakterkait_selected .= "|" . $this->managerdeqa . ":false";
                 }
                 if ($this->manageriqa != null) {
-                    $this->store_pihak_terkait($this->idDock, $this->manageriqa);
+                    $pihakterkait_selected .= "|" . $this->manageriqa . ":false";
                 }
                 if ($this->managerurel != null) {
-                    $this->store_pihak_terkait($this->idDock, $this->managerurel);
+                    $pihakterkait_selected .= "|" . $this->managerurel . ":false";
                 }
                 if ($this->smias != null) {
-                    $this->store_pihak_terkait($this->idDock, $this->smias);
+                    $pihakterkait_selected .= "|" . $this->smias . ":false";
+                }
+
+                if ($dokumen['pihak_terkait'] != null) {
+                    $pihakterkait_selected .= $dokumen['pihak_terkait'];
+                }
+
+                $pihakterkait_selected = collect(explode("|", $pihakterkait_selected))->sort();
+                $pihakterkait_selected_new = [];
+                $pihakterkait_selected_filter = '';
+
+                foreach ($pihakterkait_selected as $value) {
+                    $pihakterkait_selected_new[] = $value;
+                }
+                for ($i_filter = 1; $i_filter <= count($pihakterkait_selected_new) - 1; $i_filter++) {
+                    if ($i_filter + 1 == count($pihakterkait_selected_new)) {
+                        if ($pihakterkait_selected_new[$i_filter] != $pihakterkait_selected_new[1]) {
+                            $pihakterkait_selected_filter .= "|" . $pihakterkait_selected_new[$i_filter];
+                        }
+                    }
+                    if ($i_filter + 1 != count($pihakterkait_selected_new)) {
+                        if ($pihakterkait_selected_new[$i_filter] != $pihakterkait_selected_new[$i_filter + 1]) {
+                            $pihakterkait_selected_filter .= "|" . $pihakterkait_selected_new[$i_filter];
+                        }
+                    }
+                }
+
+                // dd($pihakterkait_selected_filter);
+
+                $old_pic = $dokumen['pic'];
+                $pics_explode = explode("|", $old_pic);
+                $new_pic_status = [];
+
+                $check_location = 0;
+                for ($i_explode = 1; $i_explode <= count($pics_explode) - 1; $i_explode++) {
+                    $pic_status = explode(":", $pics_explode[$i_explode]);
+
+                    // mengubah location jika semua pic tidak bernilai false
+                    if ($pic_status[1] == 'false') {
+                        // dd("oke");
+                        $check_location += 1;
+                    }
+                    // memperbarui pic
+                    if ($pic_status[0] == $this->role) {
+                        $new_pic_status = [
+                            $pic_status[0],
+                            $this->id_peninjau
+                        ];
+                    }
+                }
+                if ($check_location == 1) {
+                    $this->location = "pihak_terkait";
+                }
+
+                // menyimpan perubahan status pic
+                $update_pic = '';
+                for ($i_update_pic = 1; $i_update_pic <= count($pics_explode) - 1; $i_update_pic++) {
+                    $pic_status_update = explode(":", $pics_explode[$i_update_pic]);
+                    if ($pic_status_update[0] != $this->role) {
+                        $update_pic .= "|" . $pic_status_update[0] . ":" . $pic_status_update[1];
+                    }
+                }
+                $update_pic .= "|" . $new_pic_status[0] . ":" . $new_pic_status[1];
+
+                // file handler
+                $file_handler = null;
+                $file_history = null;
+
+                if ($this->file == null) {
+                    $file_handler = $this->old_file;
+                } else {
+                    $file_handler = $this->file->store('dokumen-pds', 'public');
+                    $file_history = $file_handler;
+                }
+
+                $update_dokumen = $dokumen_query->update([
+                    'file' => $file_handler,
+                    'pic' => $update_pic,
+                    'pihak_terkait' => $pihakterkait_selected_filter,
+                    'location' => $this->location
+                ]);
+                if ($update_dokumen) {
+                    History::create([
+                        'dokumen_id' => $this->idDock,
+                        'user_id' => $id_user,
+                        'user_name' => session('auth')[0]['name'],
+                        'file' => $file_history,
+                        'photo' => session('auth')[0]['photo'],
+                        'judul' => 'PDS Telah Disetujui',
+                        'pesan' => $this->komentar
+                    ]);
+                    $this->active = 'off';
+                    $param = [
+                        'for' => 'tinjau',
+                        'session' => 'tinjau'
+                    ];
+                    $this->emit('closeModal', $param);
+                } else {
+                    session()->flash('err', "PDS Gagal Disubmit");
                 }
             }
-        }
-    }
-    public function Pic()
-    {
-        $pic = Pic::where('dokumen_id', $this->idDock)->where('role_id', $this->role)->update([
-            'pic' => $this->id_peninjau,
-            'status' => true
-        ]);
-        if ($pic) {
-            $check = Pic::where('dokumen_id', $this->idDock)->where('status', false)->get();
-            if (count($check) == 0) {
-                Dokumen::where('id', $this->idDock)->update([
-                    'pic_status' => true
-                ]);
+        } elseif ($this->as_view == 'pihak_terkait') {
+            $dokumen  = $dokumen_query->first();
+            $pihakterkait_now = explode("|", $dokumen['pihak_terkait']);
+
+            $update_role_pihakterkait = [];
+            $update_pihakterkait = '';
+            $check_location = 0;
+
+            for ($i_now = 1; $i_now <= count($pihakterkait_now) - 1; $i_now++) {
+                $pihakterkait_status = explode(":", $pihakterkait_now[$i_now]);
+                if ($pihakterkait_status[0] == $this->role) {
+                    $update_role_pihakterkait = [
+                        $pihakterkait_status[0], $this->id_peninjau
+                    ];
+                }
+                if ($pihakterkait_status[0] != $this->role) {
+                    $update_pihakterkait .= "|" . $pihakterkait_status[0] . ":" . $pihakterkait_status[1];
+                }
+                if ($pihakterkait_status[1] == 'false') {
+                    $check_location += 1;
+                }
             }
-            $this->operation = true;
-        }
-    }
-    public function store_pihak_terkait($dokumen_id, $roleid)
-    {
-        $pt = PihakTerkait::create([
-            'dokumen_id' => $dokumen_id,
-            'role_id' => $roleid
-        ]);
-        if ($pt) {
-            $this->operation = true;
-        }
-    }
-    public function pihak_terkait()
-    {
-        $query = PihakTerkait::where('dokumen_id', $this->idDock);
-        $pt = $query->where('role_id', $this->role)->update([
-            'pihak_terkait' => $this->id_peninjau,
-            'status' => true
-        ]);
-        $check = PihakTerkait::where('dokumen_id', $this->idDock)->where('status', false)->get();
-        if ($pt) {
-            if (count($check) == 0) {
-                Dokumen::where('id', $this->idDock)->update([
-                    'pihakterkait_status' => true
-                ]);
+            if ($check_location == 1) {
+                $this->location = 'management';
             }
-            $this->operation = true;
+            $update_pihakterkait .= "|" . $update_role_pihakterkait[0] . ":" . $update_role_pihakterkait[1];
+
+            $file_handler = null;
+            $file_history = null;
+            if ($this->file == null) {
+                $file_handler = $this->old_file;
+            } else {
+                $file_handler = $this->file->store('dokumen-pds', 'public');
+                $file_history = $file_handler;
+            }
+
+            $update_dokumen = $dokumen_query->update([
+                'file' => $file_handler,
+                'pihak_terkait' => $update_pihakterkait,
+                'location' => $this->location
+            ]);
+            if ($update_dokumen) {
+                History::create([
+                    'dokumen_id' => $this->idDock,
+                    'user_id' => $id_user,
+                    'user_name' => session('auth')[0]['name'],
+                    'file' => $file_history,
+                    'photo' => session('auth')[0]['photo'],
+                    'judul' => 'PDS Telah Disetujui',
+                    'pesan' => $this->komentar
+                ]);
+                $this->active = 'off';
+                $param = [
+                    'for' => 'tinjau',
+                    'session' => 'tinjau'
+                ];
+                $this->emit('closeModal', $param);
+            } else {
+                session()->flash('err', "PDS Gagal Disubmit");
+            }
+        } elseif ($this->as_view == 'management') {
+            $file_handler = null;
+            $file_history = null;
+            if ($this->file == null) {
+                $file_handler = $this->old_file;
+            } else {
+                $file_handler = $this->file->store('dokumen-pds', 'public');
+                $file_history = $file_handler;
+            }
+
+            $update_dokumen = $dokumen_query->update([
+                'file' => $file_handler,
+                'management' => $this->id_peninjau,
+                'location' => 'pengendali_dokumen'
+            ]);
+            if ($update_dokumen) {
+                History::create([
+                    'dokumen_id' => $this->idDock,
+                    'user_id' => $id_user,
+                    'user_name' => session('auth')[0]['name'],
+                    'file' => $file_history,
+                    'photo' => session('auth')[0]['photo'],
+                    'judul' => 'PDS Telah Disetujui',
+                    'pesan' => $this->komentar
+                ]);
+                $this->active = 'off';
+                $param = [
+                    'for' => 'tinjau',
+                    'session' => 'tinjau'
+                ];
+                $this->emit('closeModal', $param);
+            } else {
+                session()->flash('err', "PDS Gagal Disubmit");
+            }
+        } elseif ($this->as_view == 'pengendali_dokumen') {
+            $file_handler = null;
+            $file_history = null;
+            if ($this->file == null) {
+                $file_handler = $this->old_file;
+            } else {
+                $file_handler = $this->file->store('dokumen-pds', 'public');
+                $file_history = $file_handler;
+            }
+            $update_dokumen = $dokumen_query->update([
+                'file' => $file_handler,
+                'status' => 'Selesai',
+                'pengendali_dokumen' => $this->id_peninjau,
+                'location' => 'Finish'
+            ]);
+            if ($update_dokumen) {
+                History::create([
+                    'dokumen_id' => $this->idDock,
+                    'user_id' => $id_user,
+                    'user_name' => session('auth')[0]['name'],
+                    'file' => $file_history,
+                    'photo' => session('auth')[0]['photo'],
+                    'judul' => 'PDS Telah Disetujui',
+                    'pesan' => $this->komentar
+                ]);
+                $this->active = 'off';
+                $param = [
+                    'for' => 'tinjau',
+                    'session' => 'tinjau'
+                ];
+                $this->emit('closeModal', $param);
+            } else {
+                session()->flash('err', "PDS Gagal Disubmit");
+            }
         }
     }
+
     public function export($path, $judul)
     {
         return Storage::disk('public')->download($path, $judul);
@@ -269,9 +368,7 @@ class Tinjau extends Component
         $this->old_file = $data[0]['file'];
         $this->judul = $data[0]['judul'];
         $this->idDock = $data[0]['id'];
-        $this->pengendali = $this->attrTinjau['pengendali'];
-        $this->manager = $this->attrTinjau['manager'];
-        $this->manajemen = $this->attrTinjau['manajemen'];
+        $this->as_view = $this->attrTinjau['as_view'];
         $this->location = $this->attrTinjau['location'];
         $this->role = session('auth')[0]['role'];
         $this->id_peninjau = session('auth')[0]['id'];

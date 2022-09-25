@@ -90,19 +90,19 @@
                             <td class="py-2">{{ $item->nomor }}</td>
                             <td class="py-2">{{ $item->judul }}</td>
                             <td class="py-2">
-                                @if ($item->status == 1)
+                                @if ($item->status == 'Ditinjau')
                                     <div id="{{ $item->id . 'ditinjau' }}"
                                         class="bg-primary-status text-center p-2 rounded-pill">
                                         Ditinjau
                                     </div>
                                 @endif
-                                @if ($item->status == 2)
+                                @if ($item->status == 'Dikembalikan')
                                     <div id="{{ $item->id . 'dikembalikan' }}"
                                         class="bg-danger-status text-center p-2 rounded-pill">
                                         Dikembalikan
                                     </div>
                                 @endif
-                                @if ($item->status == 3)
+                                @if ($item->status == 'Selesai')
                                     <div id="{{ $item->id . 'selesai' }}"
                                         class="bg-success-status text-center p-2 rounded-pill">
                                         Selesai
