@@ -5,6 +5,12 @@ hr {
 body {
     font-family: "Poppins", sans-serif;
 }
+.page-link {
+    width: 30px !important;
+    height: 30px !important;
+    text-align: center !important;
+    border-radius: 50% !important;
+}
 .inputTanggal {
     border: none;
     background: transparent;

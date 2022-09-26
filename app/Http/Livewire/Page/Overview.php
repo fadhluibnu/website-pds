@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Overview extends Component
 {
+    use WithPagination;
     public $title  = "Overview";
+    public $index_paginate = 0;
     public $q_tinjau = null;
     public $q_tracking = null;
     public $monitor_id;
@@ -129,7 +132,7 @@ class Overview extends Component
     }
 
     // Mengambil Dokumen Yang Harus Ditinjau Dan Hilang Setelah Di Tinjau
-    public function get_dokumens()
+    public function get_dokumens($search)
     {
 
         $data = [];
@@ -189,6 +192,27 @@ class Overview extends Component
                     }
                 }
             }
+        }
+        if ($search != null) {
+            $s_result = [];
+            foreach (collect($data) as $item) {
+                $explode = explode($search, $item['judul']);
+                if (count($explode) > 1) {
+                    $s_result[] = [
+                        'id' => $item['id'],
+                        'identitas' => $item['id'] . $item['status'],
+                        'nomor' => $item['nomor'],
+                        'judul' => $item['judul'],
+                        'status' => $item['status'],
+                        'pemohon' => $item['pemohon'],
+                        'photo' => $item['photo'],
+                        'tgl' => $item['tgl'],
+                        'location' => $item['location'],
+                        'as_view' =>  $item['as_view']
+                    ];
+                }
+            }
+            return $s_result;
         }
         return $data;
     }
@@ -267,9 +291,21 @@ class Overview extends Component
         return $data;
     }
 
+    public function paginate($index)
+    {
+        $this->index_paginate = $index;
+    }
+
     public function render()
     {
-        $data = $this->get_dokumens();
+        $data = $this->get_dokumens($this->q_tinjau);
+        $paginate = collect($data)->chunk(5)->all();
+        if ($this->q_tinjau == null) {
+            $data = collect($data)->chunk(5)->all();
+            $data = collect($data[$this->index_paginate]);
+        } else {
+            $data = collect($data);
+        }
         $tracking = collect($this->tracking_document($this->q_tracking));
         $monitor = $this->monitor($this->monitor_id);
         if (count(collect($monitor)) == 0) {
@@ -394,10 +430,11 @@ class Overview extends Component
 
         return view('livewire.page.overview', [
             'activity' => collect($activity),
-            'data' => collect($data),
+            'data' => $data,
             'tracking' => collect($tracking),
             'monitor' => $monitor,
-            'need_follow_up' => $need_follow_up_section
+            'need_follow_up' => $need_follow_up_section,
+            'paginate' => count($paginate) - 1
         ])->extends("main")->section('content')->layoutData(['title' => $this->title]);
     }
 }

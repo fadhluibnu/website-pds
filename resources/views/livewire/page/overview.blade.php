@@ -36,7 +36,7 @@
                     aria-label="default input example">
             </form>
         </div>
-        <div class="table">
+        <div class="table pb-1">
             <div class="header-table px-4 text-white">
                 <div class="row ps-3">
                     <div class="col-1">No</div>
@@ -47,7 +47,7 @@
                     <div class="col-2">Aksi</div>
                 </div>
             </div>
-            <div class="data-table px-4">
+            <div class="data-table px-4 m-0">
                 @if ($data->isEmpty())
                     <tr>
                         <td colspan="7">Tidak ada dokumen</td>
@@ -55,7 +55,7 @@
                 @else
                     @foreach ($data as $item)
                         <div class="row ps-3 align-items-center border-bottom">
-                            <div class="col-1">1.</div>
+                            <div class="col-1">{{ $loop->iteration }}</div>
                             <div class="col-2">{{ $item['nomor'] }}</div>
                             <div class="col-3 nama-dokumen">{{ $item['judul'] }}</div>
                             <div class="col-2 d-flex align-items-center">
@@ -86,6 +86,25 @@
                     @endforeach
                 @endif
             </div>
+            @if ($q_tinjau == null)
+                <nav aria-label="...">
+                    <ul class="pagination pagination-sm mt-3 px-2 mb-0">
+                        @php
+                            $loop = 1;
+                        @endphp
+                        @for ($i = 0; $i <= $paginate; $i++)
+                            <li class="page-item p-0 px-1 @if ($index_paginate == $i) active @endif"
+                                aria-current="page">
+                                <span class="page-link"
+                                    wire:click='paginate({{ $i }})'>{{ $loop }}</span>
+                            </li>
+                            @php
+                                $loop += 1;
+                            @endphp
+                        @endfor
+                    </ul>
+                </nav>
+            @endif
         </div>
     </div>
     <div class="status-pds bg-white box-radius-20 mt-3 mb-3">
@@ -196,32 +215,6 @@
                                     <div class="point pic {{ $pic }} p-3 px-5 rounded-pill">
                                         PIC
                                     </div>
-                                    {{-- @php
-                                        $pihakterkait = 'off';
-                                        $rellToPihakTerkaitRed = 'off';
-                                        $rellToPihakTerkaitBlue = 'off';
-                                    @endphp --}}
-                                    {{-- @if ($monitor['location'] == 'pihak_terkait' && $monitor['status'] == 'Ditinjau')
-                                        @php
-                                            $rellToPihakTerkaitRed = 'off';
-                                            $rellToPihakTerkaitBlue = 'active';
-                                            $pihakterkait = 'active on';
-                                        @endphp
-                                    @endif
-                                    @if ($monitor['location'] != 'pihak_terkait' && $monitor['status'] == 'Ditinjau' && $monitor['pihak_terkait'] != null)
-                                        @php
-                                            $rellToPihakTerkaitRed = 'off';
-                                            $rellToPihakTerkaitBlue = 'active';
-                                            $pihakterkait = 'active';
-                                        @endphp
-                                    @endif
-                                    @if ($monitor['location'] == 'pihak_terkait' && $monitor['status'] == 'Dikembalikan')
-                                        @php
-                                            $rellToPihakTerkaitRed = 'active';
-                                            $rellToPihakTerkaitBlue = 'off';
-                                            $pihakterkait = 'bg-danger text-white';
-                                        @endphp
-                                    @endif --}}
                                     <div class="rell-pic-to-pihakterkait d-flex flex-column justify-content-evenly">
                                         <div class="red d-flex justify-content-between align-items-center ">
                                             <div class="circle rounded-circle {{ $rellToPihakTerkaitRed }}"></div>
@@ -244,11 +237,6 @@
                                         Pihak Terkait
                                     </div>
                                 </div>
-                                {{-- @php
-                                    $manajemen = 'off';
-                                    $rellToManagemenRed = 'off';
-                                    $rellToManagemenBlue = 'off';
-                                @endphp --}}
                                 <div class="rell-pihakterkait-to-manajemen d-flex justify-content-evenly mt-1 mb-1">
                                     <div class="blue d-flex flex-column justify-content-between align-items-center ">
                                         <div class="circle rounded-circle {{ $rellToManagemenBlue }}"></div>
@@ -262,34 +250,24 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between" style="width: 100%;">
-                                    @php
-                                        $finish = 'off';
-                                        $rellToFinishRed = 'off';
-                                        $rellToFinishBlue = 'off';
-                                    @endphp
-                                    <div class="point finish {{ $finish }} p-3 px-4 rounded-pill">
+                                    <div class="point finish off p-3 px-4 rounded-pill">
                                         Finish
                                     </div>
                                     <div
                                         class="rell-pengendalidokumen-to-finish d-flex flex-column justify-content-evenly mt-1">
                                         <div class="red d-flex justify-content-between align-items-center ">
-                                            <div class="circle rounded-circle {{ $rellToFinishRed }}"></div>
-                                            <div class="square rounded-pill {{ $rellToFinishRed }}"></div>
-                                            <div class="square rounded-pill {{ $rellToFinishRed }}"></div>
-                                            <div class="circle rounded-circle {{ $rellToFinishRed }}"></div>
+                                            <div class="circle rounded-circle off"></div>
+                                            <div class="square rounded-pill off"></div>
+                                            <div class="square rounded-pill off"></div>
+                                            <div class="circle rounded-circle off"></div>
                                         </div>
                                         <div class="blue d-flex justify-content-between align-items-center ">
-                                            <div class="circle rounded-circle {{ $rellToFinishBlue }}"></div>
-                                            <div class="square rounded-pill {{ $rellToFinishBlue }}"></div>
-                                            <div class="square rounded-pill {{ $rellToFinishBlue }}"></div>
-                                            <div class="circle rounded-circle {{ $rellToFinishBlue }}"></div>
+                                            <div class="circle rounded-circle off"></div>
+                                            <div class="square rounded-pill off"></div>
+                                            <div class="square rounded-pill off"></div>
+                                            <div class="circle rounded-circle off"></div>
                                         </div>
                                     </div>
-                                    {{-- @php
-                                        $pengendali = 'off';
-                                        $rellToPengendaliRed = 'off';
-                                        $rellToPengendaliBlue = 'off';
-                                    @endphp --}}
                                     <div class="point pengendalidokumen {{ $pengendali }} p-3 px-4 rounded-pill">
                                         Pengendali Dokumen
                                     </div>
