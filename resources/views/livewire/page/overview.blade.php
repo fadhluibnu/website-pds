@@ -68,7 +68,7 @@
                             <div class="col-2">{{ date('d/m/Y', strtotime($item['tgl'])) }}</div>
                             <div class="col-2">
                                 <button
-                                    wire:click='openTinjau("tinjau", {{ $item['id'] }}, "{{ $item['pengendali'] }}", "{{ $item['manager'] }}", "{{ $item['manajemen'] }}", "{{ $item['location'] }}")'
+                                    wire:click='openTinjau("tinjau", {{ $item['id'] }}, "{{ $item['as_view'] }}","{{ $item['location'] }}")'
                                     onclick="wireClick('spiner{{ $item['id'] }}', 'eye{{ $item['id'] }}')"
                                     type="button" class="btn btn-primary">
                                     <div class="d-flex">
@@ -141,13 +141,13 @@
                                     {{ $item['judul'] }}
                                 </div>
 
-                                @if ($item['status'] == 1)
+                                @if ($item['status'] == 'Ditinjau')
                                     <div class="status">
                                         <div class="bg-primary-status text-center p-2 rounded-pill">
                                             Ditinjau
                                         </div>
                                     </div>
-                                @elseif($item['status'] == 2)
+                                @elseif($item['status'] == 'Dikembalikan')
                                     <div class="status">
                                         <div class="bg-danger-status text-center p-2 rounded-pill">
                                             Dikembalikan
@@ -168,29 +168,13 @@
                                 <h1>Pantau dokumen</h1>
                                 <h2 class="bg-secondary p-2 rounded ms-2"><i class="bi bi-chevron-right"></i>
                                     {{ $monitor['judul'] }}</h2>
+                                {{ $monitor['location'] }}
                             </div>
                             <div class="box-monitor d-flex mt-2 flex-column align-items-end">
                                 <div class="d-flex justify-content-between" style="width: 100%;">
                                     <div class="point start active p-3 px-4 rounded-pill">
                                         Start
                                     </div>
-                                    @php
-                                        $rellToPicRed = 'off';
-                                        $rellToPicBlue = 'active';
-                                        $pic = 'active on';
-                                    @endphp
-                                    @if ($monitor['pic_status'] == true)
-                                        @php
-                                            $pic = 'active';
-                                        @endphp
-                                    @endif
-                                    @if ($monitor['pengembali_dokumen'] == 'PIC')
-                                        @php
-                                            $rellToPicRed = 'active';
-                                            $rellToPicBlue = 'off';
-                                            $pic = 'bg-danger text-white';
-                                        @endphp
-                                    @endif
                                     <div class="rell-start-to-pic d-flex flex-column justify-content-evenly">
                                         <div class="red d-flex justify-content-between align-items-center ">
                                             <div class="circle rounded-circle {{ $rellToPicRed }}"></div>
@@ -212,34 +196,32 @@
                                     <div class="point pic {{ $pic }} p-3 px-5 rounded-pill">
                                         PIC
                                     </div>
-                                    @php
+                                    {{-- @php
                                         $pihakterkait = 'off';
                                         $rellToPihakTerkaitRed = 'off';
                                         $rellToPihakTerkaitBlue = 'off';
-                                    @endphp
-                                    @if ($monitor['pic_status'] == true)
-                                        @php
-                                            $rellToPihakTerkaitRed = 'off';
-                                            $rellToPihakTerkaitBlue = 'active';
-                                            $pihakterkait = 'active';
-                                        @endphp
-                                    @endif
-                                    @if ($monitor['pic_status'] == false &&
-                                        $monitor['pengembali_dokumen'] != 'PIC' &&
-                                        $monitor['pengembali_dokumen'] != null)
+                                    @endphp --}}
+                                    {{-- @if ($monitor['location'] == 'pihak_terkait' && $monitor['status'] == 'Ditinjau')
                                         @php
                                             $rellToPihakTerkaitRed = 'off';
                                             $rellToPihakTerkaitBlue = 'active';
                                             $pihakterkait = 'active on';
                                         @endphp
                                     @endif
-                                    @if ($monitor['pengembali_dokumen'] == 'Pihak Terkait')
+                                    @if ($monitor['location'] != 'pihak_terkait' && $monitor['status'] == 'Ditinjau' && $monitor['pihak_terkait'] != null)
+                                        @php
+                                            $rellToPihakTerkaitRed = 'off';
+                                            $rellToPihakTerkaitBlue = 'active';
+                                            $pihakterkait = 'active';
+                                        @endphp
+                                    @endif
+                                    @if ($monitor['location'] == 'pihak_terkait' && $monitor['status'] == 'Dikembalikan')
                                         @php
                                             $rellToPihakTerkaitRed = 'active';
                                             $rellToPihakTerkaitBlue = 'off';
                                             $pihakterkait = 'bg-danger text-white';
                                         @endphp
-                                    @endif
+                                    @endif --}}
                                     <div class="rell-pic-to-pihakterkait d-flex flex-column justify-content-evenly">
                                         <div class="red d-flex justify-content-between align-items-center ">
                                             <div class="circle rounded-circle {{ $rellToPihakTerkaitRed }}"></div>
@@ -262,35 +244,11 @@
                                         Pihak Terkait
                                     </div>
                                 </div>
-                                @php
+                                {{-- @php
                                     $manajemen = 'off';
                                     $rellToManagemenRed = 'off';
                                     $rellToManagemenBlue = 'off';
-                                @endphp
-                                @if ($monitor['pihakterkait_status'] == true)
-                                    @php
-                                        $rellToManagemenRed = 'off';
-                                        $rellToManagemenBlue = 'active';
-                                        $manajemen = 'active';
-                                    @endphp
-                                @endif
-                                @if ($monitor['pihakterkait_status'] == false &&
-                                    $monitor['pengembali_dokumen'] != 'PIC' &&
-                                    $monitor['pengembali_dokumen'] != 'Pihak Terkait' &&
-                                    $monitor['pengembali_dokumen'] != null)
-                                    @php
-                                        $rellToManagemenRed = 'off';
-                                        $rellToManagemenBlue = 'active';
-                                        $manajemen = 'active on';
-                                    @endphp
-                                @endif
-                                @if ($monitor['pengembali_dokumen'] == 'Manajemen')
-                                    @php
-                                        $rellToManagemenRed = 'active';
-                                        $rellToManagemenBlue = 'off';
-                                        $manajemen = 'bg-danger text-white';
-                                    @endphp
-                                @endif
+                                @endphp --}}
                                 <div class="rell-pihakterkait-to-manajemen d-flex justify-content-evenly mt-1 mb-1">
                                     <div class="blue d-flex flex-column justify-content-between align-items-center ">
                                         <div class="circle rounded-circle {{ $rellToManagemenBlue }}"></div>
@@ -309,13 +267,6 @@
                                         $rellToFinishRed = 'off';
                                         $rellToFinishBlue = 'off';
                                     @endphp
-                                    @if ($monitor['status'] == 3)
-                                        @php
-                                            $finish = 'active';
-                                            $rellToFinishRed = 'off';
-                                            $rellToFinishBlue = 'active';
-                                        @endphp
-                                    @endif
                                     <div class="point finish {{ $finish }} p-3 px-4 rounded-pill">
                                         Finish
                                     </div>
@@ -334,52 +285,28 @@
                                             <div class="circle rounded-circle {{ $rellToFinishBlue }}"></div>
                                         </div>
                                     </div>
-                                    @php
+                                    {{-- @php
                                         $pengendali = 'off';
                                         $rellToPengendaliRed = 'off';
                                         $rellToPengendaliBlue = 'off';
-                                    @endphp
-                                    @if ($monitor['management_status'] == true)
-                                        @php
-                                            $rellToPengendaliRed = 'off';
-                                            $rellToPengendaliBlue = 'active';
-                                            $pengendali = 'active';
-                                        @endphp
-                                    @endif
-                                    @if ($monitor['management_status'] == false &&
-                                        $monitor['pengembali_dokumen'] != 'PIC' &&
-                                        $monitor['pengembali_dokumen'] != 'Pihak Terkait' &&
-                                        $monitor['pengembali_dokumen'] != 'Manajemen' &&
-                                        $monitor['pengembali_dokumen'] != null)
-                                        @php
-                                            $rellToPengendaliRed = 'off';
-                                            $rellToPengendaliBlue = 'active';
-                                            $pengendali = 'active on';
-                                        @endphp
-                                    @endif
-                                    @if ($monitor['pengembali_dokumen'] == 'Pengendali')
-                                        @php
-                                            $rellToPengendaliRed = 'active';
-                                            $rellToPengendaliBlue = 'off';
-                                            $pengendali = 'bg-danger text-white';
-                                        @endphp
-                                    @endif
+                                    @endphp --}}
                                     <div class="point pengendalidokumen {{ $pengendali }} p-3 px-4 rounded-pill">
                                         Pengendali Dokumen
                                     </div>
                                     <div
                                         class="rell-manajemen-to-pengendalidokumen d-flex flex-column justify-content-evenly mt-1">
-                                        <div class="red d-flex justify-content-between align-items-center ">
-                                            <div class="circle rounded-circle {{ $rellToPengendaliRed }}"></div>
-                                            <div class="square rounded-pill {{ $rellToPengendaliRed }}"></div>
-                                            <div class="square rounded-pill {{ $rellToPengendaliRed }}"></div>
-                                            <div class="circle rounded-circle {{ $rellToPengendaliRed }}"></div>
-                                        </div>
+
                                         <div class="blue d-flex justify-content-between align-items-center ">
                                             <div class="circle rounded-circle {{ $rellToPengendaliBlue }}"></div>
                                             <div class="square rounded-pill {{ $rellToPengendaliBlue }}"></div>
                                             <div class="square rounded-pill {{ $rellToPengendaliBlue }}"></div>
                                             <div class="circle rounded-circle {{ $rellToPengendaliBlue }}"></div>
+                                        </div>
+                                        <div class="red d-flex justify-content-between align-items-center ">
+                                            <div class="circle rounded-circle {{ $rellToPengendaliRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPengendaliRed }}"></div>
+                                            <div class="square rounded-pill {{ $rellToPengendaliRed }}"></div>
+                                            <div class="circle rounded-circle {{ $rellToPengendaliRed }}"></div>
                                         </div>
                                     </div>
                                     <div class="point manajemen {{ $manajemen }} p-3 px-4 rounded-pill">

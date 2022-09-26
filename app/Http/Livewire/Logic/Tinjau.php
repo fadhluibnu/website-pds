@@ -79,24 +79,33 @@ class Tinjau extends Component
                 }
 
                 $pihakterkait_selected = collect(explode("|", $pihakterkait_selected))->sort();
+                // dd($pihakterkait_selected);
                 $pihakterkait_selected_new = [];
                 $pihakterkait_selected_filter = '';
 
                 foreach ($pihakterkait_selected as $value) {
-                    $pihakterkait_selected_new[] = $value;
-                }
-                for ($i_filter = 1; $i_filter <= count($pihakterkait_selected_new) - 1; $i_filter++) {
-                    if ($i_filter + 1 == count($pihakterkait_selected_new)) {
-                        if ($pihakterkait_selected_new[$i_filter] != $pihakterkait_selected_new[1]) {
-                            $pihakterkait_selected_filter .= "|" . $pihakterkait_selected_new[$i_filter];
-                        }
-                    }
-                    if ($i_filter + 1 != count($pihakterkait_selected_new)) {
-                        if ($pihakterkait_selected_new[$i_filter] != $pihakterkait_selected_new[$i_filter + 1]) {
-                            $pihakterkait_selected_filter .= "|" . $pihakterkait_selected_new[$i_filter];
-                        }
+                    if ($value != '') {
+                        $pihakterkait_selected_new[] = $value;
                     }
                 }
+
+                if (count($pihakterkait_selected_new) > 1) {
+                    for ($i_filter = 0; $i_filter <= count($pihakterkait_selected_new) - 1; $i_filter++) {
+                        if ($i_filter + 1 == count($pihakterkait_selected_new)) {
+                            if ($pihakterkait_selected_new[$i_filter] != $pihakterkait_selected_new[0]) {
+                                $pihakterkait_selected_filter .= "|" . $pihakterkait_selected_new[$i_filter];
+                            }
+                        }
+                        if ($i_filter + 1 != count($pihakterkait_selected_new)) {
+                            if ($pihakterkait_selected_new[$i_filter] != $pihakterkait_selected_new[$i_filter + 1]) {
+                                $pihakterkait_selected_filter .= "|" . $pihakterkait_selected_new[$i_filter];
+                            }
+                        }
+                    }
+                } else {
+                    $pihakterkait_selected_filter .= "|" . $pihakterkait_selected_new[0];
+                }
+
 
                 // dd($pihakterkait_selected_filter);
 

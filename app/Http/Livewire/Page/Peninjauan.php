@@ -155,138 +155,6 @@ class Peninjauan extends Component
         }
         return $result;
     }
-
-    public function get_dokumens()
-    {
-        $data = [];
-        $dokumen = new Dokumen();
-        if (Gate::forUser(session('auth')[0]['id'])->allows('picOrPihakTerkait')) {
-            $pic_query = $dokumen->whereHas('pics', function (Builder $query) {
-                $query->where('role_id', session('auth')[0]['role']);
-            })->get();
-
-            if ($pic_query) {
-                foreach ($pic_query as $value) {
-                    $get_pemohon = Http::get(env("URL_API_GET_USER") . $value->pemohon);
-                    $pics = collect($value->pics);
-                    foreach ($pics->diff('role_id')->all() as $pic) {
-                        if ($value->status != 2 && $pic->role_id == session('auth')[0]['role']) {
-                            if ($pic->status == false) {
-                                $data[] = $this->data_dokumen($value, $get_pemohon, 1, 'as_pic', 'as_pic', 'as_pic', "PIC");
-                            } elseif ($value->status == true) {
-                                $data[] = $this->data_dokumen($value, $get_pemohon, 3, 'as_pic', 'as_pic', 'as_pic', "PIC");
-                            }
-                        } elseif ($value->status == 2 && $pic->role_id == session('auth')[0]['role']) {
-                            $data[] = $this->data_dokumen($value, $get_pemohon, 2, 'as_pic', 'as_pic', 'as_pic', "PIC");
-                        }
-                    }
-                }
-            }
-            $pihakterkait_query = $dokumen->whereHas('pihakTerkaits', function (Builder $query) {
-                $query->where('role_id', session('auth')[0]['role']);
-            })->get();
-
-            if ($pihakterkait_query) {
-                foreach ($pihakterkait_query as $value) {
-                    $get_pemohon = Http::get(env("URL_API_GET_USER") . $value->pemohon);
-                    $pihakterkaits = collect($value->pihakTerkaits);
-                    $pihakterkaits = $pihakterkaits->where('role_id', session('auth')[0]['role'])->first();
-                    if ($pihakterkaits->role_id == session('auth')[0]['role'] && $value->status != 2 && $value->pic_status == true) {
-                        if ($pihakterkaits->status == false) {
-                            $data[] = $this->data_dokumen($value, $get_pemohon, 1, 'as_pihak_terkait', 'as_pihak_terkait', 'as_pihak_terkait', "Pihak Terkait");
-                        } elseif ($pihakterkaits->role_id == session('auth')[0]['role'] && $pihakterkaits->status == true) {
-                            $data[] = $this->data_dokumen($value, $get_pemohon, 3, 'as_pihak_terkait', 'as_pihak_terkait', 'as_pihak_terkait', "Pihak Terkait");
-                        }
-                    } elseif ($pihakterkaits->role_id == session('auth')[0]['role'] && $value->status == 2 && $value->pic_status == false) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 2, 'as_pihak_terkait', 'as_pihak_terkait', 'as_pihak_terkait', "Pihak Terkait");
-                    }
-                }
-            }
-        }
-        if (Gate::forUser(session('auth')[0]['id'])->allows('management')) {
-            $management_query = $dokumen->where('pic_status', true)->where('pihakterkait_status', true)->get();
-            foreach ($management_query as $value) {
-                $get_pemohon = Http::get(env("URL_API_GET_USER") . $value->pemohon);
-                if ($value->status != 2 && $value->pic_status == true && $value->pihakterkait_status == true) {
-                    if ($value->management_status == true) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 3, 'null', 'null', "manajemen", "Manajemen");
-                    } elseif ($value->management_status == false) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 1, 'null', 'null', "manajemen", "Manajemen");
-                    }
-                } elseif ($value->status == 2 && $value->pic_status == false && $value->pihakterkait_status == false) {
-                    $data[] = $this->data_dokumen($value, $get_pemohon, 2, 'null', 'null', "manajemen", "Manajemen");
-                }
-            }
-        }
-
-        if (Gate::forUser(session('auth')[0]['id'])->allows('pengendaliDokumen')) {
-            $pengendali_query = $dokumen->get();
-            foreach ($pengendali_query as $value) {
-                $get_pemohon = Http::get(env("URL_API_GET_USER") . $value->pemohon);
-
-                $pics_query = collect($value->pics);
-                $pihakterkait_query = collect($value->pihakTerkaits);
-                $pic = $pics_query->where('role_id', session('auth')[0]['role'])->where('status', false)->all();
-                $pihakterkait = $pihakterkait_query->where('role_id', session('auth')[0]['role'])->where('status', false)->all();
-
-                if (!$pic && !$pihakterkait && $value->status != 2 && $value->pic_status == true && $value->pihakterkait_status == true && $value->management_status == true) {
-                    if ($value->pengendali_status == true) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 3, "not_pic_and_pihak_terkait", "null", "null", "Pengendali");
-                    } elseif ($value->pengendali_status == false) {
-                        $data[] = $this->data_dokumen($value, $get_pemohon, 1, "not_pic_and_pihak_terkait", "null", "null", "Pengendali");
-                    }
-                } elseif (!$pic && !$pihakterkait && $value->status == 2 && $value->pic_status == false && $value->pihakterkait_status == false && $value->management_status == false) {
-                    $data[] = $this->data_dokumen($value, $get_pemohon, 2, "not_pic_and_pihak_terkait", "null", "null", "Pengendali");
-                }
-            }
-        }
-
-        $collect = collect($data);
-        $data = $collect->sortBy([
-            ['status', 'asc'],
-            ['id', 'asc']
-        ]);
-        $result = [];
-        for ($i = 0; $i <= count($data) - 1; $i++) {
-            if ($i + 1 == count($data)) {
-                if ($data[$i]['id'] != $data[0]['id'] && $data[$i]['identitas'] != $data[0]['identitas']) {
-                    $result[] = [
-                        'id' => $data[$i]['id'],
-                        'identitas' => $data[$i]['id'] . 'ditinjau',
-                        'nomor' => $data[$i]['nomor'],
-                        'judul' => $data[$i]['judul'],
-                        'status' => $data[$i]['status'],
-                        'pemohon' => $data[$i]['pemohon'],
-                        'photo' => $data[$i]['photo'],
-                        'tgl' => $data[$i]['tgl'],
-                        'pengendali' => $data[$i]['pengendali'],
-                        'manager' => $data[$i]['manager'],
-                        'manajemen' => $data[$i]['manajemen'],
-                        'location' => $data[$i]['location']
-                    ];
-                }
-            }
-            if ($i + 1 != count($data)) {
-                if ($data[$i]['id'] != $data[$i + 1]['id'] && $data[$i]['identitas'] != $data[$i + 1]['identitas']) {
-                    $result[] = [
-                        'id' => $data[$i]['id'],
-                        'identitas' => $data[$i]['id'] . 'ditinjau',
-                        'nomor' => $data[$i]['nomor'],
-                        'judul' => $data[$i]['judul'],
-                        'status' => $data[$i]['status'],
-                        'pemohon' => $data[$i]['pemohon'],
-                        'photo' => $data[$i]['photo'],
-                        'tgl' => $data[$i]['tgl'],
-                        'pengendali' => $data[$i]['pengendali'],
-                        'manager' => $data[$i]['manager'],
-                        'manajemen' => $data[$i]['manajemen'],
-                        'location' => $data[$i]['location']
-                    ];
-                }
-            }
-        }
-        return $result;
-    }
     public function data_dokumen($value, $status, $get_pemohon, $as_view)
     {
         $data = [
@@ -400,7 +268,49 @@ class Peninjauan extends Component
             ['status', 'asc'],
             ['identitas', 'asc'],
         ]);
-        return $data;
+
+        $result = [];
+        for ($i = 0; $i <= count($data) - 1; $i++) {
+            if ($i + 1 == count($data)) {
+                if ($data[$i]['id'] != $data[0]['id'] && $data[$i]['identitas'] != $data[0]['identitas']) {
+                    $result[] = [
+                        'id' => $data[$i]['id'],
+                        'identitas' => $data[$i]['id'] . $data[$i]['status'],
+                        'nomor' => $data[$i]['nomor'],
+                        'judul' => $data[$i]['judul'],
+                        'status' => $data[$i]['status'],
+                        'pemohon' => $data[$i]['pemohon'],
+                        'photo' => $data[$i]['photo'],
+                        'tgl' => $data[$i]['tgl'],
+                        'location' => $data[$i]['location'],
+                        'as_view' =>  $data[$i]['as_view']
+                    ];
+                }
+            }
+            if ($i + 1 != count($data)) {
+                if ($data[$i]['id'] != $data[$i + 1]['id'] && $data[$i]['identitas'] != $data[$i + 1]['identitas']) {
+                    $result[] = [
+                        'id' => $data[$i]['id'],
+                        'identitas' => $data[$i]['id'] . $data[$i]['status'],
+                        'nomor' => $data[$i]['nomor'],
+                        'judul' => $data[$i]['judul'],
+                        'status' => $data[$i]['status'],
+                        'pemohon' => $data[$i]['pemohon'],
+                        'photo' => $data[$i]['photo'],
+                        'tgl' => $data[$i]['tgl'],
+                        'location' => $data[$i]['location'],
+                        'as_view' =>  $data[$i]['as_view']
+                    ];
+                }
+            }
+        }
+
+        // dd(count($data));
+        if (count($result) == 0) {
+            return $data;
+        } else {
+            return $result;
+        }
     }
     public function render()
     {
@@ -411,10 +321,6 @@ class Peninjauan extends Component
         //     $data = collect($this->get_dokumens());
         // }
         $data = collect($this->get_dokumen2());
-
-        // foreach ($data as $i) {
-        //     dd($i[0]['id']);
-        // }
 
         return view('livewire.page.peninjauan', [
             'data' => $data

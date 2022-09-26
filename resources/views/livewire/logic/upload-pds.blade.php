@@ -10,12 +10,9 @@
         <div class="box-modal-content p-3 overflow-auto">
             <form id="formupload" method="POST" wire:submit.prevent="storepds" enctype="multipart/form-data">
                 @csrf
-                <input type="text" wire:model='pemohon'>
-                <input type="text" wire:model='status'>
-                <input type="text" wire:model='location'>
-                <input type="text" wire:model='pihak_terkait'>
-                <input type="text" wire:model='management'>
-                <input type="text" wire:model='pengendali_dokumen'>
+                <input type="hidden" wire:model='pemohon'>
+                <input type="hidden" wire:model='status'>
+                <input type="hidden" wire:model='location'>
                 <div class="row overflow-auto" style="height: 70vh;">
                     <div class="col-6">
                         <div class="mb-3">
