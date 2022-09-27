@@ -30,7 +30,7 @@ Route::middleware(['HasSession'])->group(function () {
 Route::get('/peninjauan', Peninjauan::class)->name("peninjauan")->middleware('peninjauan');
 Route::middleware(['peninjauan'])->group(function () {
     Route::get('/pengguna', Pengguna::class)->name("pengguna");
-    Route::get('/pengguna/detail-pengguna', DetailPengguna::class)->name("detail-pengguna");
+    Route::get('/pengguna/{id}', DetailPengguna::class)->name("detail-pengguna");
 });
 Route::get('/login', [AuthController::class, 'index'])->name("login")->middleware('NoSession');
 Route::post('/login', [AuthController::class, 'login'])->middleware('NoSession');

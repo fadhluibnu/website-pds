@@ -49,7 +49,7 @@
                     <div class="d-flex p-3">
                         <p class="m-0 ms-2 p-1">Role</p>
                         <div class="icone bg-primary rounded d-flex">
-                            <p class="engginer m-auto p-1">Engginer</p>
+                            <p class="engginer m-auto p-1">{{ $user['role'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,8 @@
                         <div class="row mb-3">
                             <label for="inputNama" class="col-sm-2 col-form-label">Nama</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputNama" disabled value="Thomeas">
+                                <input type="text" class="form-control" id="inputNama" disabled
+                                    value="{{ $user['name'] }}">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -72,14 +73,15 @@
                         <div class="row mb-3">
                             <label for="inputNIK" class="col-sm-2 col-form-label">NIK</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputNIK" disabled value="12345678">
+                                <input type="text" class="form-control" id="inputNIK" disabled
+                                    value="{{ $user['id'] }}">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="inputEmail3"disabled
-                                    value="Thomeas@gmail.com">
+                                    value="{{ $user['email'] }}">
                             </div>
                         </div>
                 </div>

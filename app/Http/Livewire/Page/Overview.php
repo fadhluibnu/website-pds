@@ -300,7 +300,7 @@ class Overview extends Component
     {
         $data = $this->get_dokumens($this->q_tinjau);
         $paginate = collect($data)->chunk(5)->all();
-        if ($this->q_tinjau == null) {
+        if ($this->q_tinjau != null) {
             $data = collect($data)->chunk(5)->all();
             $data = collect($data[$this->index_paginate]);
         } else {

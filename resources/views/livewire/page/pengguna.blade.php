@@ -41,7 +41,7 @@
     <div class="bg-white box-radius-10 mt-3">
         <h1 class="title p-3 pb-1 m-0">Semua Dokumen</h1>
         <table class="table">
-            <thead class="my-bg-dark text-white">
+            <thead class="my-bg-dark text-white" style="position: sticky;top: -12px;z-index: 10;">
                 <tr class="pengguna">
                     <th scope="col" class="py-2 px-3 pe-0">No</th>
                     <th scope="col" class="py-2">NIK</th>
@@ -52,22 +52,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="pengguna">
-                    <td class="py-2 px-3 pe-0">1</td>
-                    <td class="py-2">123457ADB</td>
-                    <td class="py-2">Username</td>
-                    <td class="py-2">Username@gmail.com</td>
-                    <td class="py-2">Manager</td>
-                    <td class="py-2 px-4 ps-0">
-                        <a href="{{ route('detail-pengguna') }}" class="btn box-icon rounded-circle btn-primary p-2">
-                            <i class="bi bi-eye-fill m-auto"></i>
-                            <div class="my-tooltip d-none">
-                                <div class="segitiga"></div>
-                                <span>Detail</span>
-                            </div>
-                        </a>
-                    </td>
-                </tr>
+                @foreach ($users as $item)
+                    <tr class="pengguna">
+                        <td class="py-2 px-3 pe-0">{{ $loop->iteration }}</td>
+                        <td class="py-2">{{ $item['nik'] }}</td>
+                        <td class="py-2">{{ $item['name'] }}</td>
+                        <td class="py-2">{{ $item['email'] }}</td>
+                        <td class="py-2">{{ $item['role'] }}</td>
+                        <td class="py-2 px-4 ps-0">
+                            <a href="{{ route('detail-pengguna', $item['nik']) }}"
+                                class="btn box-icon rounded-circle btn-primary p-2">
+                                <i class="bi bi-eye-fill m-auto"></i>
+                                <div class="my-tooltip d-none">
+                                    <div class="segitiga"></div>
+                                    <span>Detail</span>
+                                </div>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
