@@ -22,7 +22,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="downloadfile" class="form-label">Nama Dokumen</label>
-                        <div wire:click='export("{{ $item['file'] }}")'
+                        <div onclick="wireClick('spinerEx', 'eyeEx')" wire:click='export("{{ $item['file'] }}")'
                             class="download-file d-flex justify-content-between rounded p-2"
                             style="background: #F3F5FA;cursor:pointer;">
                             <div class="d-flex align-items-center">
@@ -40,12 +40,14 @@
                                 </svg>
                                 <p class="ms-2">PDS</p>
                             </div>
-                            <div wire:loading wire:target='export'>
-                                <span id="spinerDetail" class="text-color spinner-border spinner-border-sm m-auto"
-                                    role="status" aria-hidden="true"></span>
-                            </div>
-                            <div wire:loading.remove wire:target='export'>
-                                <i class="bi bi-download"></i>
+                            <div onclick="wireClick('spinerEx', 'eyeEx')">
+                                <div id="spinerEx" class="d-none">
+                                    <span class="spinner-border spinner-border-sm  me-2" role="status"
+                                        aria-hidden="true"></span>
+                                </div>
+                                <div id="eyeEx">
+                                    <i class="bi bi-download"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -63,17 +65,32 @@
                                         {{ $item['created_at']->diffForHumans() }}</p>
                                 </div>
                                 <div class="d-flex mt-2 justify-content-between">
-                                    <div class="profile detail{{ $item['user_id'] }}"></div>
-                                    <style>
+                                    <div class="profile detail{{ $item['user_id'] }}"
+                                        style="background-image: url({{ asset('assets/default.jpg') }})"></div>
+                                    {{-- <style>
                                         .content .modal-custom .profile.detail{{ $item['user_id'] }} {
                                             background-image: url({{ env('URL_WEB_API') . 'storage/' . $item['photo'] }})
                                         }
-                                    </style>
-                                    <div class="text ms-2" style="width: 566px;">
+                                    </style> --}}
+                                    <div class="text ms-2" style="width: 510px;">
                                         <h3 class="fw-medium m-0" style="font-size: 14px;">
                                             {{ $item['user_name'] }}</h3>
                                         <p class="m-0" style="font-size: 14px;">
                                             {!! $item['pesan'] !!}</p>
+                                    </div>
+                                    <div class="px-4 ms-1">
+                                        @if ($item['file'] != null)
+                                            <div wire:click='exportHistory("{{ $item['file'] }}", "{{ $item['user_name'] }}")'
+                                                class="btn btn-secondary d-flex" style="width: 42px;height: 38px;"
+                                                onclick="wireClick('spinerEx{{ $item['id'] }}', 'eyeEx{{ $item['id'] }}')">
+                                                <div id="spinerEx{{ $item['id'] }}" class="d-none m-auto">
+                                                    <span class="spinner-border spinner-border-sm" role="status"
+                                                        aria-hidden="true"></span>
+                                                </div>
+                                                <i id="eyeEx{{ $item['id'] }}"
+                                                    class="bi bi-file-earmark-word-fill fs-6 m-auto"></i>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

@@ -36,23 +36,59 @@
                     aria-label="default input example">
             </form>
         </div>
-        <div class="table pb-1">
-            <div class="header-table px-4 text-white">
-                <div class="row ps-3">
-                    <div class="col-1">No</div>
-                    <div class="col-2">Nomor Dokumen</div>
-                    <div class="col-3">Judul Dokumen</div>
-                    <div class="col-2">Pemohon</div>
-                    <div class="col-2">Tgl Upload</div>
-                    <div class="col-2">Aksi</div>
-                </div>
-            </div>
-            <div class="data-table px-4 m-0">
+        <table class="table pb-1">
+            <thead class="my-bg-dark text-white">
+                <tr class="peninjauan">
+                    <th scope="col" class="py-2 px-3 pe-0">No</th>
+                    <th scope="col" class="py-2">Nomor Dokumen</th>
+                    <th scope="col" class="py-2">Nama Dokumen</th>
+                    <th scope="col" class="py-2">Pemohon</th>
+                    <th scope="col" class="py-2">Tgl Upload</th>
+                    <th scope="col" class="py-2 px-3 ps-0">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
                 @if ($data->isEmpty())
                     <tr>
                         <td colspan="7">Tidak ada dokumen</td>
                     </tr>
                 @else
+                    @foreach ($data as $item)
+                        <tr class="peninjauan" style="vertical-align: middle;">
+                            <td class="py-2 px-3 pe-0">{{ $loop->iteration }}</td>
+                            <td class="py-2">{{ $item['nomor'] }}</td>
+                            <td class="py-2">{{ $item['judul'] }}</td>
+                            <td class="py-2">
+                                <div class="d-flex" style="width: 184px;">
+                                    <div class="prof-circle"
+                                        @if ($item['photo'] == null) style="background-image: url({{ asset('assets/default.jpg') }})" @endif>
+                                    </div>
+                                    <p class="nama ms-2 m-0" style="width: 144px;">{{ $item['pemohon'] }}</p>
+                                </div>
+                            </td>
+                            <td class="py-2">{{ date('d/m/Y', strtotime($item['tgl'])) }}</td>
+                            <td class="py-2 px-3 ps-0">
+                                <button
+                                    wire:click='openTinjau("tinjau", {{ $item['id'] }}, "{{ $item['as_view'] }}","{{ $item['location'] }}")'
+                                    onclick="wireClick('spiner{{ $item['id'] }}', 'eye{{ $item['id'] }}')"
+                                    type="button" class="btn btn-primary">
+                                    <div class="d-flex">
+                                        <div id="spiner{{ $item['id'] }}" class="d-none">
+                                            <span class="spinner-border spinner-border-sm  me-2" role="status"
+                                                aria-hidden="true"></span>
+                                        </div>
+                                        <div id="eye{{ $item['id'] }}">
+                                            <i class="bi bi-eye-fill me-2"></i>
+                                        </div> <span>Tinjau</span>
+                                    </div>
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
+            </tbody>
+        </table>
+        {{--
                     @foreach ($data as $item)
                         <div class="row ps-3 align-items-center border-bottom">
                             <div class="col-1">{{ $loop->iteration }}</div>
@@ -60,8 +96,7 @@
                             <div class="col-3 nama-dokumen">{{ $item['judul'] }}</div>
                             <div class="col-2 d-flex align-items-center">
                                 <div class="prof-circle"
-                                    @if ($item['photo'] == null) style="background-image: url({{ asset('assets/default.jpg') }})"
-                        {{-- @else --}} @endif>
+                                    @if ($item['photo'] == null) style="background-image: url({{ asset('assets/default.jpg') }})" @endif>
                                 </div>
                                 <span class="nama ms-2 m-0">{{ $item['pemohon'] }}</span>
                             </div>
@@ -85,8 +120,8 @@
                         </div>
                     @endforeach
                 @endif
-            </div>
-            @if ($q_tinjau == null)
+            </div> --}}
+        {{-- @if ($q_tinjau == null)
                 <nav aria-label="...">
                     <ul class="pagination pagination-sm mt-3 px-2 mb-0">
                         @php
@@ -104,8 +139,7 @@
                         @endfor
                     </ul>
                 </nav>
-            @endif
-        </div>
+            @endif --}}
     </div>
     <div class="status-pds bg-white box-radius-20 mt-3 mb-3">
         <div class="d-flex p-3 align-items-center justify-content-between">
@@ -187,7 +221,6 @@
                                 <h1>Pantau dokumen</h1>
                                 <h2 class="bg-secondary p-2 rounded ms-2"><i class="bi bi-chevron-right"></i>
                                     {{ $monitor['judul'] }}</h2>
-                                {{ $monitor['location'] }}
                             </div>
                             <div class="box-monitor d-flex mt-2 flex-column align-items-end">
                                 <div class="d-flex justify-content-between" style="width: 100%;">
