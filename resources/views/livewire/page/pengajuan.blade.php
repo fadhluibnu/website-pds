@@ -1,6 +1,6 @@
 <div class="container-fluid" style="height: 90vh;overflow-y: auto;">
     {{-- <livewire:logic.search></livewire:logic.search> --}}
-    <form wire:submit.prevent='search' class="filter bg-white p-3 box-radius-10">
+    <form wire:submit.prevent='fun_search' class="filter bg-white p-3 box-radius-10">
         @csrf
         <input type="hidden" wire:model='search'>
         <div class="row">

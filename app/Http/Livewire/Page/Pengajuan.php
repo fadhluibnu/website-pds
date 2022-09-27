@@ -19,13 +19,13 @@ class Pengajuan extends Component
     public $judul;
     public $status;
     public $tanggal;
+    public $search = false;
     public $modal = [
         'for' => 'null',
         'message' => 'null',
         'delete' => 'null',
     ];
     public $title = "Pengajuan";
-    protected $search;
     protected $data;
     public $deleteName;
     public $deleteNomor;
@@ -43,8 +43,10 @@ class Pengajuan extends Component
     }
     public function clear()
     {
-        $this->tanggal = null;
+        $this->judul = $this->judul;
+        $this->status = $this->status;
         $this->search = true;
+        $this->tanggal = null;
     }
     public function openModal($for, $message)
     {
@@ -93,33 +95,63 @@ class Pengajuan extends Component
         $dokumen = Dokumen::where('pemohon', $pemohon[0]['id'])->latest()->get();
         return $dokumen;
     }
-    public function search()
+    public function fun_search()
     {
-        $pemohon = session('auth');
         $this->search = true;
-        $dokumen = Dokumen::where('pemohon', $pemohon[0]['id']);
-        if ($this->judul) {
-            $dokumen = $dokumen->where('judul', 'like', '%' . $this->judul . '%');
+    }
+    public function search_operation($data)
+    {
+        $result = [];
+        if ($this->status == null) {
+            $this->status = "kosong";
         }
-        if ($this->status) {
-            $dokumen = $dokumen->whereHas('status', function (Builder $query) {
-                $query->where('status', $this->status);
-            });
+        for ($i_data = 0; $i_data <= count($data) - 1; $i_data++) {
+            if ($this->judul != null && $this->status != "kosong" && $this->tanggal != null) {
+                $split_data_judul = explode(strtolower($this->judul), strtolower($data[$i_data]['judul']));
+                if (count($split_data_judul) > 1 && $data[$i_data]['status'] == $this->status && date('Y-m-d', strtotime($data[$i_data]['tgl'])) == $this->tanggal) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul == null && $this->status == "kosong" && $this->tanggal == null) {
+                $result = $data;
+            } elseif ($this->judul != null && $this->status != "kosong" && $this->tanggal == null) {
+                $split_data_judul = explode(strtolower($this->judul), strtolower($data[$i_data]['judul']));
+                if (count($split_data_judul) > 1 && $data[$i_data]['status'] == $this->status) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul != null && $this->status == "kosong" && $this->tanggal != null) {
+                $split_data_judul = explode(strtolower($this->judul), strtolower($data[$i_data]['judul']));
+                if (count($split_data_judul) > 1 && date('Y-m-d', strtotime($data[$i_data]['tgl'])) == $this->tanggal) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul == null && $this->status != "kosong" && $this->tanggal != null) {
+                if ($data[$i_data]['status'] == $this->status && date('Y-m-d', strtotime($data[$i_data]['tgl'])) == $this->tanggal) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul != null && $this->status == "kosong" && $this->tanggal == null) {
+                $split_data_judul = explode(strtolower($this->judul), strtolower($data[$i_data]['judul']));
+                // dd($split_data_judul);
+                if (count($split_data_judul) > 1) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul == null && $this->status != "kosong" && $this->tanggal == null) {
+                if ($data[$i_data]['status'] == $this->status) {
+                    $result[] = $data[$i_data];
+                }
+            } elseif ($this->judul == null && $this->status == "kosong" && $this->tanggal != null) {
+                if (date('Y-m-d', strtotime($data[$i_data]['tgl'])) == $this->tanggal) {
+                    $result[] = $data[$i_data];
+                }
+            }
         }
-        if ($this->tanggal) {
-            $dokumen = $dokumen->where('created_at', 'like', '%' . $this->tanggal . '%');
-        }
-
-        $dokumen = $dokumen->get();
-        return $dokumen;
+        return $result;
     }
     public function render()
     {
-        if ($this->search == null) {
-            $data = $this->get_dokumen();
-        }
         if ($this->search == true) {
-            $data = $this->search();
+            $data = collect($this->get_dokumen());
+            $data = collect($this->search_operation($data));
+        } else {
+            $data = $this->get_dokumen();
         }
         // $data = [];
         return view('livewire.page.pengajuan', [
