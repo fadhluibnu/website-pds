@@ -88,39 +88,6 @@
                 @endif
             </tbody>
         </table>
-        {{--
-                    @foreach ($data as $item)
-                        <div class="row ps-3 align-items-center border-bottom">
-                            <div class="col-1">{{ $loop->iteration }}</div>
-                            <div class="col-2">{{ $item['nomor'] }}</div>
-                            <div class="col-3 nama-dokumen">{{ $item['judul'] }}</div>
-                            <div class="col-2 d-flex align-items-center">
-                                <div class="prof-circle"
-                                    @if ($item['photo'] == null) style="background-image: url({{ asset('assets/default.jpg') }})" @endif>
-                                </div>
-                                <span class="nama ms-2 m-0">{{ $item['pemohon'] }}</span>
-                            </div>
-                            <div class="col-2">{{ date('d/m/Y', strtotime($item['tgl'])) }}</div>
-                            <div class="col-2">
-                                <button
-                                    wire:click='openTinjau("tinjau", {{ $item['id'] }}, "{{ $item['as_view'] }}","{{ $item['location'] }}")'
-                                    onclick="wireClick('spiner{{ $item['id'] }}', 'eye{{ $item['id'] }}')"
-                                    type="button" class="btn btn-primary">
-                                    <div class="d-flex">
-                                        <div id="spiner{{ $item['id'] }}" class="d-none">
-                                            <span class="spinner-border spinner-border-sm  me-2" role="status"
-                                                aria-hidden="true"></span>
-                                        </div>
-                                        <div id="eye{{ $item['id'] }}">
-                                            <i class="bi bi-eye-fill me-2"></i>
-                                        </div> <span>Tinjau</span>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                    @endforeach
-                @endif
-            </div> --}}
         {{-- @if ($q_tinjau == null)
                 <nav aria-label="...">
                     <ul class="pagination pagination-sm mt-3 px-2 mb-0">

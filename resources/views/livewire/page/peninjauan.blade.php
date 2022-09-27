@@ -15,9 +15,9 @@
                 <select id="statusdokumen" class="form-select mt-2" aria-label="Default select example"
                     style="padding: 10px;" wire:model.defer='status'>
                     <option value="kosong" selected>Semua</option>
-                    <option value="1">Ditinjau</option>
-                    <option value="3">Selesai</option>
-                    <option value="2">Dikembalikan</option>
+                    <option value="Ditinjau">Ditinjau</option>
+                    <option value="Selesai">Selesai</option>
+                    <option value="Dikembalikan">Dikembalikan</option>
                 </select>
             </div>
             <div class="col-3">
@@ -119,10 +119,11 @@
                         </td>
                         <td class="py-2">
                             <div class="d-flex align-items-center">
+                                {{-- style="background-image: url({{ env('URL_WEB_API') . 'storage/' . $item['photo'] }});" --}}
                                 <div class="prof-circle"
-                                    style="background-image: url({{ env('URL_WEB_API') . 'storage/' . $item['photo'] }});">
+                                    style="background-image: url({{ asset('assets/default.jpg') }})">
                                 </div>
-                                <span class="fw-medium ms-2 m-0">{{ $item['pemohon'] }}</span>
+                                <span class="fw-medium ms-2 m-0" style="width: 150px;">{{ $item['pemohon'] }}</span>
                             </div>
                         </td>
                         <td class="py-2">{{ date('d/m/Y', strtotime($item['tgl'])) }}</td>

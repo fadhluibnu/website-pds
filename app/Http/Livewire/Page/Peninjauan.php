@@ -118,19 +118,19 @@ class Peninjauan extends Component
         }
         for ($i_data = 0; $i_data <= count($data) - 1; $i_data++) {
             if ($this->judul != null && $this->status != "kosong" && $this->tanggal != null) {
-                $split_data_judul = explode($this->judul, $data[$i_data]['judul']);
+                $split_data_judul = explode(strtolower($this->judul), strtolower($data[$i_data]['judul']));
                 if (count($split_data_judul) > 1 && $data[$i_data]['status'] == $this->status && date('Y-m-d', strtotime($data[$i_data]['tgl'])) == $this->tanggal) {
                     $result[] = $data[$i_data];
                 }
             } elseif ($this->judul == null && $this->status == "kosong" && $this->tanggal == null) {
                 $result = $data;
             } elseif ($this->judul != null && $this->status != "kosong" && $this->tanggal == null) {
-                $split_data_judul = explode($this->judul, $data[$i_data]['judul']);
+                $split_data_judul = explode(strtolower($this->judul), strtolower($data[$i_data]['judul']));
                 if (count($split_data_judul) > 1 && $data[$i_data]['status'] == $this->status) {
                     $result[] = $data[$i_data];
                 }
             } elseif ($this->judul != null && $this->status == "kosong" && $this->tanggal != null) {
-                $split_data_judul = explode($this->judul, $data[$i_data]['judul']);
+                $split_data_judul = explode(strtolower($this->judul), strtolower($data[$i_data]['judul']));
                 if (count($split_data_judul) > 1 && date('Y-m-d', strtotime($data[$i_data]['tgl'])) == $this->tanggal) {
                     $result[] = $data[$i_data];
                 }
@@ -139,7 +139,8 @@ class Peninjauan extends Component
                     $result[] = $data[$i_data];
                 }
             } elseif ($this->judul != null && $this->status == "kosong" && $this->tanggal == null) {
-                $split_data_judul = explode($this->judul, $data[$i_data]['judul']);
+                $split_data_judul = explode(strtolower($this->judul), strtolower($data[$i_data]['judul']));
+                // dd($split_data_judul);
                 if (count($split_data_judul) > 1) {
                     $result[] = $data[$i_data];
                 }
@@ -314,13 +315,13 @@ class Peninjauan extends Component
     }
     public function render()
     {
-        // if ($this->search == true) {
-        //     $data = collect($this->get_dokumens());
-        //     $data = collect($this->search_operation($data));
-        // } else {
-        //     $data = collect($this->get_dokumens());
-        // }
-        $data = collect($this->get_dokumen2());
+        if ($this->search == true) {
+            $data = collect($this->get_dokumen2());
+            $data = collect($this->search_operation($data));
+        } else {
+            $data = collect($this->get_dokumen2());
+        }
+        // $data = collect($this->get_dokumen2());
 
         return view('livewire.page.peninjauan', [
             'data' => $data
