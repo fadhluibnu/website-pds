@@ -126,10 +126,10 @@
                                                 <span>Detail & History</span>
                                             </div>
                                         </div>
+                                        {{-- wire:click='openModal("edit", {{ $item->id }})' --}}
+                                        {{-- onclick="wireClick('spinerEdit{{ $item->id }}', 'penEdit{{ $item->id }}')" --}}
                                         <div id="{{ $item->id . 'edit' }}"
-                                            class="box-icon rounded-circle bg-warning ms-1"
-                                            wire:click='openModal("edit", {{ $item->id }})'
-                                            onclick="wireClick('spinerEdit{{ $item->id }}', 'penEdit{{ $item->id }}')">
+                                            class="box-icon disable rounded-circle bg-warning ms-1">
                                             <span id="spinerEdit{{ $item->id }}"
                                                 class="spinner-border spinner-border-sm m-auto d-none" role="status"
                                                 aria-hidden="true"></span>

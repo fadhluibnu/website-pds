@@ -263,7 +263,7 @@ class EditPds extends Component
         }
 
         return view('livewire.logic.edit-pds', [
-            'data' => $data
+            'data' => collect($data)
         ]);
     }
 }

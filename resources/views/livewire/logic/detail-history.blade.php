@@ -21,7 +21,17 @@
                             placeholder="Pihak terkait" value="{{ $item['judul'] }}" disabled>
                     </div>
                     <div class="mb-3">
-                        <label for="downloadfile" class="form-label">Nama Dokumen</label>
+                        <label for="namadokumen" class="form-label">Jenis Dokumen</label>
+                        <input type="text" class="form-control p-2 box-radius-10" id="namadokumen"
+                            placeholder="Pihak terkait" value="{{ $item['jenisdokumen'] }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="namadokumen" class="form-label">Jenis Permohonan</label>
+                        <input type="text" class="form-control p-2 box-radius-10" id="namadokumen"
+                            placeholder="Pihak terkait" value="{{ $item['jenispermohonan'] }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="downloadfile" class="form-label">Download Dokumen</label>
                         <div onclick="wireClick('spinerEx', 'eyeEx')" wire:click='export("{{ $item['file'] }}")'
                             class="download-file d-flex justify-content-between rounded p-2"
                             style="background: #F3F5FA;cursor:pointer;">
@@ -49,6 +59,38 @@
                                     <i class="bi bi-download"></i>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="namadokumen" class="form-label">Penanggung Jawab</label>
+                        <div class="d-flex">
+                            @foreach ($pics as $pic)
+                                @if ($pic == 'Lab Manager DEQA')
+                                    <div class="btn-checkbox-detail rounded text-center"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        Manager DEQA</div>
+                                @endif
+                                @if ($pic == 'Lab Manager IQA')
+                                    <div class="btn-checkbox-detail rounded text-center"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        Manager IQA</div>
+                                @endif
+                                @if ($pic == 'Lab Manager UREL')
+                                    <div class="btn-checkbox-detail rounded text-center"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        Manager UREL</div>
+                                @endif
+                                @if ($pic == 'SM IAS')
+                                    <div class="btn-checkbox-detail rounded text-center"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        OSM TTH</div>
+                                @endif
+                                @if ($pic == 'Document Controller 1')
+                                    <div class="btn-checkbox-detail rounded text-center"><i
+                                            class="bi bi-check-circle-fill"></i>
+                                        Pengendali Dokumen</div>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                 </form>

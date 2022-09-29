@@ -4,7 +4,7 @@
     </div>
     <div class="modal-content">
         <div class="header-modal border-bottom d-flex align-items-center justify-content-between">
-            <h1>Upload PDS</h1>
+            <h1>Edit PDS</h1>
             <i class="bi bi-x-lg" style="cursor: pointer;" wire:click='closeX()'></i>
         </div>
         <div class="box-modal-content p-3 overflow-auto">

@@ -31,6 +31,16 @@
     <div class="pds-terbaru bg-white box-radius-20 pb-3 {{ $need_follow_up }}">
         <div class="d-flex p-3 pb-1 justify-content-between">
             <h1 class="title">Need Follow Up</h1>
+            @if (session()->has('tinjau'))
+                <div class="alert alert-success alert-dismissible fade show m-0 m-auto" role="alert"
+                    style="width: 450px;padding:10px 10px !important;">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span>{{ session('tinjau') }}</span>
+                        <button type="button" class="btn-close p-0" data-bs-dismiss="alert" aria-label="Close"
+                            style="position: unset !important"></button>
+                    </div>
+                </div>
+            @endif
             <form action="">
                 <input class="form-control" wire:model='q_tinjau' type="search" placeholder="Search Document"
                     aria-label="default input example">
@@ -131,7 +141,8 @@
                 type="button" class="btn btn-primary box-radius-10 mybutton">
                 <div class="d-flex">
                     <div id="spinerUpload" class="d-none">
-                        <span class="spinner-border spinner-border-sm  me-2" role="status" aria-hidden="true"></span>
+                        <span class="spinner-border spinner-border-sm  me-2" role="status"
+                            aria-hidden="true"></span>
                     </div>
                     <div id="eyeUpload">
                         <i class="bi bi-file-earmark-arrow-up-fill me-1"></i>

@@ -97,7 +97,7 @@ class Overview extends Component
             session()->flash('action', "PDS Berhasil Di Edit");
         }
         if ($attr['session'] == 'tinjau') {
-            session()->flash('action', "PDS Berhasil Di Tinjau");
+            session()->flash('tinjau', "PDS Berhasil Di Tinjau");
         }
         if ($attr['session'] == 'kembalikan') {
             session()->flash('action', "PDS Berhasil Di Kembalikan");
@@ -134,7 +134,6 @@ class Overview extends Component
     // Mengambil Dokumen Yang Harus Ditinjau Dan Hilang Setelah Di Tinjau
     public function get_dokumens($search)
     {
-
         $data = [];
         $dokumen  = Dokumen::latest()->get();
 
@@ -196,7 +195,7 @@ class Overview extends Component
         if ($search != null) {
             $s_result = [];
             foreach (collect($data) as $item) {
-                $explode = explode($search, $item['judul']);
+                $explode = explode(strtolower($search), strtolower($item['judul']));
                 if (count($explode) > 1) {
                     $s_result[] = [
                         'id' => $item['id'],
@@ -251,7 +250,7 @@ class Overview extends Component
         if ($search != null) {
             $s_result = [];
             foreach (collect($data) as $item) {
-                $explode = explode($search, $item['judul']);
+                $explode = explode(strtolower($search), strtolower($item['judul']));
                 if (count($explode) > 1) {
                     $s_result[] = $this->store_tracking($item);
                 }
@@ -355,7 +354,7 @@ class Overview extends Component
                 $this->rellToPihakTerkaitBlue = 'active';
                 $this->pihakterkait = 'active on';
             }
-            if ($monitor['location'] != 'pihak_terkait' && $monitor['status'] == 'Ditinjau' && $monitor['pihak_terkait'] != null) {
+            if ($monitor['location'] != 'PIC' && $monitor['location'] != 'pihak_terkait' && $monitor['status'] == 'Ditinjau' && $monitor['pihak_terkait'] != null) {
                 $this->rellToPihakTerkaitRed = 'off';
                 $this->rellToPihakTerkaitBlue = 'active';
                 $this->pihakterkait = 'active';

@@ -23,6 +23,7 @@ class Tinjau extends Component
     use WithFileUploads;
     public $attrTinjau;
     public $active = 'active';
+    public $ketersedian_dokumen = false;
 
     // form
     public $idDock;
@@ -369,17 +370,23 @@ class Tinjau extends Component
     }
     public function render()
     {
-        $data = Dokumen::where('id', $this->attrTinjau['id'])->get();
-        $this->old_file = $data[0]['file'];
-        $this->judul = $data[0]['judul'];
-        $this->idDock = $data[0]['id'];
-        $this->as_view = $this->attrTinjau['as_view'];
-        $this->location = $this->attrTinjau['location'];
-        $this->role = session('auth')[0]['role'];
-        $this->id_peninjau = session('auth')[0]['id'];
-        $http = Http::get(env("URL_API_GET_USER") . $data[0]->pemohon);
+        $data = Dokumen::where('id', $this->attrTinjau['id'])->first()->get();
+        if (count($data) != 0) {
+            $this->old_file = $data[0]['file'];
+            $this->judul = $data[0]['judul'];
+            $this->idDock = $data[0]['id'];
+            $this->as_view = $this->attrTinjau['as_view'];
+            $this->location = $this->attrTinjau['location'];
+            $this->role = session('auth')[0]['role'];
+            $this->id_peninjau = session('auth')[0]['id'];
+            $http = Http::get(env("URL_API_GET_USER") . $data[0]->pemohon);
+        } else {
+            $data = null;
+            $http = null;
+            $this->ketersedian_dokumen = true;
+        }
         return view('livewire.logic.tinjau', [
-            'data' => $data,
+            'data' => collect($data[0]),
             'api' => $http
         ]);
     }

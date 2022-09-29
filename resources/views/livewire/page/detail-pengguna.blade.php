@@ -10,16 +10,16 @@
                     </div>
                     <p class="m-0 ms-2">Total <br />Dokumen</p>
                 </div>
-                <h1 class="m-0">100</h1>
+                <h1 class="m-0">{{ $activity['total_dokumen'] }}</h1>
             </div>
             <div class="detail-dokumen-disahkan p-3 bg-white box-radius-10 ms-3">
                 <div class="d-flex">
                     <div class="icon bg-success rounded d-flex">
                         <i class="bi bi-file-earmark-check-fill m-auto"></i>
                     </div>
-                    <p class="m-0 ms-2">Dokumen <br />Disetujui</p>
+                    <p class="m-0 ms-2">Dokumen <br />Selesai</p>
                 </div>
-                <h1 class="m-0">80</h1>
+                <h1 class="m-0">{{ $activity['dokumen_selesai'] }}</h1>
             </div>
             <div class="detail-dalam-proses p-3 bg-white box-radius-10 ms-3">
                 <div class="d-flex">
@@ -28,16 +28,16 @@
                     </div>
                     <p class="m-0 ms-2">Dalam <br />Dikembalikan</p>
                 </div>
-                <h1 class="m-0">10</h1>
+                <h1 class="m-0">{{ $activity['dokumen_dikembalikan'] }}</h1>
             </div>
             <div class="detail-dalam-proses p-3 bg-white box-radius-10 ms-3">
                 <div class="d-flex">
                     <div class="icon bg-warning rounded d-flex">
                         <i class="bi bi-file-earmark-arrow-up-fill m-auto"></i>
                     </div>
-                    <p class="m-0 ms-2">Dokumen <br />Diproses</p>
+                    <p class="m-0 ms-2">Dokumen <br />Ditinjau</p>
                 </div>
-                <h1 class="m-0">10</h1>
+                <h1 class="m-0">{{ $activity['dokumen_ditinjau'] }}</h1>
             </div>
         </div>
     </div>
@@ -62,12 +62,6 @@
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="inputNama" disabled
                                     value="{{ $user['name'] }}">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputUsername"disabled value="Thomeas">
                             </div>
                         </div>
                         <div class="row mb-3">

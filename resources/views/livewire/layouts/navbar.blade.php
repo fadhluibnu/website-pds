@@ -9,9 +9,9 @@
                 <div class="input-group" id="form-search-header">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
                     <input type="text" class="form-control" placeholder="Cari dokumen" aria-label="Username"
-                        aria-describedby="basic-addon1"
-                        onclick="formSearchHeader('o', 'form-search-header', 'header-overview', 'search-result')">
+                        aria-describedby="basic-addon1" wire:model='s_overview'>
                 </div>
+                {{-- onclick="formSearchHeader('o', 'form-search-header', 'header-overview', 'search-result')" --}}
             </form>
         </div>
         <div class="box-header d-flex align-items-center justify-content-between">
@@ -21,20 +21,21 @@
             <div class="jam d-flex">
                 <div class="m-auto d-flex align-items-center">
                     <i class="bi bi-alarm-fill"></i>
-                    <p class="text ms-3">12:00</p>
+                    <p class="text ms-3" id="realtime-clock"></p>
                 </div>
             </div>
             <div class="tanggal d-flex">
                 <div class="m-auto d-flex align-items-center">
                     <i class="bi bi-calendar-week-fill"></i>
-                    <p class="text ms-3">27/06/2022</p>
+                    <p class="text ms-3">{{ date('d/m/Y') }}</p>
                 </div>
             </div>
         </div>
     </header>
     <div id="search-result" class="d-none position-absolute">
-        <div class="close-modal position-absolute" style="z-index: -5;"
-            onclick="formSearchHeader('c', 'form-search-header', 'header-overview', 'search-result')"></div>
+
+        {{-- onclick="formSearchHeader('c', 'form-search-header', 'header-overview', 'search-result')" --}}
+        <div class="close-modal position-absolute" style="z-index: -5;"></div>
         <div class="row px-2" style="margin-top: 90px;">
             <div class="col-6">
                 <div class="bg-white box-radius-10 overflow-hidden">
@@ -48,17 +49,19 @@
                                 Status
                             </div>
                         </div>
-                        <div class="row align-items-center px-3 p-2 border-bottom">
-                            <div class="col-9 text-color">
-                                Lorem ipsum dolor sit amet consectetur
+                        @foreach ($peninjauan as $item)
+                            <div class="row align-items-center px-3 p-2 border-bottom">
+                                <div class="col-9 text-color">
+                                    {{ $item['judul'] }}
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-primary"
+                                        onclick="modalTarget('open', 'modal-tinjau-targeted')">
+                                        <i class="bi bi-eye-fill me-2"></i>Tinjau
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-3">
-                                <button type="button" class="btn btn-primary"
-                                    onclick="modalTarget('open', 'modal-tinjau-targeted')">
-                                    <i class="bi bi-eye-fill me-2"></i>Tinjau
-                                </button>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

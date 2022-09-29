@@ -1,39 +1,47 @@
 <div class="container-fluid" style="height: 90vh;overflow-y: auto;">
-    <form class="filter bg-white p-3 box-radius-10">
+    <form wire:submit.prevent='fun_search' class="filter bg-white p-3 box-radius-10">
         <div class="row">
-            <div class="col-5">
-                <label for="namanomor" onmouseup="formInput('o', 'inpnamanomor')">Nama atau Nomor
-                    Dokumen</label>
+            <div class="col-6">
+                <label for="namanomor" onmouseup="formInput('o', 'inpnamanomor')">Nama</label>
                 <div id="inpnamanomor" class="input-group namanomor box-radius-10 border mt-2">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-                    <input type="text" id="namanomor" class="form-control ps-0" placeholder="Nama / Nomor Dokumen">
+                    <input wire:model.defer='nama' type="text" id="namanomor" class="form-control ps-0"
+                        placeholder="Nama / Nomor Dokumen">
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <label for="role">Role</label>
                 <select id="role" class="form-select mt-2" aria-label="Default select example"
-                    style="padding: 10px;">
-                    <option selected>Semua</option>
-                    <option value="1">OSM TTH</option>
-                    <option value="2">Manager IQA</option>
-                    <option value="3">Manager DEQA</option>
-                    <option value="3">Manager UREL</option>
+                    style="padding: 10px;" wire:model.defer='role'>
+                    <option value="kosong" selected>Semua</option>
+                    @foreach ($roles as $item)
+                        <option value="{{ $item['name'] }}">{{ $item['name'] }}</option>
+                    @endforeach
+                    {{-- <option value="SM IAS">OSM TTH</option>
+                    <option value="Lab Manager IQA">Manager IQA</option>
+                    <option value="Lab Manager DEQA">Manager DEQA</option>
+                    <option value="Lab Manager UREL">Manager UREL</option>
+                    <option value="Bagian UREL">Bagian UREL</option>
+                    <option value="Lab Transmisi">Lab Transmisi</option>
+                    <option value="Lab Device">Lab Device</option>
+                    <option value="Lab Energy">Lab Energy</option>
+                    <option value="Lab Kabel dan Aksesoris FTTH">Lab Kabel dan Aksesoris FTTH</option>
+                    <option value="Deactivated">Deactivated</option> --}}
                 </select>
             </div>
-            <div class="col-2">
+            {{-- <div class="col-2">
                 <label for="role">Urutkan</label>
                 <select id="role" class="form-select mt-2" aria-label="Default select example"
                     style="padding: 10px;">
-                    <option selected>Semua</option>
-                    <option value="1">Ditinjau</option>
-                    <option value="2">Selesai</option>
-                    <option value="3">Dikembalikan</option>
+                    <option value="kosong" selected>Semua</option>
+                    <option value="Abjad">Abjad</option>
+                    <option value="Abjad">Aktivitas</option>
                 </select>
-            </div>
+            </div> --}}
             <div class="col-2">
                 <div class="d-flex flex-column justify-content-between" style="height: 100%;">
                     <div class="bg-white p-1"></div>
-                    <button type="button" class="btn btn-primary" style="padding: 10px;">Terapkan</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 10px;">Terapkan</button>
                 </div>
             </div>
         </div>
@@ -53,7 +61,7 @@
             </thead>
             <tbody>
                 @foreach ($users as $item)
-                    <tr class="pengguna">
+                    <tr class="pengguna" style="vertical-align:middle;">
                         <td class="py-2 px-3 pe-0">{{ $loop->iteration }}</td>
                         <td class="py-2">{{ $item['nik'] }}</td>
                         <td class="py-2">{{ $item['name'] }}</td>
