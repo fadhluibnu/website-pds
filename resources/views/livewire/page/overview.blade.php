@@ -98,7 +98,7 @@
                 @endif
             </tbody>
         </table>
-        {{-- @if ($q_tinjau == null)
+        @if ($q_tinjau == null)
                 <nav aria-label="...">
                     <ul class="pagination pagination-sm mt-3 px-2 mb-0">
                         @php
@@ -116,7 +116,7 @@
                         @endfor
                     </ul>
                 </nav>
-            @endif --}}
+            @endif
     </div>
     <div class="status-pds bg-white box-radius-20 mt-3 mb-3">
         <div class="d-flex p-3 align-items-center justify-content-between">
