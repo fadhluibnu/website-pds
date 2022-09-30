@@ -40,11 +40,21 @@ class DetailHistory extends Component
         $history = History::where('dokumen_id', $this->idDokumen)->latest()->get();
 
 
-        $pics = [];
+        $pics = [
+            'Lab Manager DEQA' => null,
+            'Lab Manager IQA' => null,
+            'Lab Manager UREL' => null,
+            'SM IAS' => null,
+            'Document Controller 1' => null
+        ];
         $pics_query = explode("|", $data[0]['pic']);
         for ($i = 1; $i <= count($pics_query) - 1; $i++) {
             $pic = explode(":", $pics_query[$i]);
-            $pics += [$pic[0]];
+            foreach (collect($pics) as $key => $value) {
+                if ($pic[0] == $key) {
+                    $pics[$key] = true;
+                }
+            }
         }
         return view('livewire.logic.detail-history', [
             'data' => collect($data),

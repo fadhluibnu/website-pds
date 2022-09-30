@@ -64,33 +64,33 @@
                     <div class="mb-3">
                         <label for="namadokumen" class="form-label">Penanggung Jawab</label>
                         <div class="d-flex">
-                            @foreach ($pics as $pic)
-                                @if ($pic == 'Lab Manager DEQA')
-                                    <div class="btn-checkbox-detail rounded text-center"><i
-                                            class="bi bi-check-circle-fill"></i>
-                                        Manager DEQA</div>
-                                @endif
-                                @if ($pic == 'Lab Manager IQA')
-                                    <div class="btn-checkbox-detail rounded text-center"><i
-                                            class="bi bi-check-circle-fill"></i>
-                                        Manager IQA</div>
-                                @endif
-                                @if ($pic == 'Lab Manager UREL')
-                                    <div class="btn-checkbox-detail rounded text-center"><i
-                                            class="bi bi-check-circle-fill"></i>
-                                        Manager UREL</div>
-                                @endif
-                                @if ($pic == 'SM IAS')
-                                    <div class="btn-checkbox-detail rounded text-center"><i
-                                            class="bi bi-check-circle-fill"></i>
-                                        OSM TTH</div>
-                                @endif
-                                @if ($pic == 'Document Controller 1')
-                                    <div class="btn-checkbox-detail rounded text-center"><i
-                                            class="bi bi-check-circle-fill"></i>
-                                        Pengendali Dokumen</div>
-                                @endif
-                            @endforeach
+                            {{-- @foreach ($pics as $pic) --}}
+                            @if ($pics['Lab Manager DEQA'] == true)
+                                <div class="btn-checkbox-detail m-1 rounded text-center"><i
+                                        class="bi bi-check-circle-fill"></i>
+                                    Manager DEQA</div>
+                            @endif
+                            @if ($pics['Lab Manager IQA'] == true)
+                                <div class="btn-checkbox-detail m-1 rounded text-center"><i
+                                        class="bi bi-check-circle-fill"></i>
+                                    Manager IQA</div>
+                            @endif
+                            @if ($pics['Lab Manager UREL'] == true)
+                                <div class="btn-checkbox-detail m-1 rounded text-center"><i
+                                        class="bi bi-check-circle-fill"></i>
+                                    Manager UREL</div>
+                            @endif
+                            @if ($pics['SM IAS'] == true)
+                                <div class="btn-checkbox-detail m-1 rounded text-center"><i
+                                        class="bi bi-check-circle-fill"></i>
+                                    OSM TTH</div>
+                            @endif
+                            @if ($pics['Document Controller 1'] == true)
+                                <div class="btn-checkbox-detail m-1 rounded text-center"><i
+                                        class="bi bi-check-circle-fill"></i>
+                                    Pengendali Dokumen</div>
+                            @endif
+                            {{-- @endforeach --}}
                         </div>
                     </div>
                 </form>
