@@ -55,7 +55,7 @@ class Tinjau extends Component
         $id_user = session('auth')[0]['id'];
         if ($this->as_view == 'pic') {
             if ($this->pengendalidokumen == null & $this->managerdeqa == null & $this->manageriqa == null & $this->managerurel == null & $this->smias == null) {
-                $this->alertPic = "<script>alert('Anda belum memilih Penanggung Jawab')</script>";
+                $this->alertPic = "<script>alert('Anda belum memilih Pihak Terkait')</script>";
             } else {
                 $dokumen  = $dokumen_query->first();
                 $pihakterkait_selected = '';
