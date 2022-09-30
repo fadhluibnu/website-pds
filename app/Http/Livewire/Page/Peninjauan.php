@@ -24,7 +24,7 @@ class Peninjauan extends Component
     ];
     public $tinjau = [
         'for' => 'null',
-        'id' => 'null',
+        'id' => null,
         'as_view' => 'null',
         'location' => 'null'
     ];
@@ -270,47 +270,134 @@ class Peninjauan extends Component
             ['identitas', 'asc'],
         ]);
 
-        $result = [];
+        $filter_data = [];
         for ($i = 0; $i <= count($data) - 1; $i++) {
-            if ($i + 1 == count($data)) {
-                if ($data[$i]['id'] != $data[0]['id'] && $data[$i]['identitas'] != $data[0]['identitas']) {
-                    $result[] = [
-                        'id' => $data[$i]['id'],
-                        'identitas' => $data[$i]['id'] . $data[$i]['status'],
-                        'nomor' => $data[$i]['nomor'],
-                        'judul' => $data[$i]['judul'],
-                        'status' => $data[$i]['status'],
-                        'pemohon' => $data[$i]['pemohon'],
-                        'photo' => $data[$i]['photo'],
-                        'tgl' => $data[$i]['tgl'],
-                        'location' => $data[$i]['location'],
-                        'as_view' =>  $data[$i]['as_view']
-                    ];
+            if (count($data) > 1) {
+                if ($i + 1 == count($data)) {
+                    if ($data[$i]['id'] != $data[0]['id'] && $data[$i]['identitas'] != $data[0]['identitas']) {
+                        $filter_data[] = [
+                            'id' => $data[$i]['id'],
+                            'identitas' => $data[$i]['id'] . $data[$i]['status'],
+                            'nomor' => $data[$i]['nomor'],
+                            'judul' => $data[$i]['judul'],
+                            'status' => $data[$i]['status'],
+                            'pemohon' => $data[$i]['pemohon'],
+                            'photo' => $data[$i]['photo'],
+                            'tgl' => $data[$i]['tgl'],
+                            'location' => $data[$i]['location'],
+                            'as_view' =>  $data[$i]['as_view']
+                        ];
+                    }
                 }
-            }
-            if ($i + 1 != count($data)) {
-                if ($data[$i]['id'] != $data[$i + 1]['id'] && $data[$i]['identitas'] != $data[$i + 1]['identitas']) {
-                    $result[] = [
-                        'id' => $data[$i]['id'],
-                        'identitas' => $data[$i]['id'] . $data[$i]['status'],
-                        'nomor' => $data[$i]['nomor'],
-                        'judul' => $data[$i]['judul'],
-                        'status' => $data[$i]['status'],
-                        'pemohon' => $data[$i]['pemohon'],
-                        'photo' => $data[$i]['photo'],
-                        'tgl' => $data[$i]['tgl'],
-                        'location' => $data[$i]['location'],
-                        'as_view' =>  $data[$i]['as_view']
-                    ];
+                if ($i + 1 != count($data)) {
+                    if ($data[$i]['id'] != $data[$i + 1]['id'] && $data[$i]['identitas'] != $data[$i + 1]['identitas']) {
+                        $filter_data[] = [
+                            'id' => $data[$i]['id'],
+                            'identitas' => $data[$i]['id'] . $data[$i]['status'],
+                            'nomor' => $data[$i]['nomor'],
+                            'judul' => $data[$i]['judul'],
+                            'status' => $data[$i]['status'],
+                            'pemohon' => $data[$i]['pemohon'],
+                            'photo' => $data[$i]['photo'],
+                            'tgl' => $data[$i]['tgl'],
+                            'location' => $data[$i]['location'],
+                            'as_view' =>  $data[$i]['as_view']
+                        ];
+                    }
                 }
+            } else {
+                $filter_data[] = [
+                    'id' => $data[$i]['id'],
+                    'identitas' => $data[$i]['id'] . $data[$i]['status'],
+                    'nomor' => $data[$i]['nomor'],
+                    'judul' => $data[$i]['judul'],
+                    'status' => $data[$i]['status'],
+                    'pemohon' => $data[$i]['pemohon'],
+                    'photo' => $data[$i]['photo'],
+                    'tgl' => $data[$i]['tgl'],
+                    'location' => $data[$i]['location'],
+                    'as_view' =>  $data[$i]['as_view']
+                ];
             }
         }
 
         // dd(count($data));
-        if (count($result) == 0) {
-            return $data;
+        if (count($filter_data) == 0) {
+            for ($i = 0; $i <= count($data) - 1; $i++) {
+                if ($i + 1 == count($data)) {
+                    if (count($filter_data) == 0) {
+                        $search_arr = array_search($data[$i]['identitas'], $data[0]);
+                        if ($search_arr == false) {
+                            $filter_data[] = [
+                                'id' => $data[$i]['id'],
+                                'identitas' => $data[$i]['id'] . $data[$i]['status'],
+                                'nomor' => $data[$i]['nomor'],
+                                'judul' => $data[$i]['judul'],
+                                'status' => $data[$i]['status'],
+                                'pemohon' => $data[$i]['pemohon'],
+                                'photo' => $data[$i]['photo'],
+                                'tgl' => $data[$i]['tgl'],
+                                'location' => $data[$i]['location'],
+                                'as_view' =>  $data[$i]['as_view']
+                            ];
+                        }
+                    } else {
+                        $search_arr_filter = array_search($data[$i]['identitas'], $filter_data[$i - 1]);
+                        if ($search_arr_filter == false) {
+                            $filter_data[] = [
+                                'id' => $data[$i]['id'],
+                                'identitas' => $data[$i]['id'] . $data[$i]['status'],
+                                'nomor' => $data[$i]['nomor'],
+                                'judul' => $data[$i]['judul'],
+                                'status' => $data[$i]['status'],
+                                'pemohon' => $data[$i]['pemohon'],
+                                'photo' => $data[$i]['photo'],
+                                'tgl' => $data[$i]['tgl'],
+                                'location' => $data[$i]['location'],
+                                'as_view' =>  $data[$i]['as_view']
+                            ];
+                        }
+                    }
+                }
+                if ($i + 1 != count($data)) {
+                    if (count($filter_data) == 0) {
+                        $search_arr = array_search($data[$i]['identitas'], $data[$i + 1]);
+                        if ($search_arr != false) {
+                            $filter_data[] = [
+                                'id' => $data[$i]['id'],
+                                'identitas' => $data[$i]['id'] . $data[$i]['status'],
+                                'nomor' => $data[$i]['nomor'],
+                                'judul' => $data[$i]['judul'],
+                                'status' => $data[$i]['status'],
+                                'pemohon' => $data[$i]['pemohon'],
+                                'photo' => $data[$i]['photo'],
+                                'tgl' => $data[$i]['tgl'],
+                                'location' => $data[$i]['location'],
+                                'as_view' =>  $data[$i]['as_view']
+                            ];
+                        }
+                    } else {
+                        $search_arr_filter = array_search($data[$i]['identitas'], $filter_data[$i - 1]);
+                        if ($search_arr_filter == false) {
+                            $filter_data[] = [
+                                'id' => $data[$i]['id'],
+                                'identitas' => $data[$i]['id'] . $data[$i]['status'],
+                                'nomor' => $data[$i]['nomor'],
+                                'judul' => $data[$i]['judul'],
+                                'status' => $data[$i]['status'],
+                                'pemohon' => $data[$i]['pemohon'],
+                                'photo' => $data[$i]['photo'],
+                                'tgl' => $data[$i]['tgl'],
+                                'location' => $data[$i]['location'],
+                                'as_view' =>  $data[$i]['as_view']
+                            ];
+                        }
+                    }
+                }
+            }
+            return $filter_data;
         } else {
-            return $result;
+            return $filter_data;
         }
     }
     public function render()

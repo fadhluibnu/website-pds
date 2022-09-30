@@ -19,6 +19,7 @@ class Perbaiki extends Component
     public $judul;
     public $status;
     public $location;
+    public $placeholder_upload_fie = '';
 
     public function closeX()
     {
@@ -38,6 +39,9 @@ class Perbaiki extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+        if ($this->file != null) {
+            $this->placeholder_upload_fie = 'd-none';
+        }
     }
 
     public function update_file()

@@ -54,7 +54,7 @@
                     <textarea class="form-control" id="catatanperbaikan" rows="3" wire:model='komentar' required></textarea>
                 </div>
                 <div class="d-flex mt-3">
-                    <div wire:loading wire:target='kembalikan' disabled
+                    <div wire:loading wire:target='komentar' disabled
                         class="btn btn-danger my-btn-danger box-radius-10">
                         <div class="d-flex m-auto align-items-center px-1 py-1">
                             <div class="loader d-flex">
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                    <button wire:loading.remove wire:target='kembalikan'
+                    <button wire:loading.remove wire:target='komentar'
                         class="btn btn-danger my-btn-danger box-radius-10" type="submit">Kembalikan</button>
                     <button type="button" class="btn ms-2 text-primary box-radius-10"
                         wire:click='toTinjau()'>Batal</button>

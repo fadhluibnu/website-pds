@@ -49,7 +49,7 @@
                                 Status
                             </div>
                         </div>
-                        @foreach ($peninjauan as $item)
+                        {{-- @foreach ($peninjauan as $item)
                             <div class="row align-items-center px-3 p-2 border-bottom">
                                 <div class="col-9 text-color">
                                     {{ $item['judul'] }}
@@ -61,7 +61,7 @@
                                     </button>
                                 </div>
                             </div>
-                        @endforeach
+                        @endforeach --}}
                     </div>
                 </div>
             </div>

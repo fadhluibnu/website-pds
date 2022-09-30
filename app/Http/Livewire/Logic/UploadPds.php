@@ -74,6 +74,9 @@ class UploadPds extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+        if ($this->file != null) {
+            $this->placeholder_upload_fie = 'd-none';
+        }
     }
 
     public function storepds()
@@ -132,60 +135,6 @@ class UploadPds extends Component
                 session()->flash('action', "Data Gagal Diupload");
             }
         }
-        // if ($this->pengendalidokumen == null & $this->managerdeqa == null & $this->manageriqa == null & $this->managerurel == null & $this->smias == null) {
-        //     $this->alertPic = "<script>alert('Anda belum memilih Penanggung Jawab')</script>";
-        // } else {
-        //     if (Gate::forUser($this->pemohon)->allows('management')) {
-        //         $this->rules += [
-        //             'management' => 'required'
-        //         ];
-        //     }
-        //     if (Gate::forUser($this->pemohon)->allows('pengendaliDokumen')) {
-        //         $this->rules += [
-        //             'pengendali' => 'required'
-        //         ];
-        //     }
-        //     $validatedData = $this->validate();
-        //     $validatedData['file'] = $this->file->store('dokumen-pds', 'public');
-
-        //     $store = Dokumen::create($validatedData);
-
-        //     if ($store) {
-        //         if ($this->pengendalidokumen != null) {
-        //             $this->storePic($store['id'], $this->pengendalidokumen);
-        //         }
-        //         if ($this->managerdeqa != null) {
-        //             $this->storePic($store['id'], $this->managerdeqa);
-        //         }
-        //         if ($this->manageriqa != null) {
-        //             $this->storePic($store['id'], $this->manageriqa);
-        //         }
-        //         if ($this->managerurel != null) {
-        //             $this->storePic($store['id'], $this->managerurel);
-        //         }
-        //         if ($this->smias != null) {
-        //             $this->storePic($store['id'], $this->smias);
-        //         }
-        //         History::create([
-        //             'dokumen_id' => $store['id'],
-        //             'user_id' => $this->pemohon,
-        //             'user_name' => $this->user_name,
-        //             'file' => $validatedData['file'],
-        //             'photo' => session('auth')[0]['photo'],
-        //             'judul' => 'PDS Berhasil Diupload',
-        //             'pesan' => 'Dokumen <strong>' . $this->judul . '</strong> telah berhasil diupload'
-        //         ]);
-        //         // event(new EventForPic($this->event_pic, $store['id'] . 'ditinjau', $id));
-        //         $param = [
-        //             'for' => null,
-        //             'session' => 'upload'
-        //         ];
-        //         $this->emit('closeModal', $param);
-        //         // $this->eventUpload($store['id']);
-        //     } else {
-        //         session()->flash('action', "Data Gagal Diupload");
-        //     }
-        // }
     }
     public function closeX()
     {

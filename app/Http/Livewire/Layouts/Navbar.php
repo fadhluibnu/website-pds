@@ -124,8 +124,6 @@ class Navbar extends Component
 
     public function render()
     {
-        return view('livewire.layouts.navbar', [
-            'peninjauan' => collect($peninjauan)
-        ]);
+        return view('livewire.layouts.navbar');
     }
 }

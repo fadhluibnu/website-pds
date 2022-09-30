@@ -370,7 +370,8 @@ class Tinjau extends Component
     }
     public function render()
     {
-        $data = Dokumen::where('id', $this->attrTinjau['id'])->first()->get();
+        // dd($this->attrTinjau);
+        $data = Dokumen::where('id', $this->attrTinjau['id'])->get();
         if (count($data) != 0) {
             $this->old_file = $data[0]['file'];
             $this->judul = $data[0]['judul'];

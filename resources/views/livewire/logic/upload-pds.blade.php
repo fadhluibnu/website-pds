@@ -13,7 +13,7 @@
                 <input type="hidden" wire:model='pemohon'>
                 <input type="hidden" wire:model='status'>
                 <input type="hidden" wire:model='location'>
-                <div class="row overflow-auto" style="height: 70vh;">
+                <div class="row overflow-auto border-bottom" style="height: 70vh;">
                     <div class="col-6">
                         <div class="mb-3">
                             <label for="namadokumen" class="form-label">Nama Dokumen</label>
@@ -90,8 +90,7 @@
                                     </div>
                                     <div class="col-6 pe-1">
                                         <input type="checkbox" wire:model.defer="managerdeqa"
-                                            class="d-none btn-check-custom" id="manager-deqa"
-                                            value="Lab Manager DEQA">
+                                            class="d-none btn-check-custom" id="manager-deqa" value="Lab Manager DEQA">
                                         <label for="manager-deqa" class="btn-checkbox text-center"><i
                                                 class="bi bi-check-circle-fill"></i>
                                             Manager DEQA</label>
@@ -168,7 +167,7 @@
 
                 <div wire:loading.remove>
                     <button type="submit" id="btn-upload"
-                        class="btn btn-primary rounded-pill d-flex justity-content-center m-auto"
+                        class="mt-3 btn btn-primary rounded-pill d-flex justity-content-center m-auto"
                         style="width: 100%;height:54px; padding:14px 0px;">
                         <div class="m-auto">
                             Submit
@@ -177,7 +176,7 @@
                 </div>
                 <div wire:loading style="width: 100%;">
                     <button disabled type="submit" id="btn-upload"
-                        class="btn btn-primary rounded-pill d-flex justity-content-center"
+                        class="mt-3 btn btn-primary rounded-pill d-flex justity-content-center"
                         style="width: 100%;height:54px; padding:14px 0px;">
                         <div class="d-flex m-auto align-items-center">
                             <div class="loader d-flex">
